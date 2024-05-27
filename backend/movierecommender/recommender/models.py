@@ -15,3 +15,22 @@ class Preference(models.Model):
         return (
             f"Preference for {self.director or self.actor or self.liked or self.hated}"
         )
+
+
+class Movie(models.Model):
+    title = models.CharField(max_length=100)
+    director = models.CharField(max_length=100)
+    rating = models.FloatField()
+    detail = models.TextField(null=True, blank=True)
+    image = models.URLField()
+    year = models.PositiveIntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Recommendation(models.Model):
+    movies = models.ManyToManyField(Movie, related_name='recommendations')
+
+    def __str__(self):
+        return f"Recommendation {self.id}"
