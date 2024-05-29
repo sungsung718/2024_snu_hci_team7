@@ -9,5 +9,9 @@
   body,
   #root {
     @apply h-full;
+    @apply w-auto;
+  }
+
+  html {
   }
 }
