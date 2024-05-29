@@ -9,7 +9,9 @@ export default function MovieCard({
 }) {
   return (
     <div className="w-[184px]">
-      <div className="w-[184px] h-[232px] mb-3.5 bg-slate-300">image</div>
+      <div className="w-[184px] h-[232px] mb-3.5 bg-slate-300 overflow-hidden center flex justify-center items-center">
+        <img src={movie.imageUrl} alt="movie_poster" />
+      </div>
       <div>
         <div className="flex justify-between items-start">
           <div className="text-lg">
