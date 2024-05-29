@@ -6,7 +6,8 @@
 
 @layer base {
   html,
-  body {
+  body,
+  #root {
     @apply h-full;
   }
 }
