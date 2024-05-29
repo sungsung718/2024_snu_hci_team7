@@ -10,6 +10,7 @@ export default {
           600: "#5D5B5A",
         },
         beige: {
+          light: "#f5f0ea",
           dark: "#C3BDB8",
         },
       },
