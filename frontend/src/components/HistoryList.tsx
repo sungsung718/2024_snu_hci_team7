@@ -18,7 +18,7 @@ export default function HistoryList({ histories }: HistoryListType) {
       </ul>
       <button className="relative" onClick={toggleHistory}>
         <span className="material-symbols-outlined font-light text-white text-3xl drop-shadow-[0_1px_5px_rgba(51,44,37,0.65)]">
-          folder
+          {showHistory ? "folder" : "folder_open"}
         </span>
         <span className="material-symbols-outlined font-light text-white text-xl absolute top-[-6px] right-[-12px] drop-shadow-[0_1px_3px_rgba(51,44,37,0.65)]">
           history

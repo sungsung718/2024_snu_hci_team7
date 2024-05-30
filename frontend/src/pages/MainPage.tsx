@@ -18,33 +18,37 @@ export default function MainPage() {
         미리 둘러볼까요?
       </div>
       <div className="flex flex-col gap-9 w-full">
-        <div className="bg-white flex flex-col items-center py-6 px-14">
-          <div className="flex flex-wrap gap-10 ">
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-          </div>
-        </div>
-
-        <div className="bg-white flex flex-col items-center py-6 px-14">
-          <div className="flex flex-wrap gap-10">
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-            <MovieCard movie={movieMock} showPreference={true} />
-          </div>
-        </div>
+        <Movies
+          movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
+        />
+        <Movies
+          movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
+        />
       </div>
-
-      <button className="pb-28 pt-[72px] flex items-center justify-center gap-1">
-        <span className="text-lg">시작하기</span>
-        <span className="material-symbols-outlined text-5xl font-extralight">
-          arrow_right_alt
-        </span>
-      </button>
+      <StartButton />
     </div>
+  );
+}
+
+function Movies({ movies }: { movies: Movie[] }) {
+  return (
+    <div className="bg-white flex flex-col items-center py-6 px-14">
+      <div className="flex flex-wrap gap-10 ">
+        {movies.map((movie) => (
+          <MovieCard movie={movie} showPreference={true} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function StartButton() {
+  return (
+    <button className="pb-28 pt-[72px] flex items-center justify-center gap-1">
+      <span className="text-lg">시작하기</span>
+      <span className="material-symbols-outlined text-5xl font-extralight">
+        arrow_right_alt
+      </span>
+    </button>
   );
 }

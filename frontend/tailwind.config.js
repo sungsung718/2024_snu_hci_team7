@@ -6,6 +6,7 @@ export default {
     extend: {
       colors: {
         neutral: {
+          200: "#d1d1d1",
           500: "#726E6B",
           600: "#5D5B5A",
         },
