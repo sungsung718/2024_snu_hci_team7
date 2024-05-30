@@ -5,13 +5,11 @@ export default function MovieCard({
   showPreference,
 }: {
   movie: Movie;
-  showPreference: boolean;
+  showPreference?: boolean;
 }) {
   return (
     <div className="w-[184px]">
-      <div className="w-[184px] h-[232px] mb-3.5 bg-slate-300 overflow-hidden center flex justify-center items-center">
-        <img src={movie.imageUrl} alt="movie_poster" />
-      </div>
+      <Poster imageUrl={movie.imageUrl} />
       <div>
         <div className="flex justify-between items-start">
           <div className="text-lg">
@@ -47,6 +45,14 @@ export default function MovieCard({
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function Poster({ imageUrl }: { imageUrl: string }) {
+  return (
+    <div className="w-[184px] h-[232px] mb-3.5 bg-slate-300 overflow-hidden center flex justify-center items-center">
+      <img src={imageUrl} alt="movie_poster" />
     </div>
   );
 }
