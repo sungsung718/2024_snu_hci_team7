@@ -17,7 +17,7 @@ export default function ResultPage() {
       <div className="text-2xl text-center mb-8">
         영화 취향 결과를 가져왔어요.
       </div>
-      <div className="mx-auto px-[76px] pt-[60px] pb-[80px] w-[1225px] shadow-[0px_4px_23.7px_0px_rgba(0,_0,_0,_0.25)]">
+      <div className="mx-auto px-[76px] pt-[60px] pb-[80px] w-[1225px] shadow-[0px_10px_23px_0px_rgba(0,_0,_0,_0.25)]">
         <ChattingHistory />
         <Movies
           movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
@@ -87,7 +87,7 @@ function Title({ title }: { title: string }) {
     <a
       href={`https://search.naver.com/search.naver?query=영화 ${title}`}
       target="_blank"
-      className="block whitespace-nowrap mt-3 text-ellipsis overflow-hidden text-lg text-blue font-semibold cursor-pointer"
+      className="hover:underline block whitespace-nowrap mt-3 text-ellipsis overflow-hidden text-lg text-blue font-semibold cursor-pointer"
     >
       {title}
     </a>

@@ -1,6 +1,7 @@
 import "./App.css";
 import InquiryPage from "./pages/InquiryPage";
 import MainPage from "./pages/MainPage";
+import RecommendPage from "./pages/RecommendPage";
 import ResultPage from "./pages/ResultPage";
 
 function App() {
@@ -8,7 +9,8 @@ function App() {
     <>
       {/* <MainPage /> */}
       {/* <InquiryPage /> */}
-      <ResultPage />
+      <RecommendPage />
+      {/* <ResultPage /> */}
     </>
   );
 }

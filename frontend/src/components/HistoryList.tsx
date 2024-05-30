@@ -1,10 +1,10 @@
 import { useReducer } from "react";
 
-type HistoryListType = {
+type HistoryListProps = {
   histories: string[];
 };
 
-export default function HistoryList({ histories }: HistoryListType) {
+export default function HistoryList({ histories }: HistoryListProps) {
   const [showHistory, toggleHistory] = useReducer((x) => !x, false);
 
   return (

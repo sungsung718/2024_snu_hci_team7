@@ -1,10 +1,14 @@
-type GanreChipType = {
+type GanreChipProps = {
   ganre: string;
   selected: boolean;
   onClick: () => void;
 };
 
-export default function GanreChip({ ganre, selected, onClick }: GanreChipType) {
+export default function GanreChip({
+  ganre,
+  selected,
+  onClick,
+}: GanreChipProps) {
   const chipStyle = selected
     ? "border-neutral-600 text-white bg-neutral-600"
     : "border-beige-dark";

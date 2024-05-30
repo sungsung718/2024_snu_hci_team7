@@ -14,6 +14,11 @@ export default {
           light: "#f5f0ea",
           dark: "#C3BDB8",
         },
+        brown: {
+          200: "#F0E6DE",
+          400: "#827060",
+          700: "#5D544C",
+        },
         blue: "#4459C4",
       },
     },
