@@ -14,6 +14,7 @@ export default {
           light: "#f5f0ea",
           dark: "#C3BDB8",
         },
+        blue: "#4459C4",
       },
     },
   },

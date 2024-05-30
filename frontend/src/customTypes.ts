@@ -5,4 +5,5 @@ export type Movie = {
   director?: string;
   rating?: number;
   keywords?: string[];
+  reason?: string;
 };
