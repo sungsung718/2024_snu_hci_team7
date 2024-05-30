@@ -2,7 +2,7 @@ import AccountCircle from "@/assets/account_circle.svg?react";
 import { Movie } from "@/customTypes";
 
 const movieMock: Movie = {
-  title: "봄 여름 가을 겨울 그리고",
+  title: "다크나이트",
   imageUrl:
     "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
   director: "김기덕",
@@ -84,9 +84,13 @@ function Poster({ imageUrl }: { imageUrl: string }) {
 
 function Title({ title }: { title: string }) {
   return (
-    <div className="whitespace-nowrap mt-3 text-ellipsis overflow-hidden text-lg text-blue font-semibold cursor-pointer">
+    <a
+      href={`https://search.naver.com/search.naver?query=영화 ${title}`}
+      target="_blank"
+      className="block whitespace-nowrap mt-3 text-ellipsis overflow-hidden text-lg text-blue font-semibold cursor-pointer"
+    >
       {title}
-    </div>
+    </a>
   );
 }
 
