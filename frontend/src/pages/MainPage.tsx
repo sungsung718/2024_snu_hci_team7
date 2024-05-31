@@ -1,5 +1,6 @@
-import MovieCard from "@/components/MovieCard";
+import MovieCard from "@/components/main/MovieCard";
 import { Movie } from "@/customTypes";
+import { Link } from "react-router-dom";
 
 const movieMock: Movie = {
   title: "액션",
@@ -13,16 +14,18 @@ const movieMock: Movie = {
 
 export default function MainPage() {
   return (
-    <div className="bg-gray-300 flex flex-col items-center">
+    <div className="bg-[#f1f1f1] flex flex-col items-center">
       <div className="text-2xl pt-24 flex justify-center pb-12">
         미리 둘러볼까요?
       </div>
       <div className="flex flex-col gap-9 w-full">
         <Movies
           movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
+          category="최신 영화"
         />
         <Movies
           movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
+          category="꾸준히 사랑받는 영화"
         />
       </div>
       <StartButton />
@@ -30,13 +33,16 @@ export default function MainPage() {
   );
 }
 
-function Movies({ movies }: { movies: Movie[] }) {
+function Movies({ movies, category }: { movies: Movie[]; category: string }) {
   return (
     <div className="bg-white flex flex-col items-center py-6 px-14">
-      <div className="flex flex-wrap gap-10 ">
-        {movies.map((movie) => (
-          <MovieCard movie={movie} showPreference={true} />
-        ))}
+      <div>
+        <div className="text-[18px] mb-[14px]">{category}</div>
+        <div className="flex flex-wrap items-center gap-10">
+          {movies.map((movie) => (
+            <MovieCard movie={movie} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -44,11 +50,14 @@ function Movies({ movies }: { movies: Movie[] }) {
 
 function StartButton() {
   return (
-    <button className="pb-28 pt-[72px] flex items-center justify-center gap-1">
+    <Link
+      to={"/inquiry"}
+      className="pb-28 pt-[72px] flex items-center justify-center gap-1"
+    >
       <span className="text-lg">시작하기</span>
       <span className="material-symbols-outlined text-5xl font-extralight">
         arrow_right_alt
       </span>
-    </button>
+    </Link>
   );
 }

@@ -1,5 +1,6 @@
 import GanreChip from "@/components/GenreChip";
 import HistoryList from "@/components/HistoryList";
+import { useNavigate } from "react-router-dom";
 
 const GANRE_LIST = [
   "멜로",
@@ -28,12 +29,18 @@ const HISTORIES = [
 ];
 
 export default function InquiryPage() {
+  const navigate = useNavigate();
+
+  const handleDoneClick = () => {
+    navigate("/recommend");
+  };
+
   return (
     <div className="relative min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
       <div className=" min-w-[940px] max-w-[1200px] flex flex-col justify-center items-center mx-auto px-[120px] pt-40 pb-[280px]">
         <FavoriteGanre />
         <BasicPreference />
-        <OtherPreference />
+        <OtherPreference onClickDone={handleDoneClick} />
       </div>
       <HistoryList histories={HISTORIES} />
     </div>
@@ -80,7 +87,7 @@ function BasicPreference() {
   );
 }
 
-function OtherPreference() {
+function OtherPreference({ onClickDone }: { onClickDone: () => void }) {
   return (
     <div className="w-full flex gap-4 justify-center">
       <textarea
@@ -89,7 +96,8 @@ function OtherPreference() {
         placeholder="그 밖의 취향에 대해 자유롭게 알려주세요. (개봉연도, 러닝타임..)"
         className="w-[70%] max-w-[680px] h-[60px] border rounded-3xl border-beige-dark placeholder:text-beige-dark outline-none p-4 resize-none"
       />
-      <button>
+
+      <button onClick={onClickDone}>
         <span className="material-symbols-outlined font-extralight text-neutral-500 text-4xl">
           check_circle
         </span>

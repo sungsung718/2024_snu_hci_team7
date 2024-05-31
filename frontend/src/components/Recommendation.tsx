@@ -1,5 +1,5 @@
 import { Movie } from "@/customTypes";
-import Poster from "./Poster";
+import Poster from "./common/Poster";
 import SwipeDown from "@/assets/swipe_down.svg?react";
 
 type RecommendationProps = {
@@ -26,7 +26,7 @@ export default function Recommendation({
 
 function Chatting({ content }: { content: string }) {
   return (
-    <div className="max-w-[612px] w-fit px-7 py-4 border border-dashed border-beige-dark rounded-md text-[rgba(188,_180,_172)]">
+    <div className="relative max-w-[612px] w-fit px-7 py-4 border border-dashed border-beige-dark rounded-md text-[rgba(188,_180,_172)]">
       {content}
     </div>
   );
