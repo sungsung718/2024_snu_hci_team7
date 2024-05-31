@@ -1,5 +1,6 @@
 import GanreChip from "@/components/GenreChip";
 import HistoryList from "@/components/HistoryList";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const GANRE_LIST = [
@@ -7,16 +8,14 @@ const GANRE_LIST = [
   "코미디",
   "액션",
   "서부극",
-  "갱스터",
   "느와르",
   "스릴러",
-  "미스터리",
   "모험",
   "공포",
   "전쟁",
   "사극",
   "드라마",
-  "탐정",
+  "추리",
   "SF",
   "판타지",
 ];
@@ -29,6 +28,7 @@ const HISTORIES = [
 ];
 
 export default function InquiryPage() {
+  const [ganres, setGanres] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const handleDoneClick = () => {
@@ -38,7 +38,7 @@ export default function InquiryPage() {
   return (
     <div className="relative min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
       <div className=" min-w-[940px] max-w-[1200px] flex flex-col justify-center items-center mx-auto px-[120px] pt-40 pb-[280px]">
-        <FavoriteGanre />
+        <FavoriteGanre ganres={ganres} setGanres={setGanres} />
         <BasicPreference />
         <OtherPreference onClickDone={handleDoneClick} />
       </div>
@@ -47,16 +47,31 @@ export default function InquiryPage() {
   );
 }
 
-function FavoriteGanre() {
+type FavoriteGanreProps = {
+  ganres: string[];
+  setGanres: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
+  const addGanre = (ganre: string) => {
+    setGanres((prev) => [...prev, ganre]);
+  };
+
+  const removeGanre = (ganre: string) => {
+    setGanres((prev) => prev.filter((g) => g !== ganre));
+  };
+
   return (
     <div className="flex gap-4 mb-[70px]">
       <span className="whitespace-nowrap">내가 좋아하는 장르는</span>
       <div className="flex gap-2 flex-wrap">
-        {GANRE_LIST.map((ganre, i) => (
+        {GANRE_LIST.map((ganre) => (
           <GanreChip
             ganre={ganre}
-            onClick={() => {}}
-            selected={Boolean(i % 2)}
+            onClick={() => {
+              ganres.includes(ganre) ? removeGanre(ganre) : addGanre(ganre);
+            }}
+            selected={ganres.includes(ganre)}
           />
         ))}
       </div>
