@@ -1,6 +1,7 @@
 import HistoryList from "@/components/HistoryList";
 import Recommendation from "@/components/Recommendation";
 import { Movie } from "@/customTypes";
+import { useNavigate } from "react-router-dom";
 
 const HISTORIES = [
   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
@@ -23,19 +24,38 @@ const CHATTING =
   "나는 로맨스나 코미디 또는 예술적인 영화를 좋아하고, 공포 스릴러 범죄 영화는 절대 보지 않아. 가장 인상깊게 본 영화는 최근에 개봉했던 일본 영화 '괴물'이야. ";
 
 export default function RecommendPage() {
+  const navigate = useNavigate();
+
+  const handleDoneClick = () => {
+    navigate("/result");
+  };
+
   return (
     <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
-      <div className="px-[120px]">
+      <div className="px-[120px] w-fit mx-auto">
         <div>
           <Recommendation
             chatting={CHATTING}
             movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
           />
         </div>
+        <DoneButton onClick={handleDoneClick} />
         <ChattingInput />
       </div>
       <HistoryList histories={HISTORIES} />
     </div>
+  );
+}
+
+function DoneButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      className="ml-auto my-5 flex items-center gap-1 py-2.5 pl-5 pr-4 bg-brown-700 rounded-3xl text-white"
+      onClick={onClick}
+    >
+      <span className="text-[15px] font-semibold">이제 좋아요</span>
+      <span className="material-symbols-outlined font-light">check</span>
+    </button>
   );
 }
 

@@ -12,14 +12,13 @@ export default function Recommendation({
   movies,
 }: RecommendationProps) {
   return (
-    <div className="flex flex-col items-center mb-5 w-[1000px] mx-auto">
+    <div className="flex flex-col w-fit items-center mb-5 mx-auto">
       <Chatting content={chatting} />
-      <div className="mr-auto pl-3 flex gap-1 items-center mt-[56px] mb-4 text-[rgba(202,_138,_138,_0.8)] text-[14px] font-medium">
+      <div className="mr-auto pl-8 flex gap-1 items-center mt-[56px] mb-4 text-[rgba(202,_138,_138,_0.8)] text-[14px] font-medium">
         <SwipeDown />
         <span>추천의 말을 직접 조작해보세요</span>
       </div>
       <Movies movies={movies} />
-      <DoneButton />
     </div>
   );
 }
@@ -34,7 +33,7 @@ function Chatting({ content }: { content: string }) {
 
 function Movies({ movies }: { movies: Movie[] }) {
   return (
-    <div className="flex flex-wrap gap-5">
+    <div className="flex gap-5 px-5">
       {movies.map((movie) => (
         <MovieCard movie={movie} />
       ))}
@@ -104,14 +103,5 @@ function Director({ director }: { director: string }) {
     <div className="text-[13px] text-white opacity-[0.6] font-light">
       {director}
     </div>
-  );
-}
-
-function DoneButton() {
-  return (
-    <button className="ml-auto mt-5 flex items-center gap-1 py-2.5 pl-5 pr-4 bg-brown-700 rounded-3xl text-white">
-      <span className="text-[15px] font-semibold">이제 좋아요</span>
-      <span className="material-symbols-outlined font-light">check</span>
-    </button>
   );
 }
