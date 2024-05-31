@@ -1,4 +1,4 @@
-import MovieCard from "@/components/main/MovieCard";
+import MovieCard from "@/components/preview/MovieCard";
 import { Movie } from "@/customTypes";
 import { Link } from "react-router-dom";
 
@@ -12,7 +12,7 @@ const movieMock: Movie = {
   // rating: 8.1,
 };
 
-export default function MainPage() {
+export default function PreviewPage() {
   return (
     <div className="bg-[#f1f1f1] flex flex-col items-center">
       <div className="text-2xl pt-24 flex justify-center pb-12">
