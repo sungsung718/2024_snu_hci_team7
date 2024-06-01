@@ -1,9 +1,18 @@
 export type Movie = {
   title: string;
-  imageUrl: string;
+  image: string;
   year?: number;
   director?: string;
   rating?: number;
   keywords?: string[];
-  reason?: string;
+  detail?: string;
+};
+
+export type Preference = {
+  genre: string;
+  director: string;
+  actor: string;
+  liked: string;
+  hated: string;
+  detail: string;
 };

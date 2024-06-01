@@ -12,11 +12,11 @@ const HISTORIES = [
 
 const movieMock: Movie = {
   title: "액션",
-  imageUrl:
+  image:
     "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
   director: "김기덕",
   rating: 8.1,
-  reason:
+  detail:
     "이 영화는 미묘한 감정과 캐릭터의 심리를 섬세하게 그려내어 당신의 호감을 사로잡을 것입니다.",
 };
 

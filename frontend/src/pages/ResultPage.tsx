@@ -3,11 +3,11 @@ import { Movie } from "@/customTypes";
 
 const movieMock: Movie = {
   title: "다크나이트",
-  imageUrl:
+  image:
     "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
   director: "김기덕",
   rating: 8.1,
-  reason:
+  detail:
     '"괴물"과 마찬가지로 이 영화도 감정적인 연출과 음악을 통해 진정한 감정을 전달합니다.',
 };
 
@@ -65,11 +65,11 @@ function Movies({ movies }: { movies: Movie[] }) {
 function MovieCard({ movie }: { movie: Movie }) {
   return (
     <div className="w-[182px]">
-      <Poster imageUrl={movie.imageUrl} />
+      <Poster imageUrl={movie.image} />
       <Title title={movie.title} />
       {/* undefined 넘어가면 에러 뜨려나 */}
       <DirectorAndRating director={movie.director!} rating={movie.rating!} />
-      <Description description={movie.reason!} />
+      <Description description={movie.detail!} />
     </div>
   );
 }

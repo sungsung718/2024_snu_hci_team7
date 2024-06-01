@@ -44,8 +44,8 @@ function Movies({ movies }: { movies: Movie[] }) {
 function MovieCard({ movie }: { movie: Movie }) {
   return (
     <div className="w-[182px] bg-white rounded-lg overflow-hidden shadow-[0px_0px_17.3px_0px_rgba(92,_87,_78,_0.09)]">
-      <Description description={movie.reason!} />
-      <Poster imageUrl={movie.imageUrl} gradient />
+      <Description description={movie.detail!} />
+      <Poster imageUrl={movie.image} gradient />
       <BasicInformation
         title={movie.title}
         rating={movie.rating!}

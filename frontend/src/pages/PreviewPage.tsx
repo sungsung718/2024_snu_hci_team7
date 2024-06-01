@@ -35,8 +35,8 @@ function Movies({ movies, category }: { movies: Movie[]; category: string }) {
       <div>
         <div className="text-[18px] mb-[14px]">{category}</div>
         <div className="flex flex-wrap items-center gap-10">
-          {movies.map((movie) => (
-            <MovieCard movie={movie} />
+          {movies.map((movie, i) => (
+            <MovieCard movie={movie} key={i} />
           ))}
         </div>
       </div>

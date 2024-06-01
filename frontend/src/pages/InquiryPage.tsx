@@ -1,9 +1,12 @@
-import GanreChip from "@/components/GenreChip";
-import HistoryList from "@/components/HistoryList";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const GANRE_LIST = [
+import { postRecommendations } from "@/apis";
+
+import GenreChip from "@/components/GenreChip";
+import HistoryList from "@/components/HistoryList";
+
+const GENRE_LIST = [
   "멜로",
   "코미디",
   "액션",
@@ -35,7 +38,7 @@ type BasicPreference = {
 };
 
 export default function InquiryPage() {
-  const [ganres, setGanres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<string[]>([]);
   const [basicPreference, setBasicPreference] = useState<BasicPreference>({
     director: "",
     actor: "",
@@ -53,14 +56,27 @@ export default function InquiryPage() {
     setBasicPreference((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDoneClick = () => {
-    navigate("/recommend");
+  const handleDoneClick = async () => {
+    const genreString = genres.join(", ");
+    const preference = {
+      genre: genreString,
+      ...basicPreference,
+      detail,
+    };
+
+    try {
+      const res = await postRecommendations(preference);
+      console.log(res);
+      // navigate("/recommend");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div className="relative min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
       <div className=" min-w-[940px] max-w-[1200px] flex flex-col justify-center items-center mx-auto px-[120px] pt-40 pb-[280px]">
-        <FavoriteGanre ganres={ganres} setGanres={setGanres} />
+        <FavoriteGanre ganres={genres} setGanres={setGenres} />
         <BasicPreferenceInputs
           basicPreference={basicPreference}
           onChange={handleBasicPreferenceInput}
@@ -94,9 +110,9 @@ function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
     <div className="flex gap-4 mb-[70px]">
       <span className="whitespace-nowrap">내가 좋아하는 장르는</span>
       <div className="flex gap-2 flex-wrap">
-        {GANRE_LIST.map((ganre) => (
-          <GanreChip
-            ganre={ganre}
+        {GENRE_LIST.map((ganre) => (
+          <GenreChip
+            genre={ganre}
             onClick={() => {
               ganres.includes(ganre) ? removeGanre(ganre) : addGanre(ganre);
             }}

@@ -4,7 +4,7 @@ import Poster from "../common/Poster";
 export default function MovieCard({ movie }: { movie: Movie }) {
   return (
     <div className="w-[184px]">
-      <Poster imageUrl={movie.imageUrl} />
+      <Poster imageUrl={movie.image} />
       <div className="flex justify-between items-start mt-3.5">
         <div className="text-lg">
           <span>{movie.title}</span>
