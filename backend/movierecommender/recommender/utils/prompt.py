@@ -51,7 +51,7 @@ Now, it’s your turn to recommend 5 movies for a user:
 """
 
 RECOMMENDATION_FORMAT = """\
-{[{"title":"movie title","director": "John Doe",”rating”:float,"detail": "detail",”year”:int},{...},{…},{…},{…}]}
+{"movies":{[{"title":"movie title","director": "John Doe",”rating”:float,"detail": "detail",”year”:int},{...},{…},{…},{…}]}}
 """
 
 PREFERENCE_EXAMPLE = """\
@@ -60,7 +60,7 @@ PREFERENCE_EXAMPLE = """\
 """
 
 RECOMMENDATION_EXAMPLE = """\
-{[{”title”:“신세계”,”director”:”박훈정”,”rating”:8.94,”detail”:“범죄도시 시리즈와 마찬가지로 강렬한 연기와 깊이 있는 스토리가 \
+{"movies":[{”title”:“신세계”,”director”:”박훈정”,”rating”:8.94,”detail”:“범죄도시 시리즈와 마찬가지로 강렬한 연기와 깊이 있는 스토리가 \
 돋보입니다.”,”year”:2013},\
 {”title”:”아수라”,”director”:”김성수”,”rating”:6.54,”detail”:”액션과 드라마가 적절히 섞여 있어 범죄도시의 팬이라면 흥미롭게 \
 볼 수 있을 것입니다.”,”year”:2016},\
