@@ -36,17 +36,15 @@ class RecommendationCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         gpt_agent = GPTAgent()
-        # TODO: Fill in appropriate parameters for get_prompt()
-        prompt = RecommendationTemplate.get_prompt()
+        prompt = RecommendationTemplate.get_prompt(preference=serializer.data)
         gpt_agent.add_message(prompt)
 
-        reply = gpt_agent.get_answer(
+        reply = gpt_agent.get_parsed_answer(
             timeout=RECOMMENDATION_TIMEOUT,
             max_trial=RECOMMENDATION_MAX_TRIAL,
         )
 
-        # TODO: Fill in appropriate parameters for recommendation_serializer
-        recommendation_serializer = RecommendationSerializer(data=reply)
+        recommendation_serializer = RecommendationSerializer(movies=reply)
         recommendation_serializer.is_valid(raise_exception=True)
 
         serializer.save()
