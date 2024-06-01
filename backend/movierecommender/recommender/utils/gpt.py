@@ -5,7 +5,10 @@ from typing import Optional, Callable, Dict, Any, List
 import openai
 from openai import RateLimitError, OpenAIError
 
+from movierecommender.settings import OPENAI_API_KEY
 from recommender.utils.log import print_log
+
+openai.api_key = OPENAI_API_KEY
 
 
 def timeout(func: Callable):
