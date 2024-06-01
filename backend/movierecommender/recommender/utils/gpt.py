@@ -1,43 +1,15 @@
 import json
 import time
-from typing import Optional, Callable, Dict, Any, List
+from typing import Optional, Dict, Any, List
 
 import openai
 from openai import RateLimitError, OpenAIError
 
 from movierecommender.settings import OPENAI_API_KEY
 from recommender.utils.log import print_log
+from recommender.utils.timeout import timeout
 
 openai.api_key = OPENAI_API_KEY
-
-
-def timeout(func: Callable):
-    """
-    Decorator to add timeout to a function.
-    To apply timeout, function calls should include a keyword argument `timeout`.
-    If the function does not return before the timeout, a TimeoutError is raised.
-    Note that the return value of the function will be ignored, and it has to be stored properly in a shared object.
-    """
-
-    def timeout_wrapper(*args, **kwargs):
-        if "timeout" not in kwargs:
-            raise ValueError("timeout argument required")
-        seconds = kwargs.pop("timeout")
-        assert seconds is None or isinstance(
-            seconds, (int, float)
-        ), f"wrong type for timeout: {type(seconds)}"
-
-        # TODO: Use signal instead of multiprocessing
-        p = multiprocessing.Process(target=func, args=args, kwargs=kwargs)
-        p.start()
-        p.join(timeout=seconds)
-
-        if p.is_alive():
-            p.terminate()
-            raise TimeoutError
-
-    timeout_wrapper: func
-    return timeout_wrapper
 
 
 class GPTAgent:
@@ -59,8 +31,7 @@ class GPTAgent:
         Wrapper for GPT API call.
         Set `timeout=None` to disable timeout.
         """
-        # TODO: Use signal instead of multiprocessing
-        container = multiprocessing.Manager().dict()
+        container = {}
 
         for trial in range(max_trial):
             try:
