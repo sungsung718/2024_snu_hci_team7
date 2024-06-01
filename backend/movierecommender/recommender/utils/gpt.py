@@ -20,12 +20,16 @@ class GPTAgent:
     def add_message(self, content: str, role: str = "user"):
         self._messages.append({"role": role, "content": content})
 
+    def reset_messages(self):
+        self._messages = []
+
     def get_answer(
         self,
         timeout: Optional[float],
         temperature: float = 1.0,
         rate_limit_wait: int = 10,
         max_trial: int = 3,
+        is_json=True,
     ) -> str:
         """
         Wrapper for GPT API call.
@@ -35,7 +39,12 @@ class GPTAgent:
 
         for trial in range(max_trial):
             try:
-                self._call(container, timeout=timeout, temperature=temperature)
+                params = {}
+                if is_json:
+                    params["response_format"] = {"type": "json_object"}
+                self._call(
+                    container, timeout=timeout, temperature=temperature, **params
+                )
 
             except TimeoutError:
                 print_log("GPT API timeout", tag="fail", place="GPTAgent.get_answer")
