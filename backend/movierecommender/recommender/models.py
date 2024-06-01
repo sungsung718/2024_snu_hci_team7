@@ -30,7 +30,9 @@ class Movie(models.Model):
 
 
 class Recommendation(models.Model):
-    movies = models.ManyToManyField(Movie, related_name='recommendations')
+    # SQLite3가 배열을 저장 못하니 정수,정수,... 꼴로 저장
+    movies = models.CharField(max_length=100, null=False, blank=True)
+    preference = models.IntegerField()
 
     def __str__(self):
         return f"Recommendation {self.id}"

@@ -11,12 +11,16 @@ class PreferenceSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ['title', 'director', 'rating', 'detail', 'image', 'year']
+        fields = ['id', 'title', 'director', 'rating', 'detail', 'image', 'year']
 
 
 class RecommendationSerializer(serializers.ModelSerializer):
-    movies = MovieSerializer(many=True, read_only=True)
+    def to_representation(self, instance):
+        return {
+            'id': instance.id,
+            'movies': instance.movies
+        }
 
     class Meta:
         model = Recommendation
-        fields = ['id', 'movies']
+        fields = ['id', 'movies', 'preference']
