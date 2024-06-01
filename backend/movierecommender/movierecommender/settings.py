@@ -25,6 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+NAVER_CLIENT_ID = os.getenv('NAVER_CLIENT_ID')
+NAVER_API_KEY = os.getenv('NAVER_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

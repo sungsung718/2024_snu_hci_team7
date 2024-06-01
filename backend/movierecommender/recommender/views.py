@@ -5,6 +5,7 @@ from recommender.serializers import PreferenceSerializer, RecommendationSerializ
 from recommender.utils.constants import RECOMMENDATION_TIMEOUT, RECOMMENDATION_MAX_TRIAL
 from recommender.utils.gpt import GPTAgent
 from recommender.utils.log import print_log
+from recommender.utils.naver import NaverAgent
 from recommender.utils.prompt import RecommendationTemplate
 
 
@@ -46,6 +47,13 @@ class RecommendationCreateView(generics.CreateAPIView):
 
         recommendation_serializer = RecommendationSerializer(movies=reply)
         recommendation_serializer.is_valid(raise_exception=True)
+
+        naver_agent = NaverAgent()
+        for movie in recommendation_serializer.data:
+            title = movie["title"]
+            keyword = f"영화 {title} 포스터"
+            url = naver_agent.get_image(keyword=keyword)
+            movie["image"] = url
 
         serializer.save()
         recommendation_serializer.save()
