@@ -1,4 +1,4 @@
-import signal
+import threading
 from typing import Callable
 
 
@@ -21,15 +21,25 @@ def timeout(func: Callable):
             seconds, (int, float)
         ), f"wrong type for timeout: {type(seconds)}"
 
-        old_handler = signal.signal(signal.SIGALRM, timeout_handler)
-        signal.alarm(int(seconds))
-        try:
-            result = func(*args, **kwargs)
-        except TimeoutError:
-            raise
-        finally:
-            signal.signal(signal.SIGALRM, old_handler)
-            signal.alarm(0)
-        return result
+        result = []
+        error = []
+
+        def target():
+            try:
+                result.append(func(*args, **kwargs))
+            except Exception as e:
+                error.append(e)
+
+        thread = threading.Thread(target=target)
+        thread.start()
+        thread.join(timeout=seconds)
+
+        if thread.is_alive():
+            raise TimeoutError("Function timed out")
+
+        if error:
+            raise error[0]
+
+        return result[0]
 
     return timeout_wrapper
