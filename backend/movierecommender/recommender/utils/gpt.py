@@ -117,7 +117,7 @@ class GPTAgent:
     @timeout
     def _call(self, container: dict, **kwargs):
         messages = self._messages
-        completion = openai.ChatCompletion.create(
+        completion = openai.chat.completions.create(
             model=self.model,
             messages=messages,
             **kwargs,
