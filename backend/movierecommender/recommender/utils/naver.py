@@ -12,7 +12,7 @@ client_secret = NAVER_API_KEY
 class NaverAgent:
     def get_image(self, keyword):
         encText = urllib.parse.quote(keyword)
-        url = "https://openapi.naver.com/v1/search/image?display=1&query=" + encText  # JSON 결과
+        url = "https://openapi.naver.com/v1/search/image?display=5&query=" + encText  # JSON 결과
         request = urllib.request.Request(url)
         request.add_header("X-Naver-Client-Id", client_id)
         request.add_header("X-Naver-Client-Secret", client_secret)
@@ -22,7 +22,11 @@ class NaverAgent:
             raise NaverError("Cause: Naver API Call")
 
         response_body = json.loads(response.read().decode("utf-8"))
-        return response_body["items"][0]["thumbnail"]
+        for movie in response_body["items"]:
+            if len(movie["thumbnail"]) < 200:
+                return movie["thumbnail"]
+
+        return ""
 
 
 class NaverError(Exception):
