@@ -67,7 +67,7 @@ export default function InquiryPage() {
     try {
       const res = await postRecommendations(preference);
       console.log(res);
-      // navigate("/recommend");
+      navigate("/recommend", { state: { result: res } });
     } catch (err) {
       console.log(err);
     }
