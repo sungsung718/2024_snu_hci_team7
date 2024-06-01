@@ -38,7 +38,9 @@ NOTE
 * All of your responses should be in Korean.
 * Some of the input fields may be blank.
 * In the rating field of your reply, search for the “네티즌 평점” in the Naver movie. If not found, leave it as 0.
-* In the detail field of your reply, give an ONE sentence explanation why you recommend this movie. 
+* In the detail field of your reply, give an ONE sentence explanation why you recommend this movie. Then, split the \
+sentence into some subphrases based on meanings with / character. Subphrases are later used by users to gain feedback \
+for your recommendation.
 
 ***
 
