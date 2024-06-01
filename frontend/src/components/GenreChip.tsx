@@ -15,7 +15,7 @@ export default function GanreChip({
 
   return (
     <button
-      className={`flex justify-center items-center py-1 px-4 border rounded-[20px] whitespace-nowrap ${chipStyle}`}
+      className={`flex justify-center items-center py-1 px-4 border rounded-[20px] transition-colors duration-200 whitespace-nowrap ${chipStyle}`}
       onClick={onClick}
     >
       {ganre}
