@@ -23,7 +23,7 @@ class NaverAgent:
 
         response_body = json.loads(response.read().decode("utf-8"))
         for movie in response_body["items"]:
-            if len(movie["thumbnail"]) < 200:
+            if len(movie["thumbnail"]) < 350:
                 return movie["thumbnail"]
 
         return ""

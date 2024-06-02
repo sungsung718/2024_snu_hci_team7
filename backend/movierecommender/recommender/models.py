@@ -4,7 +4,7 @@ from jsonfield import JSONField
 
 
 class Preference(models.Model):
-    genre = JSONField(null=True, blank=True)
+    genre = models.CharField(max_length=200, null=False, blank=True)
     director = models.CharField(max_length=100, null=True, blank=True)
     actor = models.CharField(max_length=100, null=True, blank=True)
     liked = models.CharField(max_length=100, null=True, blank=True)
@@ -22,7 +22,7 @@ class Movie(models.Model):
     director = models.CharField(max_length=100)
     rating = models.FloatField()
     detail = models.TextField(null=True, blank=True)
-    image = models.URLField()
+    image = models.URLField(max_length=350)
     year = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
