@@ -152,7 +152,7 @@ PREV_FEEDBACK_EXAMPLE = """\
 """
 
 CUR_FEEDBACK_EXAMPLE = """\
-{"likes": "독특한 캐릭터;수사", "hates": "복잡한 서사;신파"}
+{"likes": "독특한 캐릭터;수사", "hates": "복잡한 서사;신파", "detail": "외국 영화를 좀 더 많이 추천해 주면 좋겠어."}
 """
 
 REVISED_RECOMMENDATION_EXAMPLE = """\
