@@ -1,26 +1,54 @@
 from rest_framework import serializers
 from .models import Preference, Movie, Recommendation
+from .utils.utils import elems2int, str2arr
 
 
 class PreferenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Preference
-        fields = '__all__'
+        fields = "__all__"
 
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = ['id', 'title', 'director', 'rating', 'detail', 'image', 'year']
+        fields = ["id", "title", "director", "rating", "detail", "image", "year"]
 
 
-class RecommendationSerializer(serializers.ModelSerializer):
-    def to_representation(self, instance):
+class RecommendationCreateSerializer(serializers.ModelSerializer):
+    def to_internal_value(self, data):
+        internal_value = super().to_internal_value(data)
         return {
-            'id': instance.id,
-            'movies': instance.movies
+            **internal_value,
+            "likes": "",
+            "hates": "",
+            "feedback_detail": "",
         }
+    def to_representation(self, instance):
+        return {"id": instance.id, "movies": instance.movies}
 
     class Meta:
         model = Recommendation
-        fields = ['id', 'movies', 'preference']
+        fields = ["id", "movies", "preference"]
+
+
+class RecommendationRetrieveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recommendation
+        fields = ["id", "movies", "preference", "likes", "hates"]
+
+
+class RecommendationUpdateSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        return {"id": instance.id, "movies": instance.movies}
+
+    class Meta:
+        model = Recommendation
+        fields = ["id", "movies", "preference", "likes", "hates", "feedback_detail"]
+
+
+class FeedbackSerializer(serializers.Serializer):
+    recommendation_id = serializers.IntegerField()
+    likes = serializers.CharField(allow_blank=True)
+    hates = serializers.CharField(allow_blank=True)
+    detail = serializers.CharField(allow_blank=True)
