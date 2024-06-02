@@ -24,6 +24,7 @@ from recommender.utils.naver import NaverAgent
 from recommender.utils.prompt import (
     RecommendationTemplate,
     RevisedRecommendationTemplate,
+    FinalRecommendationTemplate,
 )
 from recommender.utils.utils import ids2arr
 
@@ -261,7 +262,7 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
     def get_recommendations(self, data):
         gpt_agent = GPTAgent()
         gpt_agent.reset_messages()
-        prompt = RevisedRecommendationTemplate.get_prompt(**data)
+        prompt = FinalRecommendationTemplate.get_prompt(**data)
         gpt_agent.add_message(prompt)
 
         reply = gpt_agent.get_parsed_answer(
