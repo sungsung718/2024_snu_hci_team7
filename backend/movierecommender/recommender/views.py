@@ -56,12 +56,7 @@ class RecommendationCreateView(generics.CreateAPIView):
             max_trial=RECOMMENDATION_MAX_TRIAL,
         )
 
-        naver_agent = NaverAgent()
-        for movie in reply["movies"]:
-            title = movie["title"]
-            keyword = f"영화 {title} 포스터"
-            url = naver_agent.get_image(keyword=keyword)
-            movie["image"] = url
+        self.get_image(reply)
 
         preference_serializer = self.get_serializer(data=data)
         preference_serializer.is_valid(raise_exception=True)
@@ -83,6 +78,15 @@ class RecommendationCreateView(generics.CreateAPIView):
         recommendation_serializer.save()
 
         return {**recommendation_serializer.data, **reply}
+
+    def get_image(self, reply):
+        naver_agent = NaverAgent()
+        for movie in reply["movies"]:
+            title = movie["title"]
+            keyword = f"영화 {title} 포스터"
+            url = naver_agent.get_image(keyword=keyword)
+            movie["image"] = url
+
 
 
 class RecommendationUpdateView(generics.UpdateAPIView):
@@ -121,6 +125,8 @@ class RecommendationUpdateView(generics.UpdateAPIView):
             timeout=RECOMMENDATION_TIMEOUT,
             max_trial=RECOMMENDATION_MAX_TRIAL,
         )
+
+        self.get_image(reply)
 
         movie_ids = []
         for movie in reply["movies"]:
@@ -176,3 +182,11 @@ class RecommendationUpdateView(generics.UpdateAPIView):
         }
 
         return data
+
+    def get_image(self, reply):
+        naver_agent = NaverAgent()
+        for movie in reply["movies"]:
+            title = movie["title"]
+            keyword = f"영화 {title} 포스터"
+            url = naver_agent.get_image(keyword=keyword)
+            movie["image"] = url
