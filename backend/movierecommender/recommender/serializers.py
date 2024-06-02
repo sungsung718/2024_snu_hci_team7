@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Preference, Movie, Recommendation
-from .utils.utils import elems2int, str2arr
 
 
 class PreferenceSerializer(serializers.ModelSerializer):
