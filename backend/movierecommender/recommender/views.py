@@ -12,7 +12,12 @@ from recommender.serializers import (
     RecommendationUpdateSerializer,
     FinalRecommendationCreateSerializer,
 )
-from recommender.utils.constants import RECOMMENDATION_TIMEOUT, RECOMMENDATION_MAX_TRIAL
+from recommender.utils.constants import (
+    RECOMMENDATION_TIMEOUT,
+    RECOMMENDATION_MAX_TRIAL,
+    FINAL_RECOMMENDATION_TIMEOUT,
+    FINAL_RECOMMENDATION_MAX_TRIAL,
+)
 from recommender.utils.gpt import GPTAgent
 from recommender.utils.log import print_log
 from recommender.utils.naver import NaverAgent
@@ -260,8 +265,8 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
         gpt_agent.add_message(prompt)
 
         reply = gpt_agent.get_parsed_answer(
-            timeout=RECOMMENDATION_TIMEOUT,
-            max_trial=RECOMMENDATION_MAX_TRIAL,
+            timeout=FINAL_RECOMMENDATION_TIMEOUT,
+            max_trial=FINAL_RECOMMENDATION_MAX_TRIAL,
         )
 
         return reply
