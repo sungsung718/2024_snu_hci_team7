@@ -19,6 +19,7 @@ from recommender.utils.prompt import (
     RecommendationTemplate,
     RevisedRecommendationTemplate,
 )
+from recommender.utils.utils import movies2arr
 
 
 # Create your views here.
@@ -85,7 +86,7 @@ class RecommendationCreateView(generics.CreateAPIView):
 
 
 class RecommendationUpdateView(generics.UpdateAPIView):
-    serializer_class = FeedbackSerializer()
+    serializer_class = FeedbackSerializer
 
     def update(self, request, *args, **kwargs):
         data = self.parse_request(request)
@@ -165,7 +166,7 @@ class RecommendationUpdateView(generics.UpdateAPIView):
         prev_data = RecommendationRetrieveSerializer(prev_recommendation).data
         data = {
             "preference_id": prev_data["preference"],
-            "prev_movies_ids": prev_data.get_movies(),
+            "prev_movies_ids": movies2arr(prev_data["movies"]),
             "prev_feedback": {"likes": prev_data["likes"], "hates": prev_data["hates"]},
             "cur_feedback": {
                 "likes": feedback_data["likes"],
