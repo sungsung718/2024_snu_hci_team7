@@ -28,6 +28,11 @@ class NaverAgent:
 
         return ""
 
+    def get_link(self, keyword):
+        encText = urllib.parse.quote(keyword)
+        url = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" + encText  # JSON 결과
+        return url
+
 
 class NaverError(Exception):
     def __init__(self, cause: str, *args, answer: Optional[str] = None):
