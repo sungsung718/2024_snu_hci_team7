@@ -168,7 +168,8 @@ REVISED_RECOMMENDATION_EXAMPLE = """\
 """
 
 FINAL_RECOMMENDATION = """\
-As an AI bot, you're a part of a web application that recommends movies to a user based on his/her preference. The user has already provided 5 movies he/she likess. 
+As an AI bot, you're a part of a web application that recommends movies to a user based on his/her preference. \
+The user has already provided 5 movies he/she likes. 
 Your job is to examine user preference and recommend 7 new movies to the user. 
 
 Your reply must be in JSON format described below. 
