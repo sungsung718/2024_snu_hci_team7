@@ -10,6 +10,7 @@ from recommender.serializers import (
     FeedbackSerializer,
     RecommendationRetrieveSerializer,
     RecommendationUpdateSerializer,
+    FinalRecommendationCreateSerializer,
 )
 from recommender.utils.constants import RECOMMENDATION_TIMEOUT, RECOMMENDATION_MAX_TRIAL
 from recommender.utils.gpt import GPTAgent
@@ -19,7 +20,7 @@ from recommender.utils.prompt import (
     RecommendationTemplate,
     RevisedRecommendationTemplate,
 )
-from recommender.utils.utils import movies2arr
+from recommender.utils.utils import ids2arr
 
 
 # Create your views here.
@@ -88,7 +89,6 @@ class RecommendationCreateView(generics.CreateAPIView):
             movie["image"] = url
 
 
-
 class RecommendationUpdateView(generics.UpdateAPIView):
     serializer_class = FeedbackSerializer
 
@@ -142,9 +142,13 @@ class RecommendationUpdateView(generics.UpdateAPIView):
             data={
                 "movies": movie_ids_in_str,
                 "preference": preference_id,
-                "likes": self.add_actions(prev_feedback["likes"], cur_feedback["likes"]),
-                "hates": self.add_actions(prev_feedback["hates"], cur_feedback["hates"]),
-                "feedback_detail": cur_feedback["detail"]
+                "likes": self.add_actions(
+                    prev_feedback["likes"], cur_feedback["likes"]
+                ),
+                "hates": self.add_actions(
+                    prev_feedback["hates"], cur_feedback["hates"]
+                ),
+                "feedback_detail": cur_feedback["detail"],
             }
         )
         recommendation_serializer.is_valid(raise_exception=True)
@@ -172,12 +176,12 @@ class RecommendationUpdateView(generics.UpdateAPIView):
         prev_data = RecommendationRetrieveSerializer(prev_recommendation).data
         data = {
             "preference_id": prev_data["preference"],
-            "prev_movies_ids": movies2arr(prev_data["movies"]),
+            "prev_movies_ids": ids2arr(prev_data["movies"]),
             "prev_feedback": {"likes": prev_data["likes"], "hates": prev_data["hates"]},
             "cur_feedback": {
                 "likes": feedback_data["likes"],
                 "hates": feedback_data["hates"],
-                "detail": feedback_data["detail"]
+                "detail": feedback_data["detail"],
             },
         }
 
@@ -195,3 +199,75 @@ class RecommendationUpdateView(generics.UpdateAPIView):
             keyword = f"영화 {title} 포스터"
             url = naver_agent.get_image(keyword=keyword)
             movie["image"] = url
+
+
+class FinalRecommendationCreateView(generics.CreateAPIView):
+    serializer_class = FinalRecommendationCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        data = self.parse_request(request)
+        try:
+            reply = self.perform_create(data)
+
+        except GPTAgent.GPTError:
+            print_log(
+                f"Error while calling GPT API",
+                tag="error",
+                place="RecommendationCreateView.post",
+            )
+
+            return Response(
+                data={"error": "GPT API call failed"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        return Response(reply, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, data):
+        self.parse_data(data)
+        data_for_prompt = {
+            "movies": [movie["title"] for movie in data["movies"]]
+        }
+        reply = self.get_recommendations(data_for_prompt)
+
+        data["movies"].extend(reply["movies"])
+        self.add_link(data["movies"])
+
+        return data
+
+    def parse_request(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        data["recommendation_ids"] = ids2arr(data.pop("recommendations"))
+        return data
+
+    def parse_data(self, data):
+        latest_recommendation_id = sorted(data["recommendation_ids"])[-1]
+        field_names = ["feedback_detail", "movies"]
+        query_set = Recommendation.objects.filter(id__in=data.pop("recommendation_ids")).values_list(*field_names, flat=True)
+
+        data["history"] = [query[0] for query in query_set]
+        data["movie_ids"] = [ids2arr(query[1]) for query in query_set]
+        data["movies"] = Movie.objects.filter(
+            id__in=data.pop("movie_ids")
+        ).values()
+
+    def get_recommendations(self, data):
+        gpt_agent = GPTAgent()
+        gpt_agent.reset_messages()
+        prompt = RevisedRecommendationTemplate.get_prompt(**data)
+        gpt_agent.add_message(prompt)
+
+        reply = gpt_agent.get_parsed_answer(
+            timeout=RECOMMENDATION_TIMEOUT,
+            max_trial=RECOMMENDATION_MAX_TRIAL,
+        )
+
+        return reply
+
+    def add_link(self, movies):
+        agent = NaverAgent()
+        for movie in movies:
+            link = agent.get_link("영화 " + movie["title"])
+            movie["link"] = link
