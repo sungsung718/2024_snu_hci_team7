@@ -34,9 +34,9 @@ class Recommendation(models.Model):
     # SQLite3가 배열을 저장 못하니 정수,정수,... 꼴로 저장
     movies = models.CharField(max_length=100, null=False, blank=True)
     preference = models.IntegerField()
-    likes = models.TextField(null=False, blank=True)
-    hates = models.TextField(null=False, blank=True)
-    feedback_detail = models.TextField(null=False, blank=True)
+    likes = models.TextField(default="")
+    hates = models.TextField(default="")
+    feedback_detail = models.TextField(default="")
 
     def __str__(self):
         return f"Recommendation {self.id}"

@@ -16,6 +16,14 @@ class MovieSerializer(serializers.ModelSerializer):
 
 
 class RecommendationCreateSerializer(serializers.ModelSerializer):
+    def to_internal_value(self, data):
+        internal_value = super().to_internal_value(data)
+        return {
+            **internal_value,
+            "likes": "",
+            "hates": "",
+            "feedback_detail": "",
+        }
     def to_representation(self, instance):
         return {"id": instance.id, "movies": instance.movies}
 
@@ -25,9 +33,6 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
 
 
 class RecommendationRetrieveSerializer(serializers.ModelSerializer):
-    def get_movies(self):
-        return elems2int(str2arr(self.data["movies"]))
-
     class Meta:
         model = Recommendation
         fields = ["id", "movies", "preference", "likes", "hates"]
