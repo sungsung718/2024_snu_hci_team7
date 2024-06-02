@@ -142,8 +142,8 @@ class RecommendationUpdateView(generics.UpdateAPIView):
             data={
                 "movies": movie_ids_in_str,
                 "preference": preference_id,
-                "likes": prev_feedback["likes"] + ";" + cur_feedback["likes"],
-                "hates": cur_feedback["hates"] + ";" + cur_feedback["hates"],
+                "likes": self.add_actions(prev_feedback["likes"], cur_feedback["likes"]),
+                "hates": self.add_actions(prev_feedback["hates"], cur_feedback["hates"]),
                 "feedback_detail": cur_feedback["detail"]
             }
         )
@@ -182,6 +182,11 @@ class RecommendationUpdateView(generics.UpdateAPIView):
         }
 
         return data
+
+    def add_actions(self, old_action, new_action):
+        if len(old_action) == 0:
+            return new_action
+        return old_action + ";" + new_action
 
     def get_image(self, reply):
         naver_agent = NaverAgent()
