@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Preference, Movie, Recommendation
-from .utils.utils import elems2int, str2arr
 
 
 class PreferenceSerializer(serializers.ModelSerializer):
@@ -52,3 +51,8 @@ class FeedbackSerializer(serializers.Serializer):
     likes = serializers.CharField(allow_blank=True)
     hates = serializers.CharField(allow_blank=True)
     detail = serializers.CharField(allow_blank=True)
+
+
+class FinalRecommendationCreateSerializer(serializers.Serializer):
+    recommendations = serializers.CharField(max_length=200, allow_null=False, allow_blank=False)
+
