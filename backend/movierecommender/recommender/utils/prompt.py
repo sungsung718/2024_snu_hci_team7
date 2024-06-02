@@ -172,18 +172,19 @@ REVISED_RECOMMENDATION_EXAMPLE = """\
 class RecommendationTemplate(PromptTemplate):
     template = RECOMMENDATION
     additional_info = {
-        "output_format": RECOMMENDATION_FORMAT,
         "input_example": PREFERENCE_EXAMPLE,
         "output_example": RECOMMENDATION_EXAMPLE,
+        "output_format": RECOMMENDATION_FORMAT,
     }
 
 
 class RevisedRecommendationTemplate(PromptTemplate):
     template = REVISED_RECOMMENDATION
     additional_info = {
-        "output_format": RECOMMENDATION_FORMAT,
         "preference_example": PREFERENCE_EXAMPLE,
         "prev_movies_example": PREV_MOVIES_EXAMPLE,
         "prev_feedback_example": PREV_FEEDBACK_EXAMPLE,
         "cur_feedback_example": CUR_FEEDBACK_EXAMPLE,
+        "output_example": REVISED_RECOMMENDATION_EXAMPLE,
+        "output_format": RECOMMENDATION_FORMAT,
     }
