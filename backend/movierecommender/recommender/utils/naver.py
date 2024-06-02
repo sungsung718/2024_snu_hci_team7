@@ -1,4 +1,3 @@
-# 네이버 검색 API 예제 - 블로그 검색
 import json
 import urllib.request
 from typing import Optional
