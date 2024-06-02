@@ -52,3 +52,8 @@ class FeedbackSerializer(serializers.Serializer):
     likes = serializers.CharField(allow_blank=True)
     hates = serializers.CharField(allow_blank=True)
     detail = serializers.CharField(allow_blank=True)
+
+
+class FinalRecommendationCreateSerializer(serializers.Serializer):
+    recommendations = serializers.CharField(max_length=200, allow_null=False, allow_blank=False)
+
