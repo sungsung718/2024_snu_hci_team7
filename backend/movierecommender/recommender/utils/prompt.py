@@ -46,7 +46,7 @@ for your recommendation.
 
 Now, it’s your turn to recommend 5 movies for a user:
 
-[User Diary]
+[User Preference]
 {preference}
 
 [Your Reply]
