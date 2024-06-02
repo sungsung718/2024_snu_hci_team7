@@ -116,13 +116,12 @@ Here is an example of a user preference and the corresponding reply:
 ***
 
 NOTE
-* All of your responses should be in Korean . \
-
+* All of your responses should be in Korean .
 * Some of the input fields may be blank.
-
 * In the rating field of your reply, search for the “네티즌 평점” in the Naver movie. If not found, leave it as 0.
-
-* In the detail field of your reply, give an ONE sentence explanation why you recommend this movie. 
+* In the detail field of your reply, give an ONE sentence explanation why you recommend this movie. Then, split the \
+sentence into some subphrases based on meanings with / character. Subphrases are later used by users to gain feedback \
+for your recommendation. 
 
 ***
 
@@ -156,16 +155,16 @@ CUR_FEEDBACK_EXAMPLE = """\
 """
 
 REVISED_RECOMMENDATION_EXAMPLE = """\
-{[{”title”:“더 디파티드”,”director”:”마틴 스콜세지”,”rating”:8.49,”detail”:“마틴 스콜세지 감독이 메가폰을 잡고, 레오나르도 디카프리오와 \
-맷 데이먼 등이 출연하는 이 영화는 보스턴을 배경으로 한 아일랜드계 미국인 갱단과 경찰의 치열한 심리전을 다룹니다.”,”year”:2006},\
-{”title”:”트레이닝 데이”,”director”:”안톤 후쿠”,”rating”:8.57,”detail”:”덴젤 워싱턴의 강렬한 연기가 돋보이는 이 영화는 신참 경찰이 \
-베테랑 형사와 함께 하루 동안 마약단속을 하는 과정에서 벌어지는 일을 그립니다.”,”year”:2001},\
-{”title”:”올드보이”,”director”:”박찬욱”,”rating”:9.29,”detail”:”충격적인 반전과 강렬한 액션, 그리고 깊이 있는 심리 묘사가 돋보입니다.,\
+{[{”title”:“더 디파티드”,”director”:”마틴 스콜세지”,”rating”:8.49,”detail”:“마틴 스콜세지 감독이 메가폰을 잡고, / 레오나르도 디카프리오와 /\
+맷 데이먼 등이 출연하는 이 영화는 / 보스턴을 배경으로 한 / 아일랜드계 미국인 갱단과 / 경찰의 / 치열한 심리전을 다룹니다.”,”year”:2006},\
+{”title”:”트레이닝 데이”,”director”:”안톤 후쿠”,”rating”:8.57,”detail”:”덴젤 워싱턴의 / 강렬한 연기가 돋보이는 이 영화는 / 신참 경찰이 /\
+베테랑 형사와 함께 / 하루 동안 / 마약단속을 하는 과정에서 벌어지는 일을 그립니다.”,”year”:2001},\
+{”title”:”올드보이”,”director”:”박찬욱”,”rating”:9.29,”detail”:”충격적인 반전과 / 강렬한 액션, / 그리고 깊이 있는 심리 묘사가 돋보입니다.,\
 ”year”:2003},\
-{”title”:”히트”,”director”:”마이클 만”,”rating”:9.30,”detail”:”로버트 드 니로와 알 파치노가 주연을 맡은 이 영화는 LA를 배경으로 한 \
-베테랑 경찰과 그를 추적하는 경찰 간의 대결을 그린 범죄 스릴러입니다.”,”year”:1996},\
-{”title”:”시카리오: 암살자의 도시”,”director”:”드니 빌뇌브”,”rating”:8.39,”detail”:”멕시코 마약 카르텔을 소탕하기 위해 비밀 임무를 \
-수행하는 미국 정부 특수부대의 이야기를 그린 영화로, 긴장감 넘치는 전개와 충격적인 반전이 특징입니다.”,”year”:2015}]}
+{”title”:”히트”,”director”:”마이클 만”,”rating”:9.30,”detail”:”로버트 드 니로와 / 알 파치노가 / 주연을 맡은 이 영화는 / LA를 배경으로 한 / \
+베테랑 경찰과 / 그를 추적하는 경찰 간의 대결을 그린 범죄 스릴러입니다.”,”year”:1996},\
+{”title”:”시카리오: 암살자의 도시”,”director”:”드니 빌뇌브”,”rating”:8.39,”detail”:”멕시코 마약 카르텔을 소탕하기 위해 / 비밀 임무를 \
+수행하는 / 미국 정부 특수부대의 이야기를 그린 영화로, / 긴장감 넘치는 전개와 / 충격적인 반전이 특징입니다.”,”year”:2015}]}
 """
 
 
