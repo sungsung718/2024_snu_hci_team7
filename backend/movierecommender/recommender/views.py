@@ -236,7 +236,7 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
         }
         reply = self.get_recommendations(data_for_prompt)
 
-        data["movies"].extend(reply["movies"])
+        data["movies"] = list(data["movies"]) + reply["movies"]
         self.add_link(data["movies"])
 
         return data
@@ -249,15 +249,12 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
         return data
 
     def parse_data(self, data):
-        latest_recommendation_id = sorted(data["recommendation_ids"])[-1]
         field_names = ["feedback_detail", "movies"]
-        query_set = Recommendation.objects.filter(id__in=data.pop("recommendation_ids")).values_list(*field_names, flat=True)
+        query_set = Recommendation.objects.filter(id__in=data.pop("recommendation_ids")).values_list(*field_names)
 
         data["history"] = [query[0] for query in query_set]
-        data["movie_ids"] = [ids2arr(query[1]) for query in query_set]
-        data["movies"] = Movie.objects.filter(
-            id__in=data.pop("movie_ids")
-        ).values()
+        data["movie_ids"] = ids2arr(list(query_set)[-1][1])
+        data["movies"] = Movie.objects.filter(id__in=data.pop("movie_ids")).values()
 
     def get_recommendations(self, data):
         gpt_agent = GPTAgent()
