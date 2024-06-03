@@ -284,7 +284,8 @@ class PreviewRetrieveView(generics.RetrieveAPIView):
         try:
             reply = self.get_recommendations()
 
-        except GPTAgent.GPTError:
+        except GPTAgent.GPTError as e:
+            print_log(e.cause + ' ' + e.answer, )
             print_log(
                 f"Error while calling GPT API",
                 tag="error",
