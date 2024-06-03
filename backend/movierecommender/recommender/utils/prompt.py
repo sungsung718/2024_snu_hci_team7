@@ -226,6 +226,55 @@ FINAL_RECOMMENDATION_EXAMPLE = """\
 사이의 대결을 그린 영화로, 유쾌하면서도 시원한 액션이 매력적입니다.”,”year”:2015}]}
 """
 
+# Preview
+PREVIEW = """
+As an AI bot, you're a part of a web application that recommends movies to a user based on his/her preference. \
+We are not aware of the user’s preference, so we’d like to first suggest 10 movies. \
+Specifically, your job is to provide a user 5 recent popular movies (movies released within 5 years) \
+and 5 classic movies that have received good remarks consistently.
+
+Your reply must be in JSON format described below.
+{output_format}
+
+***
+
+Here is an example of a reply:
+
+[Your Reply]
+{output_example}
+
+***
+
+NOTE
+* All of your responses should be in Korean.
+* In the detail field of your reply, give an ONE sentence explanation of the movie.
+* In the hashtags field of your reply, give 3 hashtags separated by #
+
+***
+
+Now, it’s your turn to recommend 5 movies for a user:
+
+[Your Reply]
+
+"""
+
+PREVIEW_FORMAT = """\
+{”recent_movies”: [{"title":"movie title","genre": "SF","hashtags": "3 hashtags separated by #",”year”:int},\
+{...},{...},{...},{...}],\
+”classic_movies”:[{...},{…},{…},{…},{…}]\
+}
+"""
+
+PREVIEW_EXAMPLE = """\
+{"recent_movies": [{”title”:“범죄도시4”,”genre”:”액션”,”hashtags”:“#통쾌한#대표 한국 범죄 영화#대중이 원하는 오락”,”year”:2024},\
+{”title”:“1917”,”genre”:”드라마”,”hashtags”:“#전쟁#원테이크 기법#샘맨데스”,”year”:2019},\
+{”title”:“기생충”,”genre”:”드라마”,”hashtags”:“#봉준호#사회 풍자#아카데미 수상”,”year”:2019},\
+{{”title”:“듄”,”genre”:”SF”,”hashtags”:“#모험#티모시 샬라메#뛰어난 영상미”,”year”:2021}},\
+{{”title”:“에브리씽 에브리웨어 올 앳 원스”,”genre”:”액션”,”hashtags”:“#멀티버스#가족#감동”,”year”:2022}}],\
+"classic_movies": [{"title":"카사블랑카","genre": "로맨스","hashtags": “고전 로맨스#유명 대사#험프리 보거트",”year”:1942},{…},{…},{…},{…}]]
+}
+"""
+
 
 class RecommendationTemplate(PromptTemplate):
     template = RECOMMENDATION
@@ -254,4 +303,12 @@ class FinalRecommendationTemplate(PromptTemplate):
         "input_example": LIKED_MOVIES_EXAMPLE,
         "output_example": FINAL_RECOMMENDATION_EXAMPLE,
         "output_format": FINAL_RECOMMENDATION_FORMAT
+    }
+
+
+class PreviewTemplate(PromptTemplate):
+    template = PREVIEW
+    additional_info = {
+        "output_example": PREVIEW_EXAMPLE,
+        "output_format": PREVIEW_FORMAT
     }

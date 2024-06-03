@@ -17,6 +17,8 @@ from recommender.utils.constants import (
     RECOMMENDATION_MAX_TRIAL,
     FINAL_RECOMMENDATION_TIMEOUT,
     FINAL_RECOMMENDATION_MAX_TRIAL,
+    PREVIEW_TIMEOUT,
+    PREVIEW_MAX_TRIAL,
 )
 from recommender.utils.gpt import GPTAgent
 from recommender.utils.log import print_log
@@ -25,6 +27,7 @@ from recommender.utils.prompt import (
     RecommendationTemplate,
     RevisedRecommendationTemplate,
     FinalRecommendationTemplate,
+    PreviewTemplate,
 )
 from recommender.utils.utils import ids2arr
 
@@ -231,9 +234,7 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
 
     def perform_create(self, data):
         self.parse_data(data)
-        data_for_prompt = {
-            "movies": [movie["title"] for movie in data["movies"]]
-        }
+        data_for_prompt = {"movies": [movie["title"] for movie in data["movies"]]}
         reply = self.get_recommendations(data_for_prompt)
 
         data["movies"] = list(data["movies"]) + reply["movies"]
@@ -250,7 +251,9 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
 
     def parse_data(self, data):
         field_names = ["feedback_detail", "movies"]
-        query_set = Recommendation.objects.filter(id__in=data.pop("recommendation_ids")).values_list(*field_names)
+        query_set = Recommendation.objects.filter(
+            id__in=data.pop("recommendation_ids")
+        ).values_list(*field_names)
 
         data["history"] = [query[0] for query in query_set]
         data["movie_ids"] = ids2arr(list(query_set)[-1][1])
@@ -274,3 +277,52 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
         for movie in movies:
             link = agent.get_link("영화 " + movie["title"])
             movie["link"] = link
+
+
+class PreviewRetrieveView(generics.RetrieveAPIView):
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            reply = self.get_recommendations()
+
+        except GPTAgent.GPTError as e:
+            print_log(e.cause + ' ' + e.answer, )
+            print_log(
+                f"Error while calling GPT API",
+                tag="error",
+                place="RecommendationCreateView.post",
+            )
+
+            return Response(
+                data={"error": "GPT API call failed"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        self.get_image(reply)
+
+        return Response(reply, status=status.HTTP_200_OK)
+
+    def get_recommendations(self):
+        gpt_agent = GPTAgent()
+        gpt_agent.reset_messages()
+        prompt = PreviewTemplate.get_prompt()
+        gpt_agent.add_message(prompt)
+
+        reply = gpt_agent.get_parsed_answer(
+            timeout=PREVIEW_TIMEOUT,
+            max_trial=PREVIEW_MAX_TRIAL,
+        )
+
+        return reply
+
+    def get_image(self, reply):
+        naver_agent = NaverAgent()
+        for movie in reply["recent_movies"]:
+            title = movie["title"]
+            keyword = f"영화 {title} 포스터"
+            url = naver_agent.get_image(keyword=keyword)
+            movie["image"] = url
+        for movie in reply["classic_movies"]:
+            title = movie["title"]
+            keyword = f"영화 {title} 포스터"
+            url = naver_agent.get_image(keyword=keyword)
+            movie["image"] = url

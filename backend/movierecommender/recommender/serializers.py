@@ -55,4 +55,3 @@ class FeedbackSerializer(serializers.Serializer):
 
 class FinalRecommendationCreateSerializer(serializers.Serializer):
     recommendations = serializers.CharField(max_length=200, allow_null=False, allow_blank=False)
-

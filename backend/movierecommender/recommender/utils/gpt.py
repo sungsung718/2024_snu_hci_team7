@@ -91,7 +91,8 @@ class GPTAgent:
             rate_limit_wait=rate_limit_wait,
             max_trial=max_trial,
         )
-        answer = answer.replace("\n", "\\n")
+        answer.lstrip("\n")
+        #answer = answer.replace("\n", "\\n")
         parsed_answer = self.parse_as_json(answer, required_keys=required_keys)
         return parsed_answer
 
