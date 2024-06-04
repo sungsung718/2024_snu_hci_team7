@@ -1,7 +1,5 @@
 import { useLocation } from "react-router-dom";
 
-import AccountCircle from "@/assets/account_circle.svg?react";
-
 import { Movie } from "@/customTypes";
 import MovieCard from "@/components/recommend/MovieCard";
 
@@ -9,108 +7,36 @@ export default function ResultPage() {
   const location = useLocation();
 
   const movies: Movie[] = location.state.movies;
+  const history: string[] = location.state.history;
 
   return (
     <div className="py-[100px] min-h-full min-w-fit flex justify-center items-center bg-[url('src/assets/beige_background.png')]">
-      <div className="w-[1413px] h-[724px] flex justify-between bg-[url('src/assets/ticket_background.png')]">
-        <div className=""></div>
-        <div className="m-[60px]">
+      <div className="w-[1413px] h-[724px] p-5 flex justify-between items-center bg-[url('src/assets/ticket_background.png')]">
+        <div className="divide-y h-full flex flex-col px-[50px] py-[70px] justify-end divide-[rgba(114,_107,_107,_0.3)]">
+          {history.map((prompt) => (
+            <Prompt content={prompt} />
+          ))}
+        </div>
+        <div className="m-[40px]">
           <Movies movies={movies} />
         </div>
       </div>
-      {/* <div className="mx-auto px-[76px] pt-[60px] pb-[80px] w-[1225px] shadow-[0px_10px_23px_0px_rgba(0,_0,_0,_0.25)]">
-        <ChattingHistory />
-        <Movies movies={movies} />
-      </div> */}
     </div>
   );
 }
 
-function ChattingHistory() {
-  return (
-    <div className="flex flex-col gap-5">
-      <Chatting
-        content="나는 로맨스나 코미디 또는 예술적인 영화를 좋아하고, 공포 스릴러 범죄 영화는 절대 보지 않아.
-          가장 인상깊게 본 영화는 최근에 개봉했던 일본 영화 '괴물'이야. "
-      />
-      <Chatting content="asd" isLast />
-    </div>
-  );
-}
-
-function Chatting({ content, isLast }: { content: string; isLast?: boolean }) {
-  return (
-    <div className="flex justify-end items-end gap-2">
-      <div className="max-w-[612px] w-fit px-7 py-4 border border-neutral-200 rounded-md">
-        {content}
-      </div>
-      {isLast ? <AccountCircle /> : <div className="w-9 h-9" />}
-    </div>
-  );
+function Prompt({ content }: { content: string }) {
+  return <div className="w-[286px] py-5">{content}</div>;
 }
 
 function Movies({ movies }: { movies: Movie[] }) {
   return (
-    <div className="grid grid-cols-[repeat(6,_140px)] grid-rows-[repeat(2,_258px)] gap-x-[14px] gap-y-4">
+    <div className="grid grid-cols-[repeat(6,_132px)] grid-rows-[repeat(2,_290px)] gap-x-[14px] gap-y-4">
       {movies.map((movie) => (
-        <div className="scale-75 origin-top-left w-fit">
+        <div className="scale-[0.72] origin-top-left w-fit">
           <MovieCard movie={movie} />
         </div>
       ))}
     </div>
   );
 }
-
-// function MovieCard({ movie }: { movie: Movie }) {
-//   return (
-//     <div className="w-[182px]">
-//       <Poster imageUrl={movie.image} />
-//       <Title title={movie.title} />
-//       {/* undefined 넘어가면 에러 뜨려나 */}
-//       <DirectorAndRating director={movie.director!} rating={movie.rating!} />
-//       <Description description={movie.detail!} />
-//     </div>
-//   );
-// }
-
-// function Poster({ imageUrl }: { imageUrl: string }) {
-//   return (
-//     <div className="w-[182px] h-[229px] bg-slate-300 overflow-hidden center flex justify-center items-center">
-//       <img src={imageUrl} alt="movie_poster" />
-//     </div>
-//   );
-// }
-
-// function Title({ title }: { title: string }) {
-//   return (
-//     <a
-//       href={`https://search.naver.com/search.naver?query=영화 ${title}`}
-//       target="_blank"
-//       className="hover:underline block whitespace-nowrap mt-3 text-ellipsis overflow-hidden text-lg text-blue font-semibold cursor-pointer"
-//     >
-//       {title}
-//     </a>
-//   );
-// }
-
-// function DirectorAndRating({
-//   director,
-//   rating,
-// }: {
-//   director: string;
-//   rating: number;
-// }) {
-//   return (
-//     <div className="flex justify-between text-base text-gray-600 font-light pr-0.5">
-//       <span>{director}</span>
-//       <span className="flex items-center">
-//         <span className="material-symbols-rounded">star</span>
-//         {rating ?? 0}
-//       </span>
-//     </div>
-//   );
-// }
-
-// function Description({ description }: { description: string }) {
-//   return <div className="text-[17px] font-light mt-5">{description}</div>;
-// }
