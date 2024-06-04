@@ -87,7 +87,7 @@ export default function RecommendPage() {
     const res = await postResult(idsStr);
 
     navigate("/result", {
-      state: { res },
+      state: res,
     });
   };
 

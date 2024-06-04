@@ -3,18 +3,24 @@ import { useLocation } from "react-router-dom";
 import AccountCircle from "@/assets/account_circle.svg?react";
 
 import { Movie } from "@/customTypes";
+import MovieCard from "@/components/recommend/MovieCard";
 
 export default function ResultPage() {
   const location = useLocation();
 
+  const movies: Movie[] = location.state.movies;
+
   return (
-    <div className="py-[100px] min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
-      <div className="w-[1413px] h-[724px] bg-[url('src/assets/ticket_background.png')]"></div>
+    <div className="py-[100px] min-h-full min-w-fit flex justify-center items-center bg-[url('src/assets/beige_background.png')]">
+      <div className="w-[1413px] h-[724px] flex justify-between bg-[url('src/assets/ticket_background.png')]">
+        <div className=""></div>
+        <div className="m-[60px]">
+          <Movies movies={movies} />
+        </div>
+      </div>
       {/* <div className="mx-auto px-[76px] pt-[60px] pb-[80px] w-[1225px] shadow-[0px_10px_23px_0px_rgba(0,_0,_0,_0.25)]">
         <ChattingHistory />
-        <Movies
-          movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
-        />
+        <Movies movies={movies} />
       </div> */}
     </div>
   );
@@ -45,66 +51,66 @@ function Chatting({ content, isLast }: { content: string; isLast?: boolean }) {
 
 function Movies({ movies }: { movies: Movie[] }) {
   return (
-    <div className="bg-white flex flex-col items-center mt-[80px]">
-      <div className="flex flex-wrap gap-10">
-        {movies.map((movie) => (
+    <div className="grid grid-cols-[repeat(6,_140px)] grid-rows-[repeat(2,_258px)] gap-x-[14px] gap-y-4">
+      {movies.map((movie) => (
+        <div className="scale-75 origin-top-left w-fit">
           <MovieCard movie={movie} />
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-function MovieCard({ movie }: { movie: Movie }) {
-  return (
-    <div className="w-[182px]">
-      <Poster imageUrl={movie.image} />
-      <Title title={movie.title} />
-      {/* undefined 넘어가면 에러 뜨려나 */}
-      <DirectorAndRating director={movie.director!} rating={movie.rating!} />
-      <Description description={movie.detail!} />
-    </div>
-  );
-}
+// function MovieCard({ movie }: { movie: Movie }) {
+//   return (
+//     <div className="w-[182px]">
+//       <Poster imageUrl={movie.image} />
+//       <Title title={movie.title} />
+//       {/* undefined 넘어가면 에러 뜨려나 */}
+//       <DirectorAndRating director={movie.director!} rating={movie.rating!} />
+//       <Description description={movie.detail!} />
+//     </div>
+//   );
+// }
 
-function Poster({ imageUrl }: { imageUrl: string }) {
-  return (
-    <div className="w-[182px] h-[229px] bg-slate-300 overflow-hidden center flex justify-center items-center">
-      <img src={imageUrl} alt="movie_poster" />
-    </div>
-  );
-}
+// function Poster({ imageUrl }: { imageUrl: string }) {
+//   return (
+//     <div className="w-[182px] h-[229px] bg-slate-300 overflow-hidden center flex justify-center items-center">
+//       <img src={imageUrl} alt="movie_poster" />
+//     </div>
+//   );
+// }
 
-function Title({ title }: { title: string }) {
-  return (
-    <a
-      href={`https://search.naver.com/search.naver?query=영화 ${title}`}
-      target="_blank"
-      className="hover:underline block whitespace-nowrap mt-3 text-ellipsis overflow-hidden text-lg text-blue font-semibold cursor-pointer"
-    >
-      {title}
-    </a>
-  );
-}
+// function Title({ title }: { title: string }) {
+//   return (
+//     <a
+//       href={`https://search.naver.com/search.naver?query=영화 ${title}`}
+//       target="_blank"
+//       className="hover:underline block whitespace-nowrap mt-3 text-ellipsis overflow-hidden text-lg text-blue font-semibold cursor-pointer"
+//     >
+//       {title}
+//     </a>
+//   );
+// }
 
-function DirectorAndRating({
-  director,
-  rating,
-}: {
-  director: string;
-  rating: number;
-}) {
-  return (
-    <div className="flex justify-between text-base text-gray-600 font-light pr-0.5">
-      <span>{director}</span>
-      <span className="flex items-center">
-        <span className="material-symbols-rounded">star</span>
-        {rating ?? 0}
-      </span>
-    </div>
-  );
-}
+// function DirectorAndRating({
+//   director,
+//   rating,
+// }: {
+//   director: string;
+//   rating: number;
+// }) {
+//   return (
+//     <div className="flex justify-between text-base text-gray-600 font-light pr-0.5">
+//       <span>{director}</span>
+//       <span className="flex items-center">
+//         <span className="material-symbols-rounded">star</span>
+//         {rating ?? 0}
+//       </span>
+//     </div>
+//   );
+// }
 
-function Description({ description }: { description: string }) {
-  return <div className="text-[17px] font-light mt-5">{description}</div>;
-}
+// function Description({ description }: { description: string }) {
+//   return <div className="text-[17px] font-light mt-5">{description}</div>;
+// }

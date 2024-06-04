@@ -111,7 +111,7 @@ export const postResult = async (recommendationIds: string) => {
       "나는 코미디 영화를 좋아하고 ...",
       "조금 더 한국 영화 위주로 ...",
     ],
-    movies: [1, 2, 3, 4, 5, 6, 7].map((i) => ({
+    movies: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => ({
       id: i,
       title: "Movie Title",
       director: "John Doe",
