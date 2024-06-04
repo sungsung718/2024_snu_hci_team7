@@ -27,11 +27,12 @@ export default function ResultPage() {
         <div className="m-[40px]">
           <Movies movies={movies} />
         </div>
-        <button className="absolute bottom-[-15px] right-[30px] bg-[#5D544C] rounded-full w-[45px] h-[45px] flex justify-center items-center">
+        {/* 추후 구현 */}
+        {/* <button className="absolute bottom-[-15px] right-[30px] bg-[#5D544C] rounded-full w-[45px] h-[45px] flex justify-center items-center">
           <span className="material-symbols-outlined text-white font-light">
             download_2
           </span>
-        </button>
+        </button> */}
       </div>
     </div>
   );
