@@ -21,8 +21,8 @@ export default function PreviewPage() {
         미리 둘러볼까요?
       </div>
       <div className="flex flex-col gap-9 w-full">
-        <Movies movies={data!.latest} category="최신 영화" />
-        <Movies movies={data!.classic} category="꾸준히 사랑받는 영화" />
+        <Movies movies={data!.recent_movies} category="최신 영화" />
+        <Movies movies={data!.classic_movies} category="꾸준히 사랑받는 영화" />
       </div>
       <StartButton />
     </div>

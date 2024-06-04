@@ -26,9 +26,12 @@ export default function MovieCard({ movie }: { movie: Movie }) {
       </div>
 
       <div className="flex flex-wrap text-sm text-gray-400 mt-1.5">
-        {movie.keywords!.map((keyword) => (
-          <span>{keyword}</span>
-        ))}
+        {movie
+          .hashtags!.slice(1)
+          .split("#")
+          .map((keyword) => (
+            <span>#{keyword}</span>
+          ))}
       </div>
     </div>
   );

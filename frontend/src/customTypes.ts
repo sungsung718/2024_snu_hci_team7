@@ -2,10 +2,12 @@ export type Movie = {
   title: string;
   image: string;
   year?: number;
+  hashtags?: string;
   director?: string;
   rating?: number;
   keywords?: string[];
   detail?: string;
+  link?: string;
 };
 
 export type Preference = {

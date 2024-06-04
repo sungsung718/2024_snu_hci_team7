@@ -31,147 +31,42 @@ const putRequest = async <T = unknown>(
 
 export const getPreviewMovies = async () => {
   return {
-    latest: [
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-    ],
-    classic: [
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-      {
-        title: "액션",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 1984,
-        keywords: ["#통쾌한", "#대표 한국 범죄 영화", "#대중이 원하는 오락"],
-      },
-    ],
+    recent_movies: [1, 2, 3, 4, 5].map((i) => ({
+      title: "액션" + i,
+      image:
+        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+      year: 1984,
+      hashtags: "#통쾌한#대표 한국 범죄 영화#대중이 원하는 오락",
+    })),
+    classic_movies: [1, 2, 3, 4, 5].map((i) => ({
+      title: "액션" + i,
+      image:
+        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+      year: 1984,
+      hashtags: "#통쾌한#대표 한국 범죄 영화#대중이 원하는 오락",
+    })),
   };
+
   return await getRequest<{
-    latest: Movie[];
-    classic: Movie[];
+    recent_movies: Movie[];
+    classic_movies: Movie[];
   }>("/preview");
 };
 
 export const postRecommendations = async (preference: Preference) => {
   return {
     id: 1,
-    movies: [
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John Doe",
-        rating: 8.5,
-        detail:
-          "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John Doe",
-        rating: 8.5,
-        detail:
-          "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John Doe",
-        rating: 8.5,
-        detail:
-          "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John Doe",
-        rating: 8.5,
-        detail:
-          "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John Doe",
-        rating: 8.5,
-        detail:
-          "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-        image:
-          "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-        year: 2022,
-      },
-    ],
+    movies: [1, 2, 3, 4, 5].map((i) => ({
+      id: i,
+      title: "Movie Title",
+      director: "John Doe",
+      rating: 8.5,
+      detail:
+        "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
+      image:
+        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+      year: 2022,
+    })),
   };
 
   return await postRequest<{ id: number; movies: Movie[] }>(
@@ -187,63 +82,49 @@ type PreferenceModified = {
   detail: string;
 };
 
-export const putRecommendations = async (
-  id: number,
-  preference: PreferenceModified
-) => {
+export const putRecommendations = async (preference: PreferenceModified) => {
   return {
     id: 1,
-    movies: [
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John ",
-        rating: 8.5,
-        detail: "...",
-        image: "https://www.google.com/search?...",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John ",
-        rating: 8.5,
-        detail: "...",
-        image: "https://www.google.com/search?...",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John ",
-        rating: 8.5,
-        detail: "...",
-        image: "https://www.google.com/search?...",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John ",
-        rating: 8.5,
-        detail: "...",
-        image: "https://www.google.com/search?...",
-        year: 2022,
-      },
-      {
-        id: 1,
-        title: "Movie Title",
-        director: "John ",
-        rating: 8.5,
-        detail: "...",
-        image: "https://www.google.com/search?...",
-        year: 2022,
-      },
-    ],
+    movies: [1, 2, 3, 4, 5].map((i) => ({
+      id: i,
+      title: "Movie Title",
+      director: "John Doe",
+      rating: 8.5,
+      detail: "...",
+      image:
+        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+      year: 2022,
+      link: "https://search.naver.com/영화",
+    })),
   };
 
   return await putRequest<{ id: number; movies: Movie[] }>(
-    `/recommendations/${id}`,
+    `/recommendations/${preference.recommendation_id}`,
     preference
   );
+};
+
+export const postResult = async (recommendationIds: string) => {
+  return {
+    history: [
+      "",
+      "나는 코미디 영화를 좋아하고 ...",
+      "조금 더 한국 영화 위주로 ...",
+    ],
+    movies: [1, 2, 3, 4, 5, 6, 7].map((i) => ({
+      id: i,
+      title: "Movie Title",
+      director: "John Doe",
+      rating: 8.5,
+      detail: "...",
+      image:
+        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+      year: 2022,
+      link: "https://search.naver.com/영화",
+    })),
+  };
+
+  return await postRequest<{ history: string[]; movies: Movie[] }>(`/result`, {
+    recommendations: recommendationIds,
+  });
 };

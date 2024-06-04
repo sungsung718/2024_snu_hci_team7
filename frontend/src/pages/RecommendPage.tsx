@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { putRecommendations } from "@/apis";
+import { postResult, putRecommendations } from "@/apis";
 
 import HistoryList from "@/components/HistoryList";
 import PastRecommendation from "@/components/recommend/PastRecommendation";
@@ -67,10 +67,8 @@ export default function RecommendPage() {
   };
 
   const handleSendClick = async () => {
-    const id: number = location.state.id;
-
-    const res = await putRecommendations(id, {
-      recommendation_id: id,
+    const res = await putRecommendations({
+      recommendation_id: recommendation.id,
       likes: likes.join(";"),
       hates: hates.join(";"),
       detail,
@@ -81,8 +79,16 @@ export default function RecommendPage() {
     textAreaRef.current?.focus();
   };
 
-  const handleDoneClick = () => {
-    navigate("/result");
+  const handleDoneClick = async () => {
+    const ids = pastRecoList.map((reco) => reco.id);
+    ids.push(recommendation.id);
+    const idsStr = ids.join(",");
+
+    const res = await postResult(idsStr);
+
+    navigate("/result", {
+      state: { res },
+    });
   };
 
   return (
@@ -140,7 +146,7 @@ function ChattingInput({
   textAreaRef: React.LegacyRef<HTMLTextAreaElement>;
 }) {
   return (
-    <div className="w-full flex gap-4 justify-center">
+    <div className="w-full flex mt-6 gap-4 justify-center">
       <textarea
         name="description"
         value={value}
