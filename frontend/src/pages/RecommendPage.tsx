@@ -80,6 +80,13 @@ export default function RecommendPage() {
   };
 
   const handleDoneClick = async () => {
+    if (detail || likes.length > 0 || hates.length > 0) {
+      const confirmed = window.confirm(
+        "아직 저장되지 않은 인터랙션이 있습니다. 결과 페이지로 넘어가시겠습니까?"
+      );
+      if (!confirmed) return;
+    }
+
     const ids = pastRecoList.map((reco) => reco.id);
     ids.push(recommendation.id);
     const idsStr = ids.join(",");
