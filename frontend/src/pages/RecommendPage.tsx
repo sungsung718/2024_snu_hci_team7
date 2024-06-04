@@ -30,16 +30,17 @@ const CHATTING =
   "나는 로맨스나 코미디 또는 예술적인 영화를 좋아하고, 공포 스릴러 범죄 영화는 절대 보지 않아. 가장 인상깊게 본 영화는 최근에 개봉했던 일본 영화 '괴물'이야. ";
 
 export default function RecommendPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [recommendation, setRecommendation] = useState<{
+    id: number;
+    movies: Movie[];
+  }>(location.state);
+  const [pastMoviesList, setPastMovies] = useState<Movie[][]>([]);
   const [detail, setDetail] = useState("");
   const [likes, setLikes] = useState([]);
   const [hates, sethates] = useState([]);
-  const location = useLocation();
-  const [recommendation, setRecommendation] = useState<Movie[]>(
-    location.state.movies
-  );
-  const navigate = useNavigate();
-  // const [movieHistory, setMovieHistroy] = useState<Movie[][]>([]);
-  // const movies: Movie[] = location.state.movies;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
@@ -55,7 +56,8 @@ export default function RecommendPage() {
       detail: detail,
     });
 
-    // setMovieHistroy((prev) => [...prev, res.movies]);
+    setPastMovies((prev) => [...prev, recommendation.movies]);
+    setRecommendation(res);
   };
 
   const handleDoneClick = () => {
@@ -65,14 +67,12 @@ export default function RecommendPage() {
   return (
     <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
       <div className="px-[120px] w-fit mx-auto">
-        {/* <PastRecommendation chatting={CHATTING} movies={recommendation} /> */}
-        <Recommendation chatting={CHATTING} movies={recommendation} />
-
-        {/* <div>
-          {movieHistory.map((movies) => (
-            <Recommendation chatting={CHATTING} movies={movies} />
+        <div className="flex flex-col gap-20">
+          {pastMoviesList.map((pastMovies) => (
+            <PastRecommendation chatting={CHATTING} movies={pastMovies} />
           ))}
-        </div> */}
+          <Recommendation chatting={CHATTING} movies={recommendation.movies} />
+        </div>
         <DoneButton onClick={handleDoneClick} />
         <ChattingInput
           value={detail}

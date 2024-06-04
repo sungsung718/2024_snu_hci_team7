@@ -45,7 +45,7 @@ function Description({
 }
 
 function Word({ word }: { word: string }) {
-  return <span className="hover:bg-slate-300 cursor-pointer">{word}</span>;
+  return <span className="hover:bg-beige-light cursor-pointer">{word}</span>;
 }
 
 function BasicInformation({

@@ -12,7 +12,7 @@ export default function PastRecommendation({
   movies,
 }: RecommendationProps) {
   return (
-    <div className="flex flex-col w-fit items-center mb-5 mx-auto">
+    <div className="flex flex-col w-fit items-center mx-auto">
       <Chatting content={chatting} />
       <div className="flex gap-5 px-5 mt-10">
         {movies.map((movie) => (
