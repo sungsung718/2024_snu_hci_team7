@@ -4,13 +4,19 @@ import Poster from "../common/Poster";
 export default function MovieCard({
   movie,
   editable,
+  onClickReaction,
 }: {
   movie: Movie;
   editable?: boolean;
+  onClickReaction?: (reaction: "likes" | "hates", word: string) => void;
 }) {
   return (
     <div className="w-[182px] bg-white rounded-lg overflow-hidden shadow-[0px_0px_17.3px_0px_rgba(92,_87,_78,_0.09)]">
-      <Description description={movie.detail!} editable={editable} />
+      <Description
+        description={movie.detail!}
+        editable={editable}
+        onClickReaction={onClickReaction}
+      />
       <Poster imageUrl={movie.image} gradient />
       <BasicInformation
         title={movie.title}
@@ -24,9 +30,11 @@ export default function MovieCard({
 function Description({
   description,
   editable,
+  onClickReaction,
 }: {
   description: string;
   editable?: boolean;
+  onClickReaction?: (reaction: "likes" | "hates", word: string) => void;
 }) {
   if (!editable)
     return (
@@ -38,14 +46,55 @@ function Description({
   return (
     <div className="text-[13px] text-brown-700 p-[14px]">
       {words.map((word) => (
-        <Word word={word} />
+        <Word word={word} onClickReaction={onClickReaction!} />
       ))}
     </div>
   );
 }
 
-function Word({ word }: { word: string }) {
-  return <span className="hover:bg-beige-light cursor-pointer">{word}</span>;
+function Word({
+  word,
+  onClickReaction,
+}: {
+  word: string;
+
+  onClickReaction: (reaction: "likes" | "hates", word: string) => void;
+}) {
+  return (
+    <span className="bg-slate-400 relative group m-1">
+      <ActionBox
+        onClickReaction={(reaction: "likes" | "hates") =>
+          onClickReaction(reaction, word)
+        }
+      />
+      <span className="group-hover:bg-beige-light cursor-pointer">{word}</span>
+    </span>
+  );
+}
+
+function ActionBox({
+  onClickReaction,
+}: {
+  onClickReaction: (reaction: "likes" | "hates") => void;
+}) {
+  return (
+    <div
+      className={`absolute group-hover:flex gap-1 hidden top-[-30px] bg-beige-light`}
+    >
+      <span
+        className="cursor-pointer material-symbols-outlined text-gray-300 font-extralight"
+        onClick={() => onClickReaction("likes")}
+      >
+        thumb_up
+      </span>
+      <span
+        className="cursor-pointer material-symbols-outlined text-gray-300 font-light"
+        onClick={() => onClickReaction("hates")}
+      >
+        thumb_down
+      </span>
+    </div>
+  );
 }
 
 function BasicInformation({

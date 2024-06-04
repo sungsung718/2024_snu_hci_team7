@@ -6,11 +6,13 @@ import MovieCard from "./MovieCard";
 type RecommendationProps = {
   chatting: string;
   movies: Movie[];
+  onClickAction: (state: "likes" | "hates", word: string) => void;
 };
 
 export default function Recommendation({
   chatting,
   movies,
+  onClickAction,
 }: RecommendationProps) {
   return (
     <div className="flex flex-col w-fit items-center mb-5 mx-auto">
@@ -19,17 +21,11 @@ export default function Recommendation({
         <SwipeDown />
         <span>추천의 말을 직접 조작해보세요</span>
       </div>
-      <Movies movies={movies} />
-    </div>
-  );
-}
-
-function Movies({ movies }: { movies: Movie[] }) {
-  return (
-    <div className="flex gap-5 px-5">
-      {movies.map((movie) => (
-        <MovieCard movie={movie} editable />
-      ))}
+      <div className="flex gap-5 px-5">
+        {movies.map((movie) => (
+          <MovieCard movie={movie} editable onClickReaction={onClickAction} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -31,11 +31,33 @@ export default function RecommendPage() {
   );
   const [pastRecoList, setPastRecoList] = useState<Recommend[]>([]);
   const [detail, setDetail] = useState("");
-  const [likes, setLikes] = useState([]);
-  const [hates, sethates] = useState([]);
+  const [likes, setLikes] = useState<string[]>([]);
+  const [hates, setHates] = useState<string[]>([]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
+  };
+
+  const handleReactionClick = (state: "likes" | "hates", word: string) => {
+    if (state === "likes") {
+      setLikes((prev) => {
+        if (prev.includes(word)) {
+          return prev.filter((w) => w !== word);
+        } else return [...prev, word];
+      });
+      if (hates.includes(word)) {
+        setHates((prev) => prev.filter((w) => w !== word));
+      }
+    } else {
+      setHates((prev) => {
+        if (prev.includes(word)) {
+          return prev.filter((w) => w !== word);
+        } else return [...prev, word];
+      });
+      if (hates.includes(word)) {
+        setLikes((prev) => prev.filter((w) => w !== word));
+      }
+    }
   };
 
   const handleSendClick = async () => {
@@ -70,6 +92,7 @@ export default function RecommendPage() {
           <Recommendation
             chatting={recommendation.chatting}
             movies={recommendation.movies}
+            onClickAction={handleReactionClick}
           />
         </div>
         <DoneButton onClick={handleDoneClick} />
