@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { patchRecommendations } from "@/apis";
@@ -24,6 +24,7 @@ const HISTORIES = [
 export default function RecommendPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const [recommendation, setRecommendation] = useState<Recommend>(
     location.state
@@ -48,6 +49,8 @@ export default function RecommendPage() {
     });
     setPastRecoList((prev) => [...prev, recommendation]);
     setRecommendation({ ...res, chatting: detail });
+    setDetail("");
+    textAreaRef.current?.focus();
   };
 
   const handleDoneClick = () => {
@@ -74,6 +77,7 @@ export default function RecommendPage() {
           value={detail}
           onChange={handleInputChange}
           onClickSend={handleSendClick}
+          textAreaRef={textAreaRef}
         />
       </div>
       <HistoryList histories={HISTORIES} />
@@ -97,10 +101,12 @@ function ChattingInput({
   value,
   onChange,
   onClickSend,
+  textAreaRef,
 }: {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onClickSend: () => void;
+  textAreaRef: React.LegacyRef<HTMLTextAreaElement>;
 }) {
   return (
     <div className="w-full flex gap-4 justify-center">
@@ -111,6 +117,7 @@ function ChattingInput({
         id="description"
         placeholder="마음에 들 때까지 대화를 이어가보세요."
         className="w-[70%] max-w-[680px] h-[60px] border rounded-[22px] border-beige-dark placeholder:text-beige-dark outline-none p-4 resize-none"
+        ref={textAreaRef}
       />
       <button onClick={onClickSend}>
         <span className="material-symbols-outlined font-light text-neutral-500 text-4xl">
