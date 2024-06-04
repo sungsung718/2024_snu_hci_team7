@@ -117,7 +117,8 @@ export default function RecommendPage() {
         />
         <ReactedWords likes={likes} hates={hates} />
       </div>
-      <HistoryList histories={HISTORIES} />
+      {/* 일단... 뺌 */}
+      {/* <HistoryList histories={HISTORIES} /> */}
     </div>
   );
 }

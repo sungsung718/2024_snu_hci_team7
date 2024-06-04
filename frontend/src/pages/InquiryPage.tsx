@@ -95,7 +95,8 @@ export default function InquiryPage() {
           onClickDone={handleDoneClick}
         />
       </div>
-      <HistoryList histories={HISTORIES} />
+      {/* 일단... 뺌 */}
+      {/* <HistoryList histories={HISTORIES} /> */}
     </div>
   );
 }
