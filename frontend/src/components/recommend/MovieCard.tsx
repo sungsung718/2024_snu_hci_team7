@@ -114,7 +114,19 @@ function Word({
         </span>
       </div>
 
-      <span className="group-hover:bg-beige-light cursor-pointer">{word}</span>
+      <span
+        className={`group-hover:bg-beige-light cursor-pointer 
+      ${
+        state === "likes"
+          ? "bg-beige-dark"
+          : state === "hates"
+          ? "line-through"
+          : ""
+      }
+      `}
+      >
+        {word}
+      </span>
     </span>
   );
 }
@@ -150,7 +162,12 @@ function Title({ title }: { title: string }) {
 function Rating({ rating }: { rating: number }) {
   return (
     <span className="flex items-center text-brown-200">
-      <span className="material-symbols-rounded">star</span>
+      <span
+        className="material-symbols-rounded"
+        style={{ fontVariationSettings: '"FILL" 1' }}
+      >
+        star
+      </span>
       {rating ?? 0}
     </span>
   );

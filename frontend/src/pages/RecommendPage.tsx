@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { patchRecommendations } from "@/apis";
+import { putRecommendations } from "@/apis";
 
 import HistoryList from "@/components/HistoryList";
 import PastRecommendation from "@/components/recommend/PastRecommendation";
@@ -60,10 +60,16 @@ export default function RecommendPage() {
     }
   };
 
+  const resetAll = () => {
+    setDetail("");
+    setLikes([]);
+    setHates([]);
+  };
+
   const handleSendClick = async () => {
     const id: number = location.state.id;
 
-    const res = await patchRecommendations(id, {
+    const res = await putRecommendations(id, {
       recommendation_id: id,
       likes: likes.join(";"),
       hates: hates.join(";"),
@@ -71,7 +77,7 @@ export default function RecommendPage() {
     });
     setPastRecoList((prev) => [...prev, recommendation]);
     setRecommendation({ ...res, chatting: detail });
-    setDetail("");
+    resetAll();
     textAreaRef.current?.focus();
   };
 
@@ -103,6 +109,7 @@ export default function RecommendPage() {
           onClickSend={handleSendClick}
           textAreaRef={textAreaRef}
         />
+        <ReactedWords likes={likes} hates={hates} />
       </div>
       <HistoryList histories={HISTORIES} />
     </div>
@@ -148,6 +155,23 @@ function ChattingInput({
           send
         </span>
       </button>
+    </div>
+  );
+}
+
+function ReactedWords({ likes, hates }: { likes: string[]; hates: string[] }) {
+  return (
+    <div className="mt-5 w-[700px] mx-auto">
+      <div className="mb-2">
+        {likes.map((word) => (
+          <span className="bg-beige-dark mr-1">{word}</span>
+        ))}
+      </div>
+      <div>
+        {hates.map((word) => (
+          <span className="line-through mr-1">{word}</span>
+        ))}
+      </div>
     </div>
   );
 }

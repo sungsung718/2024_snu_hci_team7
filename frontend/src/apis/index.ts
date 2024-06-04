@@ -18,12 +18,12 @@ const postRequest = async <T = unknown>(
   return await response.json();
 };
 
-const patchRequest = async <T = unknown>(
+const putRequest = async <T = unknown>(
   url: string,
   body: object
 ): Promise<T> => {
   const response = await fetch(`${BASE_URL}${url}`, {
-    method: "PATCH",
+    method: "PUT",
     body: JSON.stringify(body), //array, list -> JSON format
   });
   return await response.json();
@@ -187,7 +187,7 @@ type PreferenceModified = {
   detail: string;
 };
 
-export const patchRecommendations = async (
+export const putRecommendations = async (
   id: number,
   preference: PreferenceModified
 ) => {
@@ -242,7 +242,7 @@ export const patchRecommendations = async (
     ],
   };
 
-  return await patchRequest<{ id: number; movies: Movie[] }>(
+  return await putRequest<{ id: number; movies: Movie[] }>(
     `/recommendations/${id}`,
     preference
   );
