@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { Movie } from "@/customTypes";
 import MovieCard from "@/components/recommend/MovieCard";
@@ -10,8 +10,15 @@ export default function ResultPage() {
   const history: string[] = location.state.history;
 
   return (
-    <div className="py-[100px] min-h-full min-w-fit flex justify-center items-center bg-[url('src/assets/beige_background.png')]">
-      <div className="w-[1413px] h-[724px] p-5 flex justify-between items-center bg-[url('src/assets/ticket_background.png')]">
+    <div className="pt-[80px] pb-[100px] min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
+      <div className="mb-2 w-[1413px] mx-auto px-5">
+        <Link to="/">
+          <span className="material-symbols-outlined font-light text-[#726E6B] text-[44px]">
+            home
+          </span>
+        </Link>
+      </div>
+      <div className="w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]">
         <div className="divide-y h-full flex flex-col px-[50px] py-[70px] justify-end divide-[rgba(114,_107,_107,_0.3)]">
           {history.map((prompt) => (
             <Prompt content={prompt} />
@@ -26,7 +33,11 @@ export default function ResultPage() {
 }
 
 function Prompt({ content }: { content: string }) {
-  return <div className="w-[286px] py-5">{content}</div>;
+  return (
+    <div className="w-[286px] whitespace-nowrap text-ellipsis overflow-hidden py-5 text-[15px] font-medium text-[#726B6B]">
+      {content}
+    </div>
+  );
 }
 
 function Movies({ movies }: { movies: Movie[] }) {
