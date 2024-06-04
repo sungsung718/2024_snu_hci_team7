@@ -7,11 +7,13 @@ type RecommendationProps = {
   chatting: string;
   movies: Movie[];
   onClickAction: (state: "likes" | "hates", word: string) => void;
+  reaction: { likes: string[]; hates: string[] };
 };
 
 export default function Recommendation({
   chatting,
   movies,
+  reaction,
   onClickAction,
 }: RecommendationProps) {
   return (
@@ -23,7 +25,12 @@ export default function Recommendation({
       </div>
       <div className="flex gap-5 px-5">
         {movies.map((movie) => (
-          <MovieCard movie={movie} editable onClickReaction={onClickAction} />
+          <MovieCard
+            movie={movie}
+            editable
+            onClickReaction={onClickAction}
+            reaction={reaction}
+          />
         ))}
       </div>
     </div>

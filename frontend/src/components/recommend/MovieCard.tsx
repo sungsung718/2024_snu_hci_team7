@@ -1,21 +1,26 @@
 import { Movie } from "@/customTypes";
+
 import Poster from "../common/Poster";
+import { useState } from "react";
 
 export default function MovieCard({
   movie,
   editable,
   onClickReaction,
+  reaction,
 }: {
   movie: Movie;
   editable?: boolean;
+  reaction?: { likes: string[]; hates: string[] };
   onClickReaction?: (reaction: "likes" | "hates", word: string) => void;
 }) {
   return (
-    <div className="w-[182px] bg-white rounded-lg overflow-hidden shadow-[0px_0px_17.3px_0px_rgba(92,_87,_78,_0.09)]">
+    <div className="w-[182px] bg-white rounded-lg shadow-[0px_0px_17.3px_0px_rgba(92,_87,_78,_0.09)]">
       <Description
         description={movie.detail!}
         editable={editable}
         onClickReaction={onClickReaction}
+        reaction={reaction}
       />
       <Poster imageUrl={movie.image} gradient />
       <BasicInformation
@@ -30,10 +35,12 @@ export default function MovieCard({
 function Description({
   description,
   editable,
+  reaction,
   onClickReaction,
 }: {
   description: string;
   editable?: boolean;
+  reaction?: { likes: string[]; hates: string[] };
   onClickReaction?: (reaction: "likes" | "hates", word: string) => void;
 }) {
   if (!editable)
@@ -46,7 +53,19 @@ function Description({
   return (
     <div className="text-[13px] text-brown-700 p-[14px]">
       {words.map((word) => (
-        <Word word={word} onClickReaction={onClickReaction!} />
+        <Word
+          word={word}
+          onClickReaction={(reaction: "likes" | "hates") =>
+            onClickReaction!(reaction, word)
+          }
+          state={
+            reaction!.likes.includes(word)
+              ? "likes"
+              : reaction!.hates.includes(word)
+              ? "hates"
+              : "none"
+          }
+        />
       ))}
     </div>
   );
@@ -54,46 +73,49 @@ function Description({
 
 function Word({
   word,
+  state,
   onClickReaction,
 }: {
   word: string;
-
-  onClickReaction: (reaction: "likes" | "hates", word: string) => void;
-}) {
-  return (
-    <span className="bg-slate-400 relative group m-1">
-      <ActionBox
-        onClickReaction={(reaction: "likes" | "hates") =>
-          onClickReaction(reaction, word)
-        }
-      />
-      <span className="group-hover:bg-beige-light cursor-pointer">{word}</span>
-    </span>
-  );
-}
-
-function ActionBox({
-  onClickReaction,
-}: {
+  state: "likes" | "hates" | "none";
   onClickReaction: (reaction: "likes" | "hates") => void;
 }) {
+  const [upHover, setUpHover] = useState(false);
+  const [downHover, setDownHover] = useState(false);
+
   return (
-    <div
-      className={`absolute group-hover:flex gap-1 hidden top-[-30px] bg-beige-light`}
-    >
-      <span
-        className="cursor-pointer material-symbols-outlined text-gray-300 font-extralight"
-        onClick={() => onClickReaction("likes")}
-      >
-        thumb_up
-      </span>
-      <span
-        className="cursor-pointer material-symbols-outlined text-gray-300 font-light"
-        onClick={() => onClickReaction("hates")}
-      >
-        thumb_down
-      </span>
-    </div>
+    <span className="relative group">
+      <div className="absolute group-hover:flex hidden top-[-25px] left-0 bg-beige-light">
+        <span
+          className={`cursor-pointer material-symbols-rounded text-beige-dark font-light px-0.5`}
+          onMouseOver={() => setUpHover(true)}
+          onMouseOut={() => setUpHover(false)}
+          onClick={() => onClickReaction("likes")}
+          style={
+            state === "likes" || upHover
+              ? { fontVariationSettings: '"FILL" 1' }
+              : undefined
+          }
+        >
+          thumb_up
+        </span>
+        <span
+          className="cursor-pointer material-symbols-rounded text-beige-dark font-light px-0.5"
+          onClick={() => onClickReaction("hates")}
+          onMouseOver={() => setDownHover(true)}
+          onMouseOut={() => setDownHover(false)}
+          style={
+            state === "hates" || downHover
+              ? { fontVariationSettings: '"FILL" 1' }
+              : undefined
+          }
+        >
+          thumb_down
+        </span>
+      </div>
+
+      <span className="group-hover:bg-beige-light cursor-pointer">{word}</span>
+    </span>
   );
 }
 
@@ -107,7 +129,7 @@ function BasicInformation({
   director: string;
 }) {
   return (
-    <div className="bg-brown-400 px-3 pt-2.5 py-3">
+    <div className="bg-brown-400 px-3 pt-2.5 py-3 rounded-b-lg">
       <div className="flex justify-between">
         <Title title={title} />
         <Rating rating={rating} />

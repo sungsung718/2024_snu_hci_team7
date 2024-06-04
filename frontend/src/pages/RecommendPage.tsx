@@ -54,7 +54,7 @@ export default function RecommendPage() {
           return prev.filter((w) => w !== word);
         } else return [...prev, word];
       });
-      if (hates.includes(word)) {
+      if (likes.includes(word)) {
         setLikes((prev) => prev.filter((w) => w !== word));
       }
     }
@@ -93,6 +93,7 @@ export default function RecommendPage() {
             chatting={recommendation.chatting}
             movies={recommendation.movies}
             onClickAction={handleReactionClick}
+            reaction={{ likes, hates }}
           />
         </div>
         <DoneButton onClick={handleDoneClick} />
