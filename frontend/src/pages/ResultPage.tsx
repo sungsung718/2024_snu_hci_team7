@@ -10,7 +10,7 @@ export default function ResultPage() {
   const history: string[] = location.state.history;
 
   return (
-    <div className="pt-[80px] pb-[100px] min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
+    <div className="pt-[65px] pb-[100px] min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
       <div className="mb-2 w-[1413px] mx-auto px-5">
         <Link to="/">
           <span className="material-symbols-outlined font-light text-[#726E6B] text-[44px]">
@@ -18,7 +18,7 @@ export default function ResultPage() {
           </span>
         </Link>
       </div>
-      <div className="w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]">
+      <div className="relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]">
         <div className="divide-y h-full flex flex-col px-[50px] py-[70px] justify-end divide-[rgba(114,_107,_107,_0.3)]">
           {history.map((prompt) => (
             <Prompt content={prompt} />
@@ -27,6 +27,11 @@ export default function ResultPage() {
         <div className="m-[40px]">
           <Movies movies={movies} />
         </div>
+        <button className="absolute bottom-[-15px] right-[30px] bg-[#5D544C] rounded-full w-[45px] h-[45px] flex justify-center items-center">
+          <span className="material-symbols-outlined text-white font-light">
+            download_2
+          </span>
+        </button>
       </div>
     </div>
   );
