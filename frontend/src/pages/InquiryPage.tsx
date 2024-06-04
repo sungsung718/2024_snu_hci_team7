@@ -64,10 +64,18 @@ export default function InquiryPage() {
       detail,
     };
 
+    const chatting = generateChatting({
+      genres: genres,
+      ...basicPreference,
+      detail,
+    });
+
     try {
       const res = await postRecommendations(preference);
       console.log(res);
-      navigate("/recommend", { state: res });
+      navigate("/recommend", {
+        state: { ...res, chatting },
+      });
     } catch (err) {
       console.log(err);
     }
@@ -211,3 +219,45 @@ function Input({
 function Span({ text }: { text: string }) {
   return <span className="whitespace-nowrap">{text}</span>;
 }
+
+const generateChatting = ({
+  genres,
+  director,
+  actor,
+  liked,
+  hated,
+  detail,
+}: {
+  genres: string[];
+  director: string;
+  actor: string;
+  liked: string;
+  hated: string;
+  detail: string;
+}) => {
+  let chatting = "";
+
+  if (genres.length > 0) {
+    chatting = `내가 좋아하는 장르는 ${genres.join(", ")}. `;
+  }
+
+  if (director) {
+    chatting += `좋아하는 감독은 ${director}. `;
+  }
+
+  if (actor) {
+    chatting += `좋아하는 배우는 ${actor}. `;
+  }
+
+  if (liked) {
+    chatting += `재밌게 본 영화는 ${liked}. `;
+  }
+
+  if (hated) {
+    chatting += `별로였던 영화는 ${hated}. `;
+  }
+
+  if (detail) chatting += `그 이외에는 ${detail}`;
+
+  return chatting;
+};
