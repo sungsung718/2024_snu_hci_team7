@@ -57,7 +57,7 @@ export default function InquiryPage() {
   };
 
   const handleDoneClick = async () => {
-    const genreString = genres.join(", ");
+    const genreString = genres.join(",");
     const preference = {
       genre: genreString,
       ...basicPreference,
@@ -67,7 +67,7 @@ export default function InquiryPage() {
     try {
       const res = await postRecommendations(preference);
       console.log(res);
-      navigate("/recommend", { state: { result: res } });
+      navigate("/recommend", { state: res });
     } catch (err) {
       console.log(err);
     }

@@ -1,7 +1,13 @@
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { patchRecommendations } from "@/apis";
+
 import HistoryList from "@/components/HistoryList";
-import Recommendation from "@/components/Recommendation";
+import PastRecommendation from "@/components/recommend/PastRecommendation";
+import Recommendation from "@/components/recommend/Recommendation";
+
 import { Movie } from "@/customTypes";
-import { useNavigate } from "react-router-dom";
 
 const HISTORIES = [
   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
@@ -24,7 +30,33 @@ const CHATTING =
   "나는 로맨스나 코미디 또는 예술적인 영화를 좋아하고, 공포 스릴러 범죄 영화는 절대 보지 않아. 가장 인상깊게 본 영화는 최근에 개봉했던 일본 영화 '괴물'이야. ";
 
 export default function RecommendPage() {
+  const [detail, setDetail] = useState("");
+  const [likes, setLikes] = useState([]);
+  const [hates, sethates] = useState([]);
+  const location = useLocation();
+  const [recommendation, setRecommendation] = useState<Movie[]>(
+    location.state.movies
+  );
   const navigate = useNavigate();
+  // const [movieHistory, setMovieHistroy] = useState<Movie[][]>([]);
+  // const movies: Movie[] = location.state.movies;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDetail(e.target.value);
+  };
+
+  const handleSendClick = async () => {
+    const id: number = location.state.id;
+
+    const res = await patchRecommendations(id, {
+      recommendation_id: id,
+      likes: likes.join(";"),
+      hates: hates.join(";"),
+      detail: detail,
+    });
+
+    // setMovieHistroy((prev) => [...prev, res.movies]);
+  };
 
   const handleDoneClick = () => {
     navigate("/result");
@@ -33,14 +65,20 @@ export default function RecommendPage() {
   return (
     <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
       <div className="px-[120px] w-fit mx-auto">
-        <div>
-          <Recommendation
-            chatting={CHATTING}
-            movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
-          />
-        </div>
+        {/* <PastRecommendation chatting={CHATTING} movies={recommendation} /> */}
+        <Recommendation chatting={CHATTING} movies={recommendation} />
+
+        {/* <div>
+          {movieHistory.map((movies) => (
+            <Recommendation chatting={CHATTING} movies={movies} />
+          ))}
+        </div> */}
         <DoneButton onClick={handleDoneClick} />
-        <ChattingInput />
+        <ChattingInput
+          value={detail}
+          onChange={handleInputChange}
+          onClickSend={handleSendClick}
+        />
       </div>
       <HistoryList histories={HISTORIES} />
     </div>
@@ -59,16 +97,26 @@ function DoneButton({ onClick }: { onClick: () => void }) {
   );
 }
 
-function ChattingInput() {
+function ChattingInput({
+  value,
+  onChange,
+  onClickSend,
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onClickSend: () => void;
+}) {
   return (
     <div className="w-full flex gap-4 justify-center">
       <textarea
         name="description"
+        value={value}
+        onChange={onChange}
         id="description"
         placeholder="마음에 들 때까지 대화를 이어가보세요."
         className="w-[70%] max-w-[680px] h-[60px] border rounded-[22px] border-beige-dark placeholder:text-beige-dark outline-none p-4 resize-none"
       />
-      <button>
+      <button onClick={onClickSend}>
         <span className="material-symbols-outlined font-light text-neutral-500 text-4xl">
           send
         </span>

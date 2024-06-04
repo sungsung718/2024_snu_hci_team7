@@ -1,50 +1,16 @@
 import { Movie } from "@/customTypes";
-import Poster from "./common/Poster";
-import SwipeDown from "@/assets/swipe_down.svg?react";
+import Poster from "../common/Poster";
 
-type RecommendationProps = {
-  chatting: string;
-  movies: Movie[];
-};
-
-export default function Recommendation({
-  chatting,
-  movies,
-}: RecommendationProps) {
-  return (
-    <div className="flex flex-col w-fit items-center mb-5 mx-auto">
-      <Chatting content={chatting} />
-      <div className="mr-auto pl-8 flex gap-1 items-center mt-[56px] mb-4 text-[rgba(202,_138,_138,_0.8)] text-[14px] font-medium">
-        <SwipeDown />
-        <span>추천의 말을 직접 조작해보세요</span>
-      </div>
-      <Movies movies={movies} />
-    </div>
-  );
-}
-
-function Chatting({ content }: { content: string }) {
-  return (
-    <div className="relative max-w-[612px] w-fit px-7 py-4 border border-dashed border-beige-dark rounded-md text-[rgba(188,_180,_172)]">
-      {content}
-    </div>
-  );
-}
-
-function Movies({ movies }: { movies: Movie[] }) {
-  return (
-    <div className="flex gap-5 px-5">
-      {movies.map((movie) => (
-        <MovieCard movie={movie} />
-      ))}
-    </div>
-  );
-}
-
-function MovieCard({ movie }: { movie: Movie }) {
+export default function MovieCard({
+  movie,
+  editable,
+}: {
+  movie: Movie;
+  editable?: boolean;
+}) {
   return (
     <div className="w-[182px] bg-white rounded-lg overflow-hidden shadow-[0px_0px_17.3px_0px_rgba(92,_87,_78,_0.09)]">
-      <Description description={movie.detail!} />
+      <Description description={movie.detail!} editable={editable} />
       <Poster imageUrl={movie.image} gradient />
       <BasicInformation
         title={movie.title}
@@ -55,10 +21,31 @@ function MovieCard({ movie }: { movie: Movie }) {
   );
 }
 
-function Description({ description }: { description: string }) {
+function Description({
+  description,
+  editable,
+}: {
+  description: string;
+  editable?: boolean;
+}) {
+  if (!editable)
+    return (
+      <div className="text-[13px] text-brown-700 p-[14px]">{description}</div>
+    );
+
+  const words = description.split("/");
+
   return (
-    <div className="text-[13px] text-brown-700 p-[14px]">{description}</div>
+    <div className="text-[13px] text-brown-700 p-[14px]">
+      {words.map((word) => (
+        <Word word={word} />
+      ))}
+    </div>
   );
+}
+
+function Word({ word }: { word: string }) {
+  return <span className="hover:bg-slate-300 cursor-pointer">{word}</span>;
 }
 
 function BasicInformation({

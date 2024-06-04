@@ -13,7 +13,7 @@ export default function HistoryList({ histories }: HistoryListProps) {
         className={`${showHistory ? "flex" : "hidden"} flex-col gap-[6px] mb-5`}
       >
         {histories.map((history) => (
-          <History history={history} />
+          <History history={history} key={history} />
         ))}
       </ul>
       <button className="relative" onClick={toggleHistory}>
