@@ -27,6 +27,7 @@ export default function MovieCard({
         title={movie.title}
         rating={movie.rating!}
         director={movie.director!}
+        year={movie.year!}
       />
     </div>
   );
@@ -134,10 +135,12 @@ function BasicInformation({
   title,
   rating,
   director,
+  year,
 }: {
   title: string;
   rating: number;
   director: string;
+  year: number;
 }) {
   return (
     <div className="bg-brown-400 px-3 pt-2.5 py-3 rounded-b-lg">
@@ -145,7 +148,11 @@ function BasicInformation({
         <Title title={title} />
         <Rating rating={rating} />
       </div>
-      <Director director={director} />
+      <div className="text-[13px] text-white font-light">
+        <span className="opacity-[0.6]">{year}</span>
+        <span className="mx-1.5 text-[#A0866F]">|</span>
+        <span className="opacity-[0.6]">{director}</span>
+      </div>
     </div>
   );
 }
@@ -162,20 +169,12 @@ function Rating({ rating }: { rating: number }) {
   return (
     <span className="flex items-center text-brown-200">
       <span
-        className="material-symbols-rounded"
+        className="material-symbols-rounded font-extralight"
         style={{ fontVariationSettings: '"FILL" 1' }}
       >
         star
       </span>
       {rating ?? 0}
     </span>
-  );
-}
-
-function Director({ director }: { director: string }) {
-  return (
-    <div className="text-[13px] text-white opacity-[0.6] font-light">
-      {director}
-    </div>
   );
 }

@@ -1,28 +1,21 @@
+import { useLocation } from "react-router-dom";
+
 import AccountCircle from "@/assets/account_circle.svg?react";
+
 import { Movie } from "@/customTypes";
 
-const movieMock: Movie = {
-  title: "다크나이트",
-  image:
-    "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-  director: "김기덕",
-  rating: 8.1,
-  detail:
-    '"괴물"과 마찬가지로 이 영화도 감정적인 연출과 음악을 통해 진정한 감정을 전달합니다.',
-};
-
 export default function ResultPage() {
+  const location = useLocation();
+
   return (
-    <div className="py-[100px]">
-      <div className="text-2xl text-center mb-8">
-        영화 취향 결과를 가져왔어요.
-      </div>
-      <div className="mx-auto px-[76px] pt-[60px] pb-[80px] w-[1225px] shadow-[0px_10px_23px_0px_rgba(0,_0,_0,_0.25)]">
+    <div className="py-[100px] min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
+      <div className="w-[1413px] h-[724px] bg-[url('src/assets/ticket_background.png')]"></div>
+      {/* <div className="mx-auto px-[76px] pt-[60px] pb-[80px] w-[1225px] shadow-[0px_10px_23px_0px_rgba(0,_0,_0,_0.25)]">
         <ChattingHistory />
         <Movies
           movies={[movieMock, movieMock, movieMock, movieMock, movieMock]}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
