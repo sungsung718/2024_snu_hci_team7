@@ -73,7 +73,7 @@ export default function RecommendPage() {
       recommendation_id: id,
       likes: likes.join(";"),
       hates: hates.join(";"),
-      detail: detail,
+      detail,
     });
     setPastRecoList((prev) => [...prev, recommendation]);
     setRecommendation({ ...res, chatting: detail });

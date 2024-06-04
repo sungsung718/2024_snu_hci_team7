@@ -43,30 +43,29 @@ function Description({
   reaction?: { likes: string[]; hates: string[] };
   onClickReaction?: (reaction: "likes" | "hates", word: string) => void;
 }) {
-  if (!editable)
-    return (
-      <div className="text-[13px] text-brown-700 p-[14px]">{description}</div>
-    );
-
   const words = description.split("/");
 
   return (
     <div className="text-[13px] text-brown-700 p-[14px]">
-      {words.map((word) => (
-        <Word
-          word={word}
-          onClickReaction={(reaction: "likes" | "hates") =>
-            onClickReaction!(reaction, word)
-          }
-          state={
-            reaction!.likes.includes(word)
-              ? "likes"
-              : reaction!.hates.includes(word)
-              ? "hates"
-              : "none"
-          }
-        />
-      ))}
+      {words.map((word) =>
+        editable ? (
+          <Word
+            word={word}
+            onClickReaction={(reaction: "likes" | "hates") =>
+              onClickReaction!(reaction, word)
+            }
+            state={
+              reaction!.likes.includes(word)
+                ? "likes"
+                : reaction!.hates.includes(word)
+                ? "hates"
+                : "none"
+            }
+          />
+        ) : (
+          <>{word}</>
+        )
+      )}
     </div>
   );
 }
