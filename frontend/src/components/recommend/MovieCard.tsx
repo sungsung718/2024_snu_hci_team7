@@ -28,6 +28,7 @@ export default function MovieCard({
         rating={movie.rating!}
         director={movie.director!}
         year={movie.year!}
+        link={movie.link}
       />
     </div>
   );
@@ -136,16 +137,18 @@ function BasicInformation({
   rating,
   director,
   year,
+  link,
 }: {
   title: string;
   rating: number;
   director: string;
   year: number;
+  link?: string;
 }) {
   return (
     <div className="bg-brown-400 px-3 pt-2.5 py-3 rounded-b-lg">
       <div className="flex justify-between">
-        <Title title={title} />
+        <Title title={title} link={link} />
         <Rating rating={rating} />
       </div>
       <div className="text-[13px] text-white font-light">
@@ -157,8 +160,16 @@ function BasicInformation({
   );
 }
 
-function Title({ title }: { title: string }) {
-  return (
+function Title({ title, link }: { title: string; link?: string }) {
+  return link ? (
+    <a
+      href={link}
+      target="_blank"
+      className="whitespace-nowrap text-ellipsis hover:underline overflow-hidden text-[17px] text-white font-semibold cursor-pointer"
+    >
+      {title}
+    </a>
+  ) : (
     <span className="whitespace-nowrap text-ellipsis overflow-hidden text-[17px] text-white font-semibold">
       {title}
     </span>
