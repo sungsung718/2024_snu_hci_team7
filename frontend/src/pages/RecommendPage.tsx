@@ -109,13 +109,20 @@ export default function RecommendPage() {
       setIsLoading(true);
 
       const res = await postResult(idsStr);
+
       res.history.shift();
-      res.history.unshift(pastRecoList[0].chatting);
+      if (pastRecoList.length > 0) {
+        res.history.unshift(pastRecoList[0].chatting);
+      } else {
+        res.history.unshift(recommendation.chatting);
+      }
+
       navigate("/result", {
         state: res,
       });
     } catch (err) {
       console.log(err);
+      alert("에러가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
