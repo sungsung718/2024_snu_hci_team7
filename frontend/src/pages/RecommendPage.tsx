@@ -3,11 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { postResult, putRecommendations } from "@/apis";
 
-import HistoryList from "@/components/HistoryList";
+// import HistoryList from "@/components/HistoryList";
 import PastRecommendation from "@/components/recommend/PastRecommendation";
 import Recommendation from "@/components/recommend/Recommendation";
 
 import { Movie } from "@/customTypes";
+import Loading from "@/components/common/Loading";
 
 type Recommend = {
   id: number;
@@ -15,11 +16,11 @@ type Recommend = {
   chatting: string;
 };
 
-const HISTORIES = [
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-];
+// const HISTORIES = [
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+// ];
 
 export default function RecommendPage() {
   const location = useLocation();
@@ -33,6 +34,7 @@ export default function RecommendPage() {
   const [detail, setDetail] = useState("");
   const [likes, setLikes] = useState<string[]>([]);
   const [hates, setHates] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
@@ -67,16 +69,29 @@ export default function RecommendPage() {
   };
 
   const handleSendClick = async () => {
-    const res = await putRecommendations({
-      recommendation_id: recommendation.id,
-      likes: likes.join(";"),
-      hates: hates.join(";"),
-      detail,
-    });
-    setPastRecoList((prev) => [...prev, recommendation]);
-    setRecommendation({ ...res, chatting: detail });
-    resetAll();
-    textAreaRef.current?.focus();
+    if (!detail) {
+      alert("채팅을 입력해주세요");
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const res = await putRecommendations({
+        recommendation_id: recommendation.id,
+        likes: likes.join(";"),
+        hates: hates.join(";"),
+        detail,
+      });
+      setPastRecoList((prev) => [...prev, recommendation]);
+      setRecommendation({ ...res, chatting: detail });
+      resetAll();
+      textAreaRef.current?.focus();
+    } catch (err) {
+      console.log(err);
+      alert("에러가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDoneClick = async () => {
@@ -91,42 +106,62 @@ export default function RecommendPage() {
     ids.push(recommendation.id);
     const idsStr = ids.join(",");
 
-    const res = await postResult(idsStr);
+    try {
+      setIsLoading(true);
 
-    navigate("/result", {
-      state: res,
-    });
+      const res = await postResult(idsStr);
+
+      res.history.shift();
+      if (pastRecoList.length > 0) {
+        res.history.unshift(pastRecoList[0].chatting);
+      } else {
+        res.history.unshift(recommendation.chatting);
+      }
+
+      navigate("/result", {
+        state: res,
+      });
+    } catch (err) {
+      console.log(err);
+      alert("에러가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
-      <div className="px-[120px] w-fit mx-auto">
-        <div className="flex flex-col gap-20">
-          {pastRecoList.map((pastRecos) => (
-            <PastRecommendation
-              chatting={pastRecos.chatting}
-              movies={pastRecos.movies}
+    <>
+      <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
+        <div className="px-[120px] w-fit mx-auto">
+          <div className="flex flex-col gap-20">
+            {pastRecoList.map((pastRecos, i) => (
+              <PastRecommendation
+                chatting={pastRecos.chatting}
+                movies={pastRecos.movies}
+                key={i}
+              />
+            ))}
+            <Recommendation
+              chatting={recommendation.chatting}
+              movies={recommendation.movies}
+              onClickAction={handleReactionClick}
+              reaction={{ likes, hates }}
             />
-          ))}
-          <Recommendation
-            chatting={recommendation.chatting}
-            movies={recommendation.movies}
-            onClickAction={handleReactionClick}
-            reaction={{ likes, hates }}
+          </div>
+          <DoneButton onClick={handleDoneClick} />
+          <ChattingInput
+            value={detail}
+            onChange={handleInputChange}
+            onClickSend={handleSendClick}
+            textAreaRef={textAreaRef}
           />
+          <ReactedWords likes={likes} hates={hates} />
         </div>
-        <DoneButton onClick={handleDoneClick} />
-        <ChattingInput
-          value={detail}
-          onChange={handleInputChange}
-          onClickSend={handleSendClick}
-          textAreaRef={textAreaRef}
-        />
-        <ReactedWords likes={likes} hates={hates} />
+        {/* 일단... 뺌 */}
+        {/* <HistoryList histories={HISTORIES} /> */}
       </div>
-      {/* 일단... 뺌 */}
-      {/* <HistoryList histories={HISTORIES} /> */}
-    </div>
+      {isLoading && <Loading />}
+    </>
   );
 }
 
@@ -165,7 +200,7 @@ function ChattingInput({
         ref={textAreaRef}
       />
       <button onClick={onClickSend}>
-        <span className="material-symbols-outlined font-light text-neutral-500 text-4xl">
+        <span className="material-symbols-outlined text-neutral-500 text-4xl">
           send
         </span>
       </button>
@@ -178,12 +213,16 @@ function ReactedWords({ likes, hates }: { likes: string[]; hates: string[] }) {
     <div className="mt-5 w-[700px] mx-auto">
       <div className="mb-2">
         {likes.map((word) => (
-          <span className="bg-beige-dark mr-1">{word}</span>
+          <span className="bg-beige-dark mr-1" key={word}>
+            {word}
+          </span>
         ))}
       </div>
       <div>
         {hates.map((word) => (
-          <span className="line-through mr-1">{word}</span>
+          <span className="line-through mr-1" key={word}>
+            {word}
+          </span>
         ))}
       </div>
     </div>

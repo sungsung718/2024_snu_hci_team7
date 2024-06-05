@@ -1,38 +1,38 @@
 import { Link, useLocation } from "react-router-dom";
 
-import { toPng } from "html-to-image";
-import { useScreenshot, createFileName } from "use-react-screenshot";
+// import { toPng } from "html-to-image";
+// import { useScreenshot, createFileName } from "use-react-screenshot";
 
 import { Movie } from "@/customTypes";
 import MovieCard from "@/components/recommend/MovieCard";
-import { createRef, useCallback, useRef } from "react";
-import html2canvas from "html2canvas";
+import { useCallback, useRef } from "react";
+// import html2canvas from "html2canvas";
 
 export default function ResultPage() {
   const location = useLocation();
 
   const movies: Movie[] = location.state.movies;
-  const history: string[] = location.state.history;
+  const history: string[] = [...location.state.history].reverse();
 
   const ticketRef = useRef<HTMLDivElement>(null);
 
-  const [image, takeScreenshot] = useScreenshot({
-    type: "image/jpeg",
-    quality: 1.0,
-  });
+  // const [image, takeScreenshot] = useScreenshot({
+  //   type: "image/jpeg",
+  //   quality: 1.0,
+  // });
 
-  const download = (
-    image: string | null,
-    { name = "img", extension = "jpg" } = {}
-  ) => {
-    console.log("downlodad");
-    console.log(image);
-    if (!image) return;
-    const a = document.createElement("a");
-    a.href = image;
-    a.download = createFileName(extension, name);
-    a.click();
-  };
+  // const download = (
+  //   image: string | null,
+  //   { name = "img", extension = "jpg" } = {}
+  // ) => {
+  //   console.log("downlodad");
+  //   console.log(image);
+  //   if (!image) return;
+  //   const a = document.createElement("a");
+  //   a.href = image;
+  //   a.download = createFileName(extension, name);
+  //   a.click();
+  // };
 
   // const handleSaveAsImage = async () => {
   //   if (!myref || !myref.current) return;
@@ -41,21 +41,24 @@ export default function ResultPage() {
   // };
 
   const handleSaveAsImage = useCallback(async () => {
-    if (ticketRef.current === null) {
-      alert("이미지를 저장할 수 없습니다.");
-      return;
-    }
+    alert("Under development");
+    return;
 
-    toPng(ticketRef.current, { cacheBust: true })
-      .then((dataUrl) => {
-        const link = document.createElement("a");
-        link.download = "my-image-name.png";
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // if (ticketRef.current === null) {
+    //   alert("이미지를 저장할 수 없습니다.");
+    //   return;
+    // }
+
+    // toPng(ticketRef.current, { cacheBust: true })
+    //   .then((dataUrl) => {
+    //     const link = document.createElement("a");
+    //     link.download = "my-image-name.png";
+    //     link.href = dataUrl;
+    //     link.click();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, [ticketRef]);
 
   // const handleSaveAsImage = () => {
@@ -78,13 +81,15 @@ export default function ResultPage() {
         </Link>
       </div>
       <div
-        ref={ticketRef}
+        // ref={ticketRef}
         className="relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
       >
-        <div className="divide-y h-full flex flex-col px-[50px] py-[70px] justify-end divide-[rgba(114,_107,_107,_0.3)]">
-          {history.map((prompt) => (
-            <Prompt content={prompt} />
-          ))}
+        <div className="h-full flex items-end px-[50px] py-[70px]">
+          <div className="max-h-[350px] overflow-y-auto overflow-x-hidden styled-scrollbar">
+            {history.map((prompt, i) => (
+              <Prompt content={prompt} key={prompt} isFirst={i === 0} />
+            ))}
+          </div>
         </div>
         <div className="m-[40px]">
           <Movies movies={movies} />
@@ -103,11 +108,16 @@ export default function ResultPage() {
   );
 }
 
-function Prompt({ content }: { content: string }) {
+function Prompt({ content, isFirst }: { content: string; isFirst: boolean }) {
   return (
-    <div className="w-[286px] whitespace-nowrap text-ellipsis overflow-hidden py-5 text-[15px] font-medium text-[#726B6B]">
-      {content}
-    </div>
+    <>
+      {!isFirst && (
+        <div className="my-5 border-b border-[rgba(114,_107,_107,_0.3)] w-[120px] h-[1px]" />
+      )}
+      <div className="w-[286px] max-h-[45px] line-clamp-2 overflow-hidden text-[15px] font-medium text-[#726B6B]">
+        {content} asdfasdfa asdfasdf asdfasdfas asdfasdfa adsf aasdf adfasdfa
+      </div>
+    </>
   );
 }
 
@@ -115,7 +125,7 @@ function Movies({ movies }: { movies: Movie[] }) {
   return (
     <div className="grid grid-cols-[repeat(6,_132px)] grid-rows-[repeat(2,_290px)] gap-x-[14px] gap-y-4">
       {movies.map((movie) => (
-        <div className="scale-[0.72] origin-top-left w-fit">
+        <div className="scale-[0.72] origin-top-left w-fit" key={movie.title}>
           <MovieCard movie={movie} />
         </div>
       ))}

@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { postRecommendations } from "@/apis";
 
 import GenreChip from "@/components/GenreChip";
-import HistoryList from "@/components/HistoryList";
+import Loading from "@/components/common/Loading";
+// import HistoryList from "@/components/HistoryList";
 
 const GENRE_LIST = [
   "멜로",
@@ -21,14 +22,15 @@ const GENRE_LIST = [
   "추리",
   "SF",
   "판타지",
+  "애니메이션",
 ];
 
-const HISTORIES = [
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-  // "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-];
+// const HISTORIES = [
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+//   // "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+// ];
 
 type BasicPreference = {
   director: string;
@@ -46,6 +48,7 @@ export default function InquiryPage() {
     hated: "",
   });
   const [detail, setDetail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -64,8 +67,6 @@ export default function InquiryPage() {
       detail,
     };
 
-    console.log(preference);
-
     const chatting = generateChatting({
       genres: genres,
       ...basicPreference,
@@ -73,33 +74,39 @@ export default function InquiryPage() {
     });
 
     try {
+      setIsLoading(true);
       const res = await postRecommendations(preference);
-      console.log(res);
       navigate("/recommend", {
         state: { ...res, chatting },
       });
     } catch (err) {
       console.log(err);
+      alert("에러가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="relative min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
-      <div className=" min-w-[940px] max-w-[1200px] flex flex-col justify-center items-center mx-auto px-[120px] pt-40 pb-[280px]">
-        <FavoriteGanre ganres={genres} setGanres={setGenres} />
-        <BasicPreferenceInputs
-          basicPreference={basicPreference}
-          onChange={handleBasicPreferenceInput}
-        />
-        <OtherPreference
-          value={detail}
-          onChangeDetail={(e) => setDetail(e.target.value)}
-          onClickDone={handleDoneClick}
-        />
+    <>
+      <div className="relative min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
+        <div className=" min-w-[940px] max-w-[1200px] flex flex-col justify-center items-center mx-auto px-[120px] pt-40 pb-[280px]">
+          <FavoriteGanre ganres={genres} setGanres={setGenres} />
+          <BasicPreferenceInputs
+            basicPreference={basicPreference}
+            onChange={handleBasicPreferenceInput}
+          />
+          <OtherPreference
+            value={detail}
+            onChangeDetail={(e) => setDetail(e.target.value)}
+            onClickDone={handleDoneClick}
+          />
+        </div>
+        {/* 일단... 뺌 */}
+        {/* <HistoryList histories={HISTORIES} /> */}
       </div>
-      {/* 일단... 뺌 */}
-      {/* <HistoryList histories={HISTORIES} /> */}
-    </div>
+      {isLoading && <Loading />}
+    </>
   );
 }
 
@@ -121,13 +128,14 @@ function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
     <div className="flex gap-4 mb-[70px]">
       <span className="whitespace-nowrap">내가 좋아하는 장르는</span>
       <div className="flex gap-2 flex-wrap">
-        {GENRE_LIST.map((ganre) => (
+        {GENRE_LIST.map((genre) => (
           <GenreChip
-            genre={ganre}
+            key={genre}
+            genre={genre}
             onClick={() => {
-              ganres.includes(ganre) ? removeGanre(ganre) : addGanre(ganre);
+              ganres.includes(genre) ? removeGanre(genre) : addGanre(genre);
             }}
-            selected={ganres.includes(ganre)}
+            selected={ganres.includes(genre)}
           />
         ))}
       </div>
@@ -191,7 +199,7 @@ function OtherPreference({
       />
 
       <button onClick={onClickDone}>
-        <span className="material-symbols-outlined font-extralight text-neutral-500 text-4xl">
+        <span className="material-symbols-outlined font-light text-neutral-500 text-4xl">
           check_circle
         </span>
       </button>
@@ -241,7 +249,7 @@ const generateChatting = ({
   let chatting = "";
 
   if (genres.length > 0) {
-    chatting = `내가 좋아하는 장르는 ${genres.join(", ")}. `;
+    chatting = `좋아하는 장르는 ${genres.join(", ")}. `;
   }
 
   if (director) {
