@@ -81,6 +81,7 @@ export default function InquiryPage() {
       });
     } catch (err) {
       console.log(err);
+      alert("에러가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
