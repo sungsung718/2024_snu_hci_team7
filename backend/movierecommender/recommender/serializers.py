@@ -23,6 +23,7 @@ class RecommendationCreateSerializer(serializers.ModelSerializer):
             "hates": "",
             "feedback_detail": "",
         }
+
     def to_representation(self, instance):
         return {"id": instance.id, "movies": instance.movies}
 
@@ -44,6 +45,7 @@ class RecommendationUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recommendation
         fields = ["id", "movies", "preference", "likes", "hates", "feedback_detail"]
+        extra_kwargs = {"likes": {"allow_blank": True}, "hates": {"allow_blank": True}}
 
 
 class FeedbackSerializer(serializers.Serializer):
@@ -54,4 +56,6 @@ class FeedbackSerializer(serializers.Serializer):
 
 
 class FinalRecommendationCreateSerializer(serializers.Serializer):
-    recommendations = serializers.CharField(max_length=200, allow_null=False, allow_blank=False)
+    recommendations = serializers.CharField(
+        max_length=200, allow_null=False, allow_blank=False
+    )
