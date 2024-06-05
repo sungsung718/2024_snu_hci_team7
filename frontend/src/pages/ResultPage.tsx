@@ -12,7 +12,7 @@ export default function ResultPage() {
   const location = useLocation();
 
   const movies: Movie[] = location.state.movies;
-  const history: string[] = location.state.history;
+  const history: string[] = [...location.state.history].reverse();
 
   const ticketRef = useRef<HTMLDivElement>(null);
 
@@ -84,10 +84,12 @@ export default function ResultPage() {
         // ref={ticketRef}
         className="relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
       >
-        <div className="divide-y h-full flex flex-col px-[50px] py-[70px] justify-end divide-[rgba(114,_107,_107,_0.3)]">
-          {history.reverse().map((prompt) => (
-            <Prompt content={prompt} key={prompt} />
-          ))}
+        <div className="h-full flex items-end px-[50px] py-[70px]">
+          <div className="max-h-[350px] overflow-y-auto overflow-x-hidden styled-scrollbar">
+            {history.map((prompt, i) => (
+              <Prompt content={prompt} key={prompt} isFirst={i === 0} />
+            ))}
+          </div>
         </div>
         <div className="m-[40px]">
           <Movies movies={movies} />
@@ -106,11 +108,16 @@ export default function ResultPage() {
   );
 }
 
-function Prompt({ content }: { content: string }) {
+function Prompt({ content, isFirst }: { content: string; isFirst: boolean }) {
   return (
-    <div className="w-[286px] whitespace-nowrap text-ellipsis overflow-hidden py-5 text-[15px] font-medium text-[#726B6B]">
-      {content}
-    </div>
+    <>
+      {!isFirst && (
+        <div className="my-5 border-b border-[rgba(114,_107,_107,_0.3)] w-[120px] h-[1px]" />
+      )}
+      <div className="w-[286px] max-h-[45px] line-clamp-2 overflow-hidden text-[15px] font-medium text-[#726B6B]">
+        {content} asdfasdfa asdfasdf asdfasdfas asdfasdfa adsf aasdf adfasdfa
+      </div>
+    </>
   );
 }
 

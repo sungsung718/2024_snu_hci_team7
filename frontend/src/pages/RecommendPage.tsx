@@ -109,6 +109,7 @@ export default function RecommendPage() {
       setIsLoading(true);
 
       const res = await postResult(idsStr);
+      res.history.shift();
       res.history.unshift(pastRecoList[0].chatting);
       navigate("/result", {
         state: res,

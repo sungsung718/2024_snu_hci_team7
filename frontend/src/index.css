@@ -14,3 +14,20 @@
     @apply w-auto;
   }
 }
+
+.styled-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-track {
+  background-color: #f5f0ea;
+  border-radius: 10px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #c3bdb8;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
