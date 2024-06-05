@@ -1,11 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 
-// import { toPng } from "html-to-image";
+import { toPng } from "html-to-image";
 // import { useScreenshot, createFileName } from "use-react-screenshot";
 
 import { Movie } from "@/customTypes";
 import MovieCard from "@/components/recommend/MovieCard";
-// import { createRef, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 // import html2canvas from "html2canvas";
 
 export default function ResultPage() {
@@ -14,7 +14,7 @@ export default function ResultPage() {
   const movies: Movie[] = location.state.movies;
   const history: string[] = location.state.history;
 
-  // const ticketRef = useRef<HTMLDivElement>(null);
+  const ticketRef = useRef<HTMLDivElement>(null);
 
   // const [image, takeScreenshot] = useScreenshot({
   //   type: "image/jpeg",
@@ -40,23 +40,26 @@ export default function ResultPage() {
   //   download(image);
   // };
 
-  // const handleSaveAsImage = useCallback(async () => {
-  //   if (ticketRef.current === null) {
-  //     alert("이미지를 저장할 수 없습니다.");
-  //     return;
-  //   }
+  const handleSaveAsImage = useCallback(async () => {
+    alert("Under development");
+    return;
 
-  //   toPng(ticketRef.current, { cacheBust: true })
-  //     .then((dataUrl) => {
-  //       const link = document.createElement("a");
-  //       link.download = "my-image-name.png";
-  //       link.href = dataUrl;
-  //       link.click();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [ticketRef]);
+    // if (ticketRef.current === null) {
+    //   alert("이미지를 저장할 수 없습니다.");
+    //   return;
+    // }
+
+    // toPng(ticketRef.current, { cacheBust: true })
+    //   .then((dataUrl) => {
+    //     const link = document.createElement("a");
+    //     link.download = "my-image-name.png";
+    //     link.href = dataUrl;
+    //     link.click();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, [ticketRef]);
 
   // const handleSaveAsImage = () => {
   //   if (!ticketRef || !ticketRef.current) return;
@@ -90,14 +93,14 @@ export default function ResultPage() {
           <Movies movies={movies} />
         </div>
         {/* 추후 구현 */}
-        {/* <button
+        <button
           className="absolute bottom-[-15px] right-[30px] bg-[#5D544C] rounded-full w-[45px] h-[45px] flex justify-center items-center"
           onClick={handleSaveAsImage}
         >
           <span className="material-symbols-outlined text-white font-light">
             download_2
           </span>
-        </button> */}
+        </button>
       </div>
     </div>
   );
