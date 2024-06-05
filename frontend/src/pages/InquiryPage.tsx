@@ -64,6 +64,8 @@ export default function InquiryPage() {
       detail,
     };
 
+    console.log(preference);
+
     const chatting = generateChatting({
       genres: genres,
       ...basicPreference,

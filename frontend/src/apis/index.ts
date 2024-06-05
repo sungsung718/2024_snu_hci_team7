@@ -15,8 +15,13 @@ const postRequest = async <T = unknown>(
 ): Promise<T> => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "POST", //default는 GET이기 때문에 POST로 따로 설정해줘야함
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(body), //array, list -> JSON format
   });
+
   return await response.json();
 };
 
@@ -56,20 +61,20 @@ export const getPreviewMovies = async () => {
 };
 
 export const postRecommendations = async (preference: Preference) => {
-  return {
-    id: 1,
-    movies: [1, 2, 3, 4, 5].map((i) => ({
-      id: i,
-      title: "Movie Title",
-      director: "John Doe",
-      rating: 8.5,
-      detail:
-        "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-      image:
-        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-      year: 2022,
-    })),
-  };
+  // return {
+  //   id: 1,
+  //   movies: [1, 2, 3, 4, 5].map((i) => ({
+  //     id: i,
+  //     title: "Movie Title",
+  //     director: "John Doe",
+  //     rating: 8.5,
+  //     detail:
+  //       "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
+  //     image:
+  //       "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+  //     year: 2022,
+  //   })),
+  // };
 
   return await postRequest<{ id: number; movies: Movie[] }>(
     "/recommendations",
@@ -85,21 +90,21 @@ type PreferenceModified = {
 };
 
 export const putRecommendations = async (preference: PreferenceModified) => {
-  return {
-    id: 1,
-    movies: [1, 2, 3, 4, 5].map((i) => ({
-      id: i,
-      title: "Movie Title",
-      director: "John Doe",
-      rating: 8.5,
-      detail:
-        "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-      image:
-        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-      year: 2022,
-      link: "https://search.naver.com/영화",
-    })),
-  };
+  // return {
+  //   id: 1,
+  //   movies: [1, 2, 3, 4, 5].map((i) => ({
+  //     id: i,
+  //     title: "Movie Title",
+  //     director: "John Doe",
+  //     rating: 8.5,
+  //     detail:
+  //       "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
+  //     image:
+  //       "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+  //     year: 2022,
+  //     link: "https://search.naver.com/영화",
+  //   })),
+  // };
 
   return await putRequest<{ id: number; movies: Movie[] }>(
     `/recommendations/${preference.recommendation_id}`,
@@ -108,24 +113,24 @@ export const putRecommendations = async (preference: PreferenceModified) => {
 };
 
 export const postResult = async (recommendationIds: string) => {
-  return {
-    history: [
-      "나는 코미디 영화를 좋아하고 ...",
-      "조금 더 한국 영화 위주로 ...",
-    ],
-    movies: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => ({
-      id: i,
-      title: "Movie Title",
-      director: "John Doe",
-      rating: 8.5,
-      detail:
-        "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-      image:
-        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
-      year: 2022,
-      link: "https://search.naver.com/영화",
-    })),
-  };
+  // return {
+  //   history: [
+  //     "나는 코미디 영화를 좋아하고 ...",
+  //     "조금 더 한국 영화 위주로 ...",
+  //   ],
+  //   movies: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => ({
+  //     id: i,
+  //     title: "Movie Title",
+  //     director: "John Doe",
+  //     rating: 8.5,
+  //     detail:
+  //       "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
+  //     image:
+  //       "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+  //     year: 2022,
+  //     link: "https://search.naver.com/영화",
+  //   })),
+  // };
 
   return await postRequest<{ history: string[]; movies: Movie[] }>(`/result`, {
     recommendations: recommendationIds,
