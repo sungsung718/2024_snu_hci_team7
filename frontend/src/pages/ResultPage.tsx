@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-import { toPng } from "html-to-image";
+// import { toPng } from "html-to-image";
 // import { useScreenshot, createFileName } from "use-react-screenshot";
 
 import { Movie } from "@/customTypes";
@@ -85,7 +85,7 @@ export default function ResultPage() {
         className="relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
       >
         <div className="divide-y h-full flex flex-col px-[50px] py-[70px] justify-end divide-[rgba(114,_107,_107,_0.3)]">
-          {history.map((prompt) => (
+          {history.reverse().map((prompt) => (
             <Prompt content={prompt} key={prompt} />
           ))}
         </div>

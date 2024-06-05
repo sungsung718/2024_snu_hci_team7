@@ -29,8 +29,6 @@ const putRequest = async <T = unknown>(
   url: string,
   body: object
 ): Promise<T> => {
-  console.log(url);
-  console.log(body);
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "PUT",
     headers: {

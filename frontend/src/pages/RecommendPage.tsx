@@ -109,6 +109,7 @@ export default function RecommendPage() {
       setIsLoading(true);
 
       const res = await postResult(idsStr);
+      res.history.unshift(pastRecoList[0].chatting);
       navigate("/result", {
         state: res,
       });
@@ -190,7 +191,7 @@ function ChattingInput({
         ref={textAreaRef}
       />
       <button onClick={onClickSend}>
-        <span className="material-symbols-outlined font-light text-neutral-500 text-4xl">
+        <span className="material-symbols-outlined text-neutral-500 text-4xl">
           send
         </span>
       </button>

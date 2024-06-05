@@ -198,7 +198,7 @@ function OtherPreference({
       />
 
       <button onClick={onClickDone}>
-        <span className="material-symbols-outlined font-extralight text-neutral-500 text-4xl">
+        <span className="material-symbols-outlined font-light text-neutral-500 text-4xl">
           check_circle
         </span>
       </button>
