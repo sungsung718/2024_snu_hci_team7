@@ -25,7 +25,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
         </div> */}
       </div>
 
-      <div className="flex flex-wrap text-sm text-gray-400 mt-1.5">
+      <div className="flex flex-wrap text-sm text-gray-400 mt-1.5 gap-[5px]">
         {movie
           .hashtags!.slice(1)
           .split("#")
