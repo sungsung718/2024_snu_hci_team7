@@ -127,13 +127,14 @@ function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
     <div className="flex gap-4 mb-[70px]">
       <span className="whitespace-nowrap">내가 좋아하는 장르는</span>
       <div className="flex gap-2 flex-wrap">
-        {GENRE_LIST.map((ganre) => (
+        {GENRE_LIST.map((genre) => (
           <GenreChip
-            genre={ganre}
+            key={genre}
+            genre={genre}
             onClick={() => {
-              ganres.includes(ganre) ? removeGanre(ganre) : addGanre(ganre);
+              ganres.includes(genre) ? removeGanre(genre) : addGanre(genre);
             }}
-            selected={ganres.includes(ganre)}
+            selected={ganres.includes(genre)}
           />
         ))}
       </div>

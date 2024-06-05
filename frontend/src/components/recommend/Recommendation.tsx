@@ -26,6 +26,7 @@ export default function Recommendation({
       <div className="flex gap-5 px-5">
         {movies.map((movie) => (
           <MovieCard
+            key={movie.title}
             movie={movie}
             editable
             onClickReaction={onClickAction}

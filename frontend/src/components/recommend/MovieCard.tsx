@@ -52,6 +52,7 @@ function Description({
       {words.map((word) =>
         editable ? (
           <Word
+            key={word}
             word={word}
             onClickReaction={(reaction: "likes" | "hates") =>
               onClickReaction!(reaction, word)

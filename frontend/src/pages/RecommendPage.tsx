@@ -124,10 +124,11 @@ export default function RecommendPage() {
       <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
         <div className="px-[120px] w-fit mx-auto">
           <div className="flex flex-col gap-20">
-            {pastRecoList.map((pastRecos) => (
+            {pastRecoList.map((pastRecos, i) => (
               <PastRecommendation
                 chatting={pastRecos.chatting}
                 movies={pastRecos.movies}
+                key={i}
               />
             ))}
             <Recommendation
@@ -202,12 +203,16 @@ function ReactedWords({ likes, hates }: { likes: string[]; hates: string[] }) {
     <div className="mt-5 w-[700px] mx-auto">
       <div className="mb-2">
         {likes.map((word) => (
-          <span className="bg-beige-dark mr-1">{word}</span>
+          <span className="bg-beige-dark mr-1" key={word}>
+            {word}
+          </span>
         ))}
       </div>
       <div>
         {hates.map((word) => (
-          <span className="line-through mr-1">{word}</span>
+          <span className="line-through mr-1" key={word}>
+            {word}
+          </span>
         ))}
       </div>
     </div>

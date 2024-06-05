@@ -83,7 +83,7 @@ export default function ResultPage() {
       >
         <div className="divide-y h-full flex flex-col px-[50px] py-[70px] justify-end divide-[rgba(114,_107,_107,_0.3)]">
           {history.map((prompt) => (
-            <Prompt content={prompt} />
+            <Prompt content={prompt} key={prompt} />
           ))}
         </div>
         <div className="m-[40px]">
@@ -115,7 +115,7 @@ function Movies({ movies }: { movies: Movie[] }) {
   return (
     <div className="grid grid-cols-[repeat(6,_132px)] grid-rows-[repeat(2,_290px)] gap-x-[14px] gap-y-4">
       {movies.map((movie) => (
-        <div className="scale-[0.72] origin-top-left w-fit">
+        <div className="scale-[0.72] origin-top-left w-fit" key={movie.title}>
           <MovieCard movie={movie} />
         </div>
       ))}

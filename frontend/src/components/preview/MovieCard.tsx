@@ -30,7 +30,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
           .hashtags!.slice(1)
           .split("#")
           .map((keyword) => (
-            <span>#{keyword}</span>
+            <span key={keyword}>#{keyword}</span>
           ))}
       </div>
     </div>
