@@ -3,11 +3,17 @@
 
 ### **How to run frontend**
 
-TODO
+You need `Node.js` to run this project. 
 
-```bash
-TODO
+After installing nodejs, run:
+
+```jsx
+> cd {your source}/2024_snu_hci_team7/frontend // go to project directory
+> npm install // install pakages
+> npm run dev // run project
 ```
+
+Make sure you also run the backend server.
 
 ## **Backend**
 
@@ -24,7 +30,7 @@ NAVER_API_KEY=
 
 After setting your keys, run this command.
 
-```
+```bash
 > pwd
 2024_snu_hci_team7/backend/movierecommender
 > pip install -r requirements.txt
