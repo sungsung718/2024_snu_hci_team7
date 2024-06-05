@@ -13,7 +13,7 @@ TODO
 
 ### **How to run backend**
 
-Before running the project, you need to create `.env` in `2024_snu_hci_team/backend/movierecommender` and set secret keys required for the project. Following are the required keys.
+Before running the project, you need to create `.env` in `2024_snu_hci_team7/backend/movierecommender` and set secret keys required for the project. Following are the required keys.
 
 ```python
 DJANGO_SECRET_KEY=
