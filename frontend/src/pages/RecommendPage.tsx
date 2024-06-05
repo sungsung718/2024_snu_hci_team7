@@ -8,6 +8,7 @@ import PastRecommendation from "@/components/recommend/PastRecommendation";
 import Recommendation from "@/components/recommend/Recommendation";
 
 import { Movie } from "@/customTypes";
+import Loading from "@/components/common/Loading";
 
 type Recommend = {
   id: number;
@@ -33,6 +34,7 @@ export default function RecommendPage() {
   const [detail, setDetail] = useState("");
   const [likes, setLikes] = useState<string[]>([]);
   const [hates, setHates] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
@@ -67,16 +69,23 @@ export default function RecommendPage() {
   };
 
   const handleSendClick = async () => {
-    const res = await putRecommendations({
-      recommendation_id: recommendation.id,
-      likes: likes.join(";"),
-      hates: hates.join(";"),
-      detail,
-    });
-    setPastRecoList((prev) => [...prev, recommendation]);
-    setRecommendation({ ...res, chatting: detail });
-    resetAll();
-    textAreaRef.current?.focus();
+    try {
+      setIsLoading(true);
+      const res = await putRecommendations({
+        recommendation_id: recommendation.id,
+        likes: likes.join(";"),
+        hates: hates.join(";"),
+        detail,
+      });
+      setPastRecoList((prev) => [...prev, recommendation]);
+      setRecommendation({ ...res, chatting: detail });
+      resetAll();
+      textAreaRef.current?.focus();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDoneClick = async () => {
@@ -91,42 +100,52 @@ export default function RecommendPage() {
     ids.push(recommendation.id);
     const idsStr = ids.join(",");
 
-    const res = await postResult(idsStr);
+    try {
+      setIsLoading(true);
 
-    navigate("/result", {
-      state: res,
-    });
+      const res = await postResult(idsStr);
+      navigate("/result", {
+        state: res,
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
-      <div className="px-[120px] w-fit mx-auto">
-        <div className="flex flex-col gap-20">
-          {pastRecoList.map((pastRecos) => (
-            <PastRecommendation
-              chatting={pastRecos.chatting}
-              movies={pastRecos.movies}
+    <>
+      <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
+        <div className="px-[120px] w-fit mx-auto">
+          <div className="flex flex-col gap-20">
+            {pastRecoList.map((pastRecos) => (
+              <PastRecommendation
+                chatting={pastRecos.chatting}
+                movies={pastRecos.movies}
+              />
+            ))}
+            <Recommendation
+              chatting={recommendation.chatting}
+              movies={recommendation.movies}
+              onClickAction={handleReactionClick}
+              reaction={{ likes, hates }}
             />
-          ))}
-          <Recommendation
-            chatting={recommendation.chatting}
-            movies={recommendation.movies}
-            onClickAction={handleReactionClick}
-            reaction={{ likes, hates }}
+          </div>
+          <DoneButton onClick={handleDoneClick} />
+          <ChattingInput
+            value={detail}
+            onChange={handleInputChange}
+            onClickSend={handleSendClick}
+            textAreaRef={textAreaRef}
           />
+          <ReactedWords likes={likes} hates={hates} />
         </div>
-        <DoneButton onClick={handleDoneClick} />
-        <ChattingInput
-          value={detail}
-          onChange={handleInputChange}
-          onClickSend={handleSendClick}
-          textAreaRef={textAreaRef}
-        />
-        <ReactedWords likes={likes} hates={hates} />
+        {/* 일단... 뺌 */}
+        {/* <HistoryList histories={HISTORIES} /> */}
       </div>
-      {/* 일단... 뺌 */}
-      {/* <HistoryList histories={HISTORIES} /> */}
-    </div>
+      {isLoading && <Loading />}
+    </>
   );
 }
 
