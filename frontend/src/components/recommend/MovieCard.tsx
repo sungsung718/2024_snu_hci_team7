@@ -15,7 +15,7 @@ export default function MovieCard({
   onClickReaction?: (reaction: "likes" | "hates", word: string) => void;
 }) {
   return (
-    <div className="w-[182px] bg-white rounded-lg shadow-[0px_0px_17.3px_0px_rgba(92,_87,_78,_0.09)]">
+    <div className="flex flex-col w-[182px] h-[408px] bg-white rounded-lg shadow-[0px_0px_17.3px_0px_rgba(92,_87,_78,_0.09)]">
       <Description
         description={movie.detail!}
         editable={editable}
@@ -48,7 +48,7 @@ function Description({
   const words = description.split("/");
 
   return (
-    <div className="text-[13px] text-brown-700 p-[14px]">
+    <div className="text-[13px] text-brown-700 p-[14px] min-h-[112px] max-h-[140px]">
       {words.map((word) =>
         editable ? (
           <Word
@@ -165,7 +165,7 @@ function Title({ title, link }: { title: string; link?: string }) {
     <a
       href={link}
       target="_blank"
-      className="whitespace-nowrap text-ellipsis hover:underline overflow-hidden text-[17px] text-white font-semibold cursor-pointer"
+      className="whitespace-nowrap text-ellipsis underline overflow-hidden text-[17px] text-white font-semibold cursor-pointer"
     >
       {title}
     </a>

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { postResult, putRecommendations } from "@/apis";
 
-import HistoryList from "@/components/HistoryList";
+// import HistoryList from "@/components/HistoryList";
 import PastRecommendation from "@/components/recommend/PastRecommendation";
 import Recommendation from "@/components/recommend/Recommendation";
 
@@ -15,11 +15,11 @@ type Recommend = {
   chatting: string;
 };
 
-const HISTORIES = [
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-  "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-];
+// const HISTORIES = [
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
+// ];
 
 export default function RecommendPage() {
   const location = useLocation();

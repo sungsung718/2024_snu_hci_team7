@@ -29,8 +29,14 @@ const putRequest = async <T = unknown>(
   url: string,
   body: object
 ): Promise<T> => {
+  console.log(url);
+  console.log(body);
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(body), //array, list -> JSON format
   });
   return await response.json();
