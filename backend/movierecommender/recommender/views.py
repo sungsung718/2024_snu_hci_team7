@@ -236,6 +236,7 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
         self.parse_data(data)
         data_for_prompt = {"movies": [movie["title"] for movie in data["movies"]]}
         reply = self.get_recommendations(data_for_prompt)
+        self.get_image(reply)
 
         data["movies"] = list(data["movies"]) + reply["movies"]
         self.add_link(data["movies"])
@@ -271,6 +272,14 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
         )
 
         return reply
+
+    def get_image(self, reply):
+        naver_agent = NaverAgent()
+        for movie in reply["movies"]:
+            title = movie["title"]
+            keyword = f"영화 {title} 포스터"
+            url = naver_agent.get_image(keyword=keyword)
+            movie["image"] = url
 
     def add_link(self, movies):
         agent = NaverAgent()
