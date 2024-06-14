@@ -102,14 +102,14 @@ export default function ResultPage() {
           <Movies movies={movies} />
         </div>
       </div>
-      <button
+      {/* <button
         className="bg-[#5D544C] rounded-full mt-10 w-[45px] h-[45px] flex justify-center items-center"
         onClick={handleSaveAsImage}
       >
         <span className="material-symbols-outlined text-white font-light">
           download_2
         </span>
-      </button>
+      </button> */}
     </div>
   );
 }
