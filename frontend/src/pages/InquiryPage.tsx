@@ -1,4 +1,4 @@
-import { CSSProperties, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { postRecommendations } from "@/apis";
@@ -197,28 +197,32 @@ function BasicPreferenceInputs({
 }) {
   return (
     <div className="flex justify-center gap-4 flex-wrap mb-[128px]">
-      <div>
-        <Span text="좋아하는 감독은" />
-        <Input
-          name="director"
-          value={basicPreference.director}
-          onChange={onChange}
-        />
-        ,
-      </div>
-      <div>
-        <Span text="좋아하는 배우는" />
-        <Input name="actor" value={basicPreference.actor} onChange={onChange} />
-        .
-      </div>
-      <div>
-        <Input name="liked" value={basicPreference.liked} onChange={onChange} />
-        <Span text="은/는 재밌게 봤는데" />
-      </div>
-      <div>
-        <Input name="hated" value={basicPreference.hated} onChange={onChange} />
-        <Span text="은/는 별로였어." />
-      </div>
+      <InputWrapper
+        label="좋아하는 감독은"
+        value={basicPreference.director}
+        onChange={onChange}
+        name="director"
+        labelForward
+      />
+      <InputWrapper
+        label="좋아하는 배우는"
+        value={basicPreference.actor}
+        onChange={onChange}
+        name="actor"
+        labelForward
+      />
+      <InputWrapper
+        label="은/는 재밌게 봤는데"
+        value={basicPreference.liked}
+        onChange={onChange}
+        name="liked"
+      />
+      <InputWrapper
+        label="은/는 별로였어."
+        value={basicPreference.hated}
+        onChange={onChange}
+        name="hated"
+      />
     </div>
   );
 }
@@ -252,34 +256,47 @@ function OtherPreference({
   );
 }
 
-function Input({
+function InputWrapper({
   name,
   value,
   onChange,
-  style,
-  placeholder,
+  label,
+  labelForward,
 }: {
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  style?: CSSProperties;
-  placeholder?: string;
+  label: string;
+  labelForward?: boolean;
 }) {
-  return (
-    <input
-      type="text"
-      name={name}
-      value={value}
-      onChange={onChange}
-      className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
-      style={style}
-      placeholder={placeholder}
-    />
-  );
-}
+  const [active, setActive] = useState(false);
 
-function Span({ text }: { text: string }) {
-  return <span className="whitespace-nowrap">{text}</span>;
+  return (
+    <div className={active ? "" : "opacity-50"}>
+      {labelForward && (
+        <label htmlFor={name} className="whitespace-nowrap">
+          {label}
+        </label>
+      )}
+      <input
+        type="text"
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setActive(true)}
+        onBlur={() => {
+          if (!value) setActive(false);
+        }}
+        className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
+      />
+      {!labelForward && (
+        <label htmlFor={name} className="whitespace-nowrap">
+          {label}
+        </label>
+      )}
+    </div>
+  );
 }
 
 const generateChatting = ({
