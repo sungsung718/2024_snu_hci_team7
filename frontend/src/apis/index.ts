@@ -47,18 +47,18 @@ const putRequest = async <T = unknown>(
 };
 
 export const getPreviewMovies = getMockPreviewMovies;
-//  async () =>
+// async () =>
 //   await getRequest<{
 //     recent_movies: Movie[];
 //     classic_movies: Movie[];
 //   }>("/preview");
 
 export const postRecommendations = postMockRecommendations;
-//  async (preference: Preference) =>
-//   await postRequest<{ id: number; movies: Movie[] }>(
-//     "/recommendations",
-//     preference
-//   );
+// async (preference: Preference) =>
+// await postRequest<{ id: number; movies: Movie[] }>(
+//   "/recommendations",
+//   preference
+// );
 
 type PreferenceModified = {
   recommendation_id: number;
@@ -68,7 +68,7 @@ type PreferenceModified = {
 };
 
 export const putRecommendations = putMockRecommendations;
-//  async (preference: PreferenceModified) =>
+// async (preference: PreferenceModified) =>
 //   await putRequest<{ id: number; movies: Movie[] }>(
 //     `/recommendations/${preference.recommendation_id}`,
 //     preference

@@ -59,14 +59,6 @@ export default function PreviewPage() {
           onClickReaction={handleReactionClick}
         />
       </div>
-      <button
-        onClick={() => {
-          console.log(liked);
-          console.log(hated);
-        }}
-      >
-        test
-      </button>
       <StartButton preference={{ liked, hated }} />
     </div>
   );

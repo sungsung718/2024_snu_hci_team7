@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { postRecommendations } from "@/apis";
 
@@ -42,6 +42,7 @@ export default function InquiryPage() {
   const [detail, setDetail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleBasicPreferenceInput = (
@@ -53,9 +54,17 @@ export default function InquiryPage() {
 
   const handleDoneClick = async () => {
     const genreString = genres.join(",");
+    const { actor, director, liked, hated } = basicPreference;
+
+    const likedList = [liked].concat(location.state.liked);
+    const hatedList = [hated].concat(location.state.hated);
+
     const preference = {
       genre: genreString,
-      ...basicPreference,
+      actor,
+      director,
+      liked: likedList.join(","),
+      hated: hatedList.join(","),
       detail,
     };
 
@@ -94,8 +103,6 @@ export default function InquiryPage() {
             onClickDone={handleDoneClick}
           />
         </div>
-        {/* 일단... 뺌 */}
-        {/* <HistoryList histories={HISTORIES} /> */}
       </div>
       {isLoading && <Loading />}
     </>
