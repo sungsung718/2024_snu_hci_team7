@@ -7,7 +7,7 @@ import PastRecommendation from "@/components/recommend/PastRecommendation";
 import Recommendation from "@/components/recommend/Recommendation";
 
 import { Movie } from "@/customTypes";
-import { RecommendationSkeleton } from "@/components/common/Loading";
+import Loading, { RecommendationSkeleton } from "@/components/common/Loading";
 
 type Recommend = {
   id: number;
@@ -29,6 +29,7 @@ export default function RecommendPage() {
   const [likes, setLikes] = useState<string[]>([]);
   const [hates, setHates] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFinishing, setIsFinishing] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
@@ -71,8 +72,6 @@ export default function RecommendPage() {
     try {
       setIsLoading(true);
 
-      await sleep(1000);
-
       const res = await putRecommendations({
         recommendation_id: recommendation.id,
         likes: likes.join(";"),
@@ -104,7 +103,8 @@ export default function RecommendPage() {
     const idsStr = ids.join(",");
 
     try {
-      setIsLoading(true);
+      setIsFinishing(true);
+
       const res = await postResult(idsStr);
 
       res.history.shift();
@@ -121,7 +121,7 @@ export default function RecommendPage() {
       console.log(err);
       alert("에러가 발생했습니다.");
     } finally {
-      setIsLoading(false);
+      setIsFinishing(false);
     }
   };
 
@@ -167,6 +167,7 @@ export default function RecommendPage() {
           <ReactedWords likes={likes} hates={hates} />
         </div>
       </div>
+      {isFinishing && <Loading />}
     </>
   );
 }
