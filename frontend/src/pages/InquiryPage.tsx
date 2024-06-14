@@ -5,7 +5,6 @@ import { postRecommendations } from "@/apis";
 
 import GenreChip from "@/components/GenreChip";
 import Loading from "@/components/common/Loading";
-// import HistoryList from "@/components/HistoryList";
 
 const GENRE_LIST = [
   "멜로",
@@ -24,13 +23,6 @@ const GENRE_LIST = [
   "판타지",
   "애니메이션",
 ];
-
-// const HISTORIES = [
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   // "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-// ];
 
 type BasicPreference = {
   director: string;

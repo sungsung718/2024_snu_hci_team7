@@ -9,7 +9,7 @@ export const getMockPreviewMovies = async () => {
       year: 1984,
       hashtags: "#통쾌한#대표 한국 범죄 영화#대중이 원하는 오락",
     })),
-    classic_movies: [1, 2, 3, 4, 5].map((i) => ({
+    classic_movies: [6, 7, 8, 9, 10].map((i) => ({
       title: "액션" + i,
       image:
         "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
