@@ -3,12 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { postResult, putRecommendations } from "@/apis";
 
-// import HistoryList from "@/components/HistoryList";
 import PastRecommendation from "@/components/recommend/PastRecommendation";
 import Recommendation from "@/components/recommend/Recommendation";
 
 import { Movie } from "@/customTypes";
-import Loading from "@/components/common/Loading";
+import { RecommendationSkeleton } from "@/components/common/Loading";
 
 type Recommend = {
   id: number;
@@ -16,16 +15,11 @@ type Recommend = {
   chatting: string;
 };
 
-// const HISTORIES = [
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-// ];
-
 export default function RecommendPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const recommendationRef = useRef<HTMLDivElement>(null);
 
   const [recommendation, setRecommendation] = useState<Recommend>(
     location.state
@@ -76,16 +70,23 @@ export default function RecommendPage() {
 
     try {
       setIsLoading(true);
+
+      await sleep(1000);
+      console.log("first");
       const res = await putRecommendations({
         recommendation_id: recommendation.id,
         likes: likes.join(";"),
         hates: hates.join(";"),
         detail,
       });
+      console.log(res.id);
+      console.log("seconed");
       setPastRecoList((prev) => [...prev, recommendation]);
       setRecommendation({ ...res, chatting: detail });
       resetAll();
       textAreaRef.current?.focus();
+      scrollToBottom();
+      // scrollToRecommendation();
     } catch (err) {
       console.log(err);
       alert("에러가 발생했습니다.");
@@ -108,7 +109,6 @@ export default function RecommendPage() {
 
     try {
       setIsLoading(true);
-
       const res = await postResult(idsStr);
 
       res.history.shift();
@@ -129,6 +129,26 @@ export default function RecommendPage() {
     }
   };
 
+  // const scrollToRecommendation = () => {
+  //   window.scrollTo({});
+  //   if (recommendationRef.current) {
+  //     recommendationRef.current.scrollTop =
+  //       recommendationRef.current.scrollHeight;
+  //     // recommendationRef.current.scrollIntoView({
+  //     //   behavior: "smooth",
+  //     //   block: "end",
+  //     // });
+  //   }
+  // };
+
+  const scrollToBottom = async () => {
+    console.log("Asdfasdfasfasdaf");
+    if (recommendationRef.current) {
+      // scrollRef.current.scrollIntoView({ behavior: "smooth" });
+      recommendationRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
@@ -141,35 +161,48 @@ export default function RecommendPage() {
                 key={i}
               />
             ))}
-            <Recommendation
-              chatting={recommendation.chatting}
-              movies={recommendation.movies}
-              onClickAction={handleReactionClick}
-              reaction={{ likes, hates }}
-            />
+            {isLoading ? (
+              <RecommendationSkeleton />
+            ) : (
+              <Recommendation
+                key={recommendation.id}
+                chatting={recommendation.chatting}
+                movies={recommendation.movies}
+                onClickAction={handleReactionClick}
+                reaction={{ likes, hates }}
+              />
+            )}
           </div>
-          <DoneButton onClick={handleDoneClick} />
+          <DoneButton onClick={handleDoneClick} disabled={isLoading} />
           <ChattingInput
             value={detail}
             onChange={handleInputChange}
             onClickSend={handleSendClick}
             textAreaRef={textAreaRef}
+            disabled={isLoading}
           />
           <ReactedWords likes={likes} hates={hates} />
+          <div ref={recommendationRef} className="h-1 bg-black"></div>
         </div>
-        {/* 일단... 뺌 */}
-        {/* <HistoryList histories={HISTORIES} /> */}
       </div>
-      {isLoading && <Loading />}
     </>
   );
 }
 
-function DoneButton({ onClick }: { onClick: () => void }) {
+function DoneButton({
+  onClick,
+  disabled,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+}) {
   return (
     <button
-      className="ml-auto my-5 flex items-center gap-1 py-2.5 pl-5 pr-4 bg-brown-700 rounded-3xl text-white"
+      className={`ml-auto my-5 flex items-center gap-1 py-2.5 pl-5 pr-4 ${
+        disabled && "opacity-30"
+      } bg-brown-700 rounded-3xl text-white`}
       onClick={onClick}
+      disabled={disabled}
     >
       <span className="text-[15px] font-semibold">이제 좋아요</span>
       <span className="material-symbols-outlined font-light">check</span>
@@ -182,11 +215,13 @@ function ChattingInput({
   onChange,
   onClickSend,
   textAreaRef,
+  disabled,
 }: {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onClickSend: () => void;
   textAreaRef: React.LegacyRef<HTMLTextAreaElement>;
+  disabled: boolean;
 }) {
   return (
     <div className="w-full flex mt-6 gap-4 justify-center">
@@ -199,8 +234,12 @@ function ChattingInput({
         className="w-[70%] max-w-[680px] h-[60px] border rounded-[22px] border-beige-dark placeholder:text-beige-dark outline-none p-4 resize-none"
         ref={textAreaRef}
       />
-      <button onClick={onClickSend}>
-        <span className="material-symbols-outlined text-neutral-500 text-4xl">
+      <button onClick={onClickSend} disabled={disabled}>
+        <span
+          className={`${
+            disabled && "opacity-30"
+          } material-symbols-outlined text-neutral-500 text-4xl`}
+        >
           send
         </span>
       </button>
@@ -228,3 +267,6 @@ function ReactedWords({ likes, hates }: { likes: string[]; hates: string[] }) {
     </div>
   );
 }
+
+const sleep = (delay: number) =>
+  new Promise((reslove) => setTimeout(reslove, delay));

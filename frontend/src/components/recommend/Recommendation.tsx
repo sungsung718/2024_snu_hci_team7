@@ -17,7 +17,7 @@ export default function Recommendation({
   onClickAction,
 }: RecommendationProps) {
   return (
-    <div className="flex flex-col w-fit items-center mb-5 mx-auto">
+    <div className="flex flex-col w-fit items-center mb-5 mx-auto animate-fadeIn">
       <Chatting content={chatting} />
       <div className="mr-auto pl-8 flex gap-1 mt-[54px] mb-4 items-center text-[rgba(202,_138,_138,_0.8)] text-[14px] font-medium">
         <SwipeDown />

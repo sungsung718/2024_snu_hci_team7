@@ -66,7 +66,7 @@ function Description({
             }
           />
         ) : (
-          <>{word}</>
+          <span key={word}>{word}</span>
         )
       )}
     </div>

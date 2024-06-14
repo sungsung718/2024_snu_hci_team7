@@ -85,8 +85,7 @@ export const postMockResult = async (recommendationIds: string) => {
       rating: 8.5,
       detail:
         "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-      image:
-        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+      image: "src/assets/darkknight.jpg",
       year: 2022,
       link: "https://search.naver.com/영화",
     })),

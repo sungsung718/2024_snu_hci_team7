@@ -1,12 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 
-// import { toPng } from "html-to-image";
+import { toPng } from "html-to-image";
 // import { useScreenshot, createFileName } from "use-react-screenshot";
 
 import { Movie } from "@/customTypes";
 import MovieCard from "@/components/recommend/MovieCard";
 import { useCallback, useRef } from "react";
-// import html2canvas from "html2canvas";
+import html2canvas from "html2canvas";
 
 export default function ResultPage() {
   const location = useLocation();
@@ -40,39 +40,46 @@ export default function ResultPage() {
   //   download(image);
   // };
 
-  const handleSaveAsImage = useCallback(async () => {
-    alert("Under development");
-    return;
-
-    // if (ticketRef.current === null) {
-    //   alert("이미지를 저장할 수 없습니다.");
-    //   return;
-    // }
-
-    // toPng(ticketRef.current, { cacheBust: true })
-    //   .then((dataUrl) => {
-    //     const link = document.createElement("a");
-    //     link.download = "my-image-name.png";
-    //     link.href = dataUrl;
-    //     link.click();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  }, [ticketRef]);
-
-  // const handleSaveAsImage = () => {
-  //   if (!ticketRef || !ticketRef.current) return;
-  //   html2canvas(ticketRef.current).then(function (canvas) {
-  //     const downloadLink = document.createElement("a");
-  //     downloadLink.download = "filename.png";
-  //     downloadLink.href = canvas.toDataURL();
-  //     downloadLink.click();
-  //   });
+  // const handleSaveAsImage = async () => {
+  // alert("Under development");
+  // return;
   // };
 
+  // const handleSaveAsImage = useCallback(async () => {
+  //   if (ticketRef.current === null) {
+  //     alert("이미지를 저장할 수 없습니다.");
+  //     return;
+  //   }
+
+  //   toPng(ticketRef.current, { cacheBust: true })
+  //     .then((dataUrl) => {
+  //       const link = document.createElement("a");
+  //       link.download = "my-image-name.png";
+  //       link.href = dataUrl;
+  //       link.click();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [ticketRef]);
+
+  const handleSaveAsImage = () => {
+    console.log("Asdfadf");
+    if (!ticketRef || !ticketRef.current) return;
+    console.log("Asdfadsdfsdfdf");
+
+    html2canvas(ticketRef.current, { proxy: "/html2canvas-proxy" }).then(
+      function (canvas) {
+        const downloadLink = document.createElement("a");
+        downloadLink.download = "filename.png";
+        downloadLink.href = canvas.toDataURL();
+        downloadLink.click();
+      }
+    );
+  };
+
   return (
-    <div className="pt-[65px] pb-[100px] min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
+    <div className="pt-[65px] flex flex-col items-center pb-[100px] min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
       <div className="mb-2 w-[1413px] mx-auto px-5">
         <Link to="/">
           <span className="material-symbols-outlined font-light text-[#726E6B] text-[44px]">
@@ -81,7 +88,7 @@ export default function ResultPage() {
         </Link>
       </div>
       <div
-        // ref={ticketRef}
+        ref={ticketRef}
         className="relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
       >
         <div className="h-full flex items-end px-[50px] py-[70px]">
@@ -94,16 +101,15 @@ export default function ResultPage() {
         <div className="m-[40px]">
           <Movies movies={movies} />
         </div>
-        {/* 추후 구현 */}
-        <button
-          className="absolute bottom-[-15px] right-[30px] bg-[#5D544C] rounded-full w-[45px] h-[45px] flex justify-center items-center"
-          onClick={handleSaveAsImage}
-        >
-          <span className="material-symbols-outlined text-white font-light">
-            download_2
-          </span>
-        </button>
       </div>
+      <button
+        className="bg-[#5D544C] rounded-full mt-10 w-[45px] h-[45px] flex justify-center items-center"
+        onClick={handleSaveAsImage}
+      >
+        <span className="material-symbols-outlined text-white font-light">
+          download_2
+        </span>
+      </button>
     </div>
   );
 }
