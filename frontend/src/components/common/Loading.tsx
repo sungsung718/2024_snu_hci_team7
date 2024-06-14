@@ -11,12 +11,15 @@ export default function Loading() {
 
 export function RecommendationSkeleton() {
   return (
-    <div className="flex gap-5 px-5 animate-pulse">
-      <MovieCardSkeleton />
-      <MovieCardSkeleton />
-      <MovieCardSkeleton />
-      <MovieCardSkeleton />
-      <MovieCardSkeleton />
+    <div className="animate-pulse mb-4">
+      <div className="rounded-md bg-brown-200 h-16 w-[540px] mb-14 mx-auto"></div>
+      <div className="flex gap-5 px-5">
+        <MovieCardSkeleton />
+        <MovieCardSkeleton />
+        <MovieCardSkeleton />
+        <MovieCardSkeleton />
+        <MovieCardSkeleton />
+      </div>
     </div>
   );
 }

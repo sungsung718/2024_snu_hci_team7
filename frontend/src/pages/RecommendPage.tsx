@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { postResult, putRecommendations } from "@/apis";
@@ -19,7 +19,7 @@ export default function RecommendPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const recommendationRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef<HTMLDivElement>(null);
 
   const [recommendation, setRecommendation] = useState<Recommend>(
     location.state
@@ -72,21 +72,17 @@ export default function RecommendPage() {
       setIsLoading(true);
 
       await sleep(1000);
-      console.log("first");
+
       const res = await putRecommendations({
         recommendation_id: recommendation.id,
         likes: likes.join(";"),
         hates: hates.join(";"),
         detail,
       });
-      console.log(res.id);
-      console.log("seconed");
       setPastRecoList((prev) => [...prev, recommendation]);
       setRecommendation({ ...res, chatting: detail });
       resetAll();
       textAreaRef.current?.focus();
-      scrollToBottom();
-      // scrollToRecommendation();
     } catch (err) {
       console.log(err);
       alert("에러가 발생했습니다.");
@@ -129,29 +125,15 @@ export default function RecommendPage() {
     }
   };
 
-  // const scrollToRecommendation = () => {
-  //   window.scrollTo({});
-  //   if (recommendationRef.current) {
-  //     recommendationRef.current.scrollTop =
-  //       recommendationRef.current.scrollHeight;
-  //     // recommendationRef.current.scrollIntoView({
-  //     //   behavior: "smooth",
-  //     //   block: "end",
-  //     // });
-  //   }
-  // };
-
-  const scrollToBottom = async () => {
-    console.log("Asdfasdfasfasdaf");
-    if (recommendationRef.current) {
-      // scrollRef.current.scrollIntoView({ behavior: "smooth" });
-      recommendationRef.current.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+    if (isLoading) {
+      loadingRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }, [isLoading]);
 
   return (
     <>
-      <div className="relative min-h-full min-w-fit pt-[110px] pb-[140px] bg-[url('src/assets/beige_background.png')]">
+      <div className="relative min-h-full min-w-fit pt-[110px] pb-[120px] bg-[url('src/assets/beige_background.png')]">
         <div className="px-[120px] w-fit mx-auto">
           <div className="flex flex-col gap-20">
             {pastRecoList.map((pastRecos, i) => (
@@ -161,16 +143,17 @@ export default function RecommendPage() {
                 key={i}
               />
             ))}
-            {isLoading ? (
-              <RecommendationSkeleton />
-            ) : (
-              <Recommendation
-                key={recommendation.id}
-                chatting={recommendation.chatting}
-                movies={recommendation.movies}
-                onClickAction={handleReactionClick}
-                reaction={{ likes, hates }}
-              />
+            <Recommendation
+              key={recommendation.id}
+              chatting={recommendation.chatting}
+              movies={recommendation.movies}
+              onClickAction={handleReactionClick}
+              reaction={{ likes, hates }}
+            />
+            {isLoading && (
+              <div ref={loadingRef}>
+                <RecommendationSkeleton />
+              </div>
             )}
           </div>
           <DoneButton onClick={handleDoneClick} disabled={isLoading} />
@@ -182,7 +165,6 @@ export default function RecommendPage() {
             disabled={isLoading}
           />
           <ReactedWords likes={likes} hates={hates} />
-          <div ref={recommendationRef} className="h-1 bg-black"></div>
         </div>
       </div>
     </>
