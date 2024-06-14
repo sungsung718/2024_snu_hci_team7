@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { CSSProperties, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { postRecommendations } from "@/apis";
@@ -32,7 +32,10 @@ type BasicPreference = {
 };
 
 export default function InquiryPage() {
-  const [genres, setGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<{ options: string[]; custom: string }>({
+    options: [],
+    custom: "",
+  });
   const [basicPreference, setBasicPreference] = useState<BasicPreference>({
     director: "",
     actor: "",
@@ -53,7 +56,8 @@ export default function InquiryPage() {
   };
 
   const handleDoneClick = async () => {
-    const genreString = genres.join(",");
+    const genreString =
+      genres.options + (genres.custom ? "," + genres.custom : "");
     const { actor, director, liked, hated } = basicPreference;
 
     const likedList = [liked].concat(location.state.liked);
@@ -69,7 +73,7 @@ export default function InquiryPage() {
     };
 
     const chatting = generateChatting({
-      genres: genres,
+      genres: genres.options.concat(genres.custom ? [genres.custom] : []),
       ...basicPreference,
       detail,
     });
@@ -92,7 +96,7 @@ export default function InquiryPage() {
     <>
       <div className="relative min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
         <div className=" min-w-[940px] max-w-[1200px] flex flex-col justify-center items-center mx-auto px-[120px] pt-40 pb-[280px]">
-          <FavoriteGanre ganres={genres} setGanres={setGenres} />
+          <FavoriteGanre genres={genres} setGenres={setGenres} />
           <BasicPreferenceInputs
             basicPreference={basicPreference}
             onChange={handleBasicPreferenceInput}
@@ -110,17 +114,33 @@ export default function InquiryPage() {
 }
 
 type FavoriteGanreProps = {
-  ganres: string[];
-  setGanres: React.Dispatch<React.SetStateAction<string[]>>;
+  genres: { options: string[]; custom: string };
+  setGenres: React.Dispatch<
+    React.SetStateAction<{ options: string[]; custom: string }>
+  >;
 };
 
-function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
-  const addGanre = (ganre: string) => {
-    setGanres((prev) => [...prev, ganre]);
+function FavoriteGanre({ genres, setGenres }: FavoriteGanreProps) {
+  const [isCustomSelected, setIsCustomSelected] = useState(false);
+  const [customGenre, setCustomGenre] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const addGenre = (genre: string) => {
+    setGenres((prev) => ({ ...prev, options: [...prev.options, genre] }));
   };
 
-  const removeGanre = (ganre: string) => {
-    setGanres((prev) => prev.filter((g) => g !== ganre));
+  const removeGenre = (genre: string) => {
+    setGenres((prev) => ({
+      ...prev,
+      options: prev.options.filter((g) => g !== genre),
+    }));
+  };
+
+  const toggleCustom = () => {
+    setIsCustomSelected((selected) => {
+      setGenres((prev) => ({ ...prev, custom: selected ? "" : customGenre }));
+      return !selected;
+    });
   };
 
   return (
@@ -132,11 +152,37 @@ function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
             key={genre}
             genre={genre}
             onClick={() => {
-              ganres.includes(genre) ? removeGanre(genre) : addGanre(genre);
+              genres.options.includes(genre)
+                ? removeGenre(genre)
+                : addGenre(genre);
             }}
-            selected={ganres.includes(genre)}
+            selected={genres.options.includes(genre)}
           />
         ))}
+        <div className="flex">
+          <GenreChip
+            key={"기타"}
+            genre={"기타"}
+            onClick={toggleCustom}
+            selected={isCustomSelected}
+          />
+          {isCustomSelected && (
+            <input
+              ref={inputRef}
+              name="기타"
+              value={customGenre}
+              onChange={(e) => {
+                const { value } = e.target;
+                setCustomGenre(value);
+                setGenres((prev) => ({ ...prev, custom: value }));
+              }}
+              placeholder="기타 입력"
+              type="text"
+              autoFocus
+              className="outline-none mx-0 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[120px]"
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -210,10 +256,14 @@ function Input({
   name,
   value,
   onChange,
+  style,
+  placeholder,
 }: {
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  style?: CSSProperties;
+  placeholder?: string;
 }) {
   return (
     <input
@@ -222,6 +272,8 @@ function Input({
       value={value}
       onChange={onChange}
       className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
+      style={style}
+      placeholder={placeholder}
     />
   );
 }
