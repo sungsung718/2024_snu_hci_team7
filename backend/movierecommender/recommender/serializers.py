@@ -12,6 +12,7 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = ["id", "title", "director", "rating", "detail", "image", "year"]
+        extra_kwargs = {"image": {"allow_blank": True}}
 
 
 class RecommendationCreateSerializer(serializers.ModelSerializer):
