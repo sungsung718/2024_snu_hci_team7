@@ -22,7 +22,7 @@ from recommender.utils.constants import (
 )
 from recommender.utils.gpt import GPTAgent
 from recommender.utils.log import print_log
-from recommender.utils.naver import NaverAgent
+from recommender.utils.naver import get_image, get_link
 from recommender.utils.prompt import (
     RecommendationTemplate,
     RevisedRecommendationTemplate,
@@ -90,11 +90,10 @@ class RecommendationCreateView(generics.CreateAPIView):
         return {**recommendation_serializer.data, **reply}
 
     def get_image(self, reply):
-        naver_agent = NaverAgent()
         for movie in reply["movies"]:
             title = movie["title"]
-            keyword = f"영화 {title} 포스터"
-            url = naver_agent.get_image(keyword=keyword)
+            keyword = f"영화 {title}"
+            url = get_image(keyword=keyword)
             movie["image"] = url
 
 
@@ -202,11 +201,10 @@ class RecommendationUpdateView(generics.UpdateAPIView):
         return old_action + ";" + new_action
 
     def get_image(self, reply):
-        naver_agent = NaverAgent()
         for movie in reply["movies"]:
             title = movie["title"]
-            keyword = f"영화 {title} 포스터"
-            url = naver_agent.get_image(keyword=keyword)
+            keyword = f"영화 {title}"
+            url = get_image(keyword=keyword)
             movie["image"] = url
 
 
@@ -274,17 +272,15 @@ class FinalRecommendationCreateView(generics.CreateAPIView):
         return reply
 
     def get_image(self, reply):
-        naver_agent = NaverAgent()
         for movie in reply["movies"]:
             title = movie["title"]
-            keyword = f"영화 {title} 포스터"
-            url = naver_agent.get_image(keyword=keyword)
+            keyword = f"영화 {title}"
+            url = get_image(keyword=keyword)
             movie["image"] = url
 
     def add_link(self, movies):
-        agent = NaverAgent()
         for movie in movies:
-            link = agent.get_link("영화 " + movie["title"])
+            link = get_link("영화 " + movie["title"])
             movie["link"] = link
 
 
@@ -324,14 +320,13 @@ class PreviewRetrieveView(generics.RetrieveAPIView):
         return reply
 
     def get_image(self, reply):
-        naver_agent = NaverAgent()
         for movie in reply["recent_movies"]:
             title = movie["title"]
-            keyword = f"영화 {title} 포스터"
-            url = naver_agent.get_image(keyword=keyword)
+            keyword = f"영화 {title}"
+            url = get_image(keyword=keyword)
             movie["image"] = url
         for movie in reply["classic_movies"]:
             title = movie["title"]
-            keyword = f"영화 {title} 포스터"
-            url = naver_agent.get_image(keyword=keyword)
+            keyword = f"영화 {title}"
+            url = get_image(keyword=keyword)
             movie["image"] = url
