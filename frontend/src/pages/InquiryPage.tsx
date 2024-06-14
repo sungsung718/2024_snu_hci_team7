@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { postRecommendations } from "@/apis";
 
 import GenreChip from "@/components/GenreChip";
 import Loading from "@/components/common/Loading";
-// import HistoryList from "@/components/HistoryList";
 
 const GENRE_LIST = [
   "멜로",
@@ -25,13 +24,6 @@ const GENRE_LIST = [
   "애니메이션",
 ];
 
-// const HISTORIES = [
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   // "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-//   "history1 뭐 표시하지,,,,,,,,,,,,,,,,,,,날짜나 프롬프트 일부",
-// ];
-
 type BasicPreference = {
   director: string;
   actor: string;
@@ -40,7 +32,10 @@ type BasicPreference = {
 };
 
 export default function InquiryPage() {
-  const [genres, setGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<{ options: string[]; custom: string }>({
+    options: [],
+    custom: "",
+  });
   const [basicPreference, setBasicPreference] = useState<BasicPreference>({
     director: "",
     actor: "",
@@ -50,6 +45,7 @@ export default function InquiryPage() {
   const [detail, setDetail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleBasicPreferenceInput = (
@@ -60,15 +56,24 @@ export default function InquiryPage() {
   };
 
   const handleDoneClick = async () => {
-    const genreString = genres.join(",");
+    const genreString =
+      genres.options + (genres.custom ? "," + genres.custom : "");
+    const { actor, director, liked, hated } = basicPreference;
+
+    const likedList = [liked].concat(location.state.liked);
+    const hatedList = [hated].concat(location.state.hated);
+
     const preference = {
       genre: genreString,
-      ...basicPreference,
+      actor,
+      director,
+      liked: likedList.join(","),
+      hated: hatedList.join(","),
       detail,
     };
 
     const chatting = generateChatting({
-      genres: genres,
+      genres: genres.options.concat(genres.custom ? [genres.custom] : []),
       ...basicPreference,
       detail,
     });
@@ -91,7 +96,7 @@ export default function InquiryPage() {
     <>
       <div className="relative min-h-full min-w-fit bg-[url('src/assets/beige_background.png')]">
         <div className=" min-w-[940px] max-w-[1200px] flex flex-col justify-center items-center mx-auto px-[120px] pt-40 pb-[280px]">
-          <FavoriteGanre ganres={genres} setGanres={setGenres} />
+          <FavoriteGanre genres={genres} setGenres={setGenres} />
           <BasicPreferenceInputs
             basicPreference={basicPreference}
             onChange={handleBasicPreferenceInput}
@@ -102,8 +107,6 @@ export default function InquiryPage() {
             onClickDone={handleDoneClick}
           />
         </div>
-        {/* 일단... 뺌 */}
-        {/* <HistoryList histories={HISTORIES} /> */}
       </div>
       {isLoading && <Loading />}
     </>
@@ -111,17 +114,33 @@ export default function InquiryPage() {
 }
 
 type FavoriteGanreProps = {
-  ganres: string[];
-  setGanres: React.Dispatch<React.SetStateAction<string[]>>;
+  genres: { options: string[]; custom: string };
+  setGenres: React.Dispatch<
+    React.SetStateAction<{ options: string[]; custom: string }>
+  >;
 };
 
-function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
-  const addGanre = (ganre: string) => {
-    setGanres((prev) => [...prev, ganre]);
+function FavoriteGanre({ genres, setGenres }: FavoriteGanreProps) {
+  const [isCustomSelected, setIsCustomSelected] = useState(false);
+  const [customGenre, setCustomGenre] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const addGenre = (genre: string) => {
+    setGenres((prev) => ({ ...prev, options: [...prev.options, genre] }));
   };
 
-  const removeGanre = (ganre: string) => {
-    setGanres((prev) => prev.filter((g) => g !== ganre));
+  const removeGenre = (genre: string) => {
+    setGenres((prev) => ({
+      ...prev,
+      options: prev.options.filter((g) => g !== genre),
+    }));
+  };
+
+  const toggleCustom = () => {
+    setIsCustomSelected((selected) => {
+      setGenres((prev) => ({ ...prev, custom: selected ? "" : customGenre }));
+      return !selected;
+    });
   };
 
   return (
@@ -133,11 +152,37 @@ function FavoriteGanre({ ganres, setGanres }: FavoriteGanreProps) {
             key={genre}
             genre={genre}
             onClick={() => {
-              ganres.includes(genre) ? removeGanre(genre) : addGanre(genre);
+              genres.options.includes(genre)
+                ? removeGenre(genre)
+                : addGenre(genre);
             }}
-            selected={ganres.includes(genre)}
+            selected={genres.options.includes(genre)}
           />
         ))}
+        <div className="flex">
+          <GenreChip
+            key={"기타"}
+            genre={"기타"}
+            onClick={toggleCustom}
+            selected={isCustomSelected}
+          />
+          {isCustomSelected && (
+            <input
+              ref={inputRef}
+              name="기타"
+              value={customGenre}
+              onChange={(e) => {
+                const { value } = e.target;
+                setCustomGenre(value);
+                setGenres((prev) => ({ ...prev, custom: value }));
+              }}
+              placeholder="기타 입력"
+              type="text"
+              autoFocus
+              className="outline-none mx-0 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[120px]"
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -152,28 +197,32 @@ function BasicPreferenceInputs({
 }) {
   return (
     <div className="flex justify-center gap-4 flex-wrap mb-[128px]">
-      <div>
-        <Span text="좋아하는 감독은" />
-        <Input
-          name="director"
-          value={basicPreference.director}
-          onChange={onChange}
-        />
-        ,
-      </div>
-      <div>
-        <Span text="좋아하는 배우는" />
-        <Input name="actor" value={basicPreference.actor} onChange={onChange} />
-        .
-      </div>
-      <div>
-        <Input name="liked" value={basicPreference.liked} onChange={onChange} />
-        <Span text="은/는 재밌게 봤는데" />
-      </div>
-      <div>
-        <Input name="hated" value={basicPreference.hated} onChange={onChange} />
-        <Span text="은/는 별로였어." />
-      </div>
+      <InputWrapper
+        label="좋아하는 감독은"
+        value={basicPreference.director}
+        onChange={onChange}
+        name="director"
+        labelForward
+      />
+      <InputWrapper
+        label="좋아하는 배우는"
+        value={basicPreference.actor}
+        onChange={onChange}
+        name="actor"
+        labelForward
+      />
+      <InputWrapper
+        label="은/는 재밌게 봤는데"
+        value={basicPreference.liked}
+        onChange={onChange}
+        name="liked"
+      />
+      <InputWrapper
+        label="은/는 별로였어."
+        value={basicPreference.hated}
+        onChange={onChange}
+        name="hated"
+      />
     </div>
   );
 }
@@ -207,28 +256,47 @@ function OtherPreference({
   );
 }
 
-function Input({
+function InputWrapper({
   name,
   value,
   onChange,
+  label,
+  labelForward,
 }: {
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  labelForward?: boolean;
 }) {
-  return (
-    <input
-      type="text"
-      name={name}
-      value={value}
-      onChange={onChange}
-      className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
-    />
-  );
-}
+  const [active, setActive] = useState(false);
 
-function Span({ text }: { text: string }) {
-  return <span className="whitespace-nowrap">{text}</span>;
+  return (
+    <div className={active ? "" : "opacity-50"}>
+      {labelForward && (
+        <label htmlFor={name} className="whitespace-nowrap">
+          {label}
+        </label>
+      )}
+      <input
+        type="text"
+        id={name}
+        name={name}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setActive(true)}
+        onBlur={() => {
+          if (!value) setActive(false);
+        }}
+        className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
+      />
+      {!labelForward && (
+        <label htmlFor={name} className="whitespace-nowrap">
+          {label}
+        </label>
+      )}
+    </div>
+  );
 }
 
 const generateChatting = ({

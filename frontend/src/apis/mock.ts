@@ -9,7 +9,7 @@ export const getMockPreviewMovies = async () => {
       year: 1984,
       hashtags: "#통쾌한#대표 한국 범죄 영화#대중이 원하는 오락",
     })),
-    classic_movies: [1, 2, 3, 4, 5].map((i) => ({
+    classic_movies: [6, 7, 8, 9, 10].map((i) => ({
       title: "액션" + i,
       image:
         "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
@@ -85,8 +85,7 @@ export const postMockResult = async (recommendationIds: string) => {
       rating: 8.5,
       detail:
         "이 영화는/ 심리적인 내용과 /예술적 표현을 통해 /당신의 호기심을 자극할 것입니다.",
-      image:
-        "https://i.namu.wiki/i/kCl6N7uOwDN3EAzl7hRjouXiOPWajThFWy6V7BJ1s0W00k-LtKIXunQTIpd2npiN1hsPGr-XYWnE-uca4DiWnQ.webp",
+      image: "src/assets/darkknight.jpg",
       year: 2022,
       link: "https://search.naver.com/영화",
     })),
