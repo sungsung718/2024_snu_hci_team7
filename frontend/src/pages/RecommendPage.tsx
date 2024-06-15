@@ -78,8 +78,12 @@ export default function RecommendPage() {
         hates: hates.join(";"),
         detail,
       });
+
       setPastRecoList((prev) => [...prev, recommendation]);
-      setRecommendation({ ...res, chatting: detail });
+      setRecommendation({
+        ...res,
+        chatting: generateChatting(likes, hates, detail),
+      });
       resetAll();
       textAreaRef.current?.focus();
     } catch (err) {
@@ -253,3 +257,17 @@ function ReactedWords({ likes, hates }: { likes: string[]; hates: string[] }) {
 
 const sleep = (delay: number) =>
   new Promise((reslove) => setTimeout(reslove, delay));
+
+const generateChatting = (likes: string[], hates: string[], detail: string) => {
+  let chatting = "";
+
+  if (likes.length > 0) {
+    chatting += `'${likes.join(" / ")}' 같은 부분은 좋아. `;
+  }
+
+  if (hates.length > 0) {
+    chatting += `'${hates.join(" / ")}' 같은 부분은 별로야. `;
+  }
+
+  return chatting + detail;
+};
