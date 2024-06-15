@@ -29,7 +29,7 @@ export default function RecommendPage() {
   const [likes, setLikes] = useState<string[]>([]);
   const [hates, setHates] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFinishing, setIsFinishing] = useState(false);
+  // const [isFinishing, setIsFinishing] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
@@ -79,6 +79,8 @@ export default function RecommendPage() {
         detail,
       });
 
+      console.log(res.movies);
+
       setPastRecoList((prev) => [...prev, recommendation]);
       setRecommendation({
         ...res,
@@ -107,7 +109,7 @@ export default function RecommendPage() {
     const idsStr = ids.join(",");
 
     try {
-      setIsFinishing(true);
+      setIsLoading(true);
 
       const res = await postResult(idsStr);
 
@@ -125,7 +127,7 @@ export default function RecommendPage() {
       console.log(err);
       alert("에러가 발생했습니다.");
     } finally {
-      setIsFinishing(false);
+      setIsLoading(false);
     }
   };
 
@@ -137,7 +139,7 @@ export default function RecommendPage() {
 
   return (
     <>
-      <div className="relative min-h-full min-w-fit pt-[110px] pb-[120px] bg-[url('src/assets/beige_background.png')]">
+      <div className="relative min-h-full min-w-fit pt-[110px] pb-[80px] bg-[url('src/assets/beige_background.png')]">
         <div className="px-[120px] w-fit mx-auto">
           <div className="flex flex-col gap-20">
             {pastRecoList.map((pastRecos, i) => (
@@ -171,7 +173,7 @@ export default function RecommendPage() {
           <ReactedWords likes={likes} hates={hates} />
         </div>
       </div>
-      {isFinishing && <Loading />}
+      {isLoading && <Loading />}
     </>
   );
 }
