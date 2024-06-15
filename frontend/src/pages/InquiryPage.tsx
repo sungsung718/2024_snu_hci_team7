@@ -60,8 +60,12 @@ export default function InquiryPage() {
       genres.options + (genres.custom ? "," + genres.custom : "");
     const { actor, director, liked, hated } = basicPreference;
 
-    const likedList = [liked].concat(location.state.liked);
-    const hatedList = [hated].concat(location.state.hated);
+    const likedList = liked
+      ? [liked].concat(location.state.liked)
+      : location.state.liked;
+    const hatedList = hated
+      ? [hated].concat(location.state.hated)
+      : location.state.hated;
 
     const preference = {
       genre: genreString,
@@ -74,7 +78,10 @@ export default function InquiryPage() {
 
     const chatting = generateChatting({
       genres: genres.options.concat(genres.custom ? [genres.custom] : []),
-      ...basicPreference,
+      actor,
+      director,
+      liked: likedList,
+      hated: hatedList,
       detail,
     });
 
@@ -310,8 +317,8 @@ const generateChatting = ({
   genres: string[];
   director: string;
   actor: string;
-  liked: string;
-  hated: string;
+  liked: string[];
+  hated: string[];
   detail: string;
 }) => {
   let chatting = "";
@@ -329,11 +336,11 @@ const generateChatting = ({
   }
 
   if (liked) {
-    chatting += `재밌게 본 영화는 ${liked}. `;
+    chatting += `선호하는 영화는 ${liked.join(", ")}. `;
   }
 
   if (hated) {
-    chatting += `별로였던 영화는 ${hated}. `;
+    chatting += `별로인 영화는 ${hated.join(", ")}. `;
   }
 
   if (detail) chatting += `그 이외에는 ${detail}`;
