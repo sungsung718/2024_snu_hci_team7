@@ -335,11 +335,11 @@ const generateChatting = ({
     chatting += `좋아하는 배우는 ${actor}. `;
   }
 
-  if (liked) {
+  if (liked.length > 0) {
     chatting += `선호하는 영화는 ${liked.join(", ")}. `;
   }
 
-  if (hated) {
+  if (hated.length > 0) {
     chatting += `별로인 영화는 ${hated.join(", ")}. `;
   }
 
