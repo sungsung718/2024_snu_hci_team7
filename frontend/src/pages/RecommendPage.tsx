@@ -255,9 +255,6 @@ function ReactedWords({ likes, hates }: { likes: string[]; hates: string[] }) {
   );
 }
 
-const sleep = (delay: number) =>
-  new Promise((reslove) => setTimeout(reslove, delay));
-
 const generateChatting = (likes: string[], hates: string[], detail: string) => {
   let chatting = "";
 

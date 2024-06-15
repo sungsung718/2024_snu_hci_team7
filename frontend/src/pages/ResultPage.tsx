@@ -46,7 +46,7 @@ function Prompt({ content, isFirst }: { content: string; isFirst: boolean }) {
       {!isFirst && (
         <div className="my-5 border-b border-[rgba(114,_107,_107,_0.3)] w-[120px] h-[1px]" />
       )}
-      <div className="w-[286px] max-h-[45px] line-clamp-2 overflow-hidden text-[15px] font-medium text-[#726B6B]">
+      <div className="w-[286px] max-h-[45px] line-clamp-5 overflow-hidden text-[15px] font-medium text-[#726B6B]">
         {content}
       </div>
     </>
