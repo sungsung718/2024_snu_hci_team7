@@ -28,7 +28,7 @@ NAVER_CLIENT_ID=
 NAVER_API_KEY=
 ```
 
-After setting your keys, run this command.
+After setting your keys, run this command. Python 10, 11, and 12 are supported.
 
 ```bash
 > pwd
