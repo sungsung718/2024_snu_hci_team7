@@ -64,7 +64,7 @@ export default function RecommendPage() {
   };
 
   const handleSendClick = async () => {
-    if (!detail) {
+    if (!detail.trim()) {
       alert("채팅을 입력해주세요");
       return;
     }

@@ -23,7 +23,7 @@ export default function ResultPage() {
       </div>
       <div
         ref={ticketRef}
-        className="relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
+        className="scale-90 relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
       >
         <div className="h-full flex items-end px-[50px] py-[70px]">
           <div className="max-h-[350px] overflow-y-auto overflow-x-hidden styled-scrollbar">
