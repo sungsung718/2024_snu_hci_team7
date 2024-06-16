@@ -30,14 +30,17 @@ export default function MovieCard({
         />
       </div>
 
-      <div className="flex justify-between items-start mt-3.5">
+      <div className="flex justify-between items-start mt-1.5">
         <div className="text-xs">
           <span>{movie.title}</span>
-          <span className="w-4 inline-block">ㆍ</span>
+          <span className="inline-block">ㆍ</span>
           <span>{movie.year}</span>
         </div>
-        <div className="flex gap-2">
-          <button onClick={() => handleClick("liked")}>
+        <div className="flex gap-0.5">
+          <button
+            onClick={() => handleClick("liked")}
+            className="flex items-center"
+          >
             <span
               className="material-symbols-rounded text-[18px] text-gray-300 font-light"
               style={
@@ -49,7 +52,10 @@ export default function MovieCard({
               thumb_up
             </span>
           </button>
-          <button onClick={() => handleClick("hated")}>
+          <button
+            onClick={() => handleClick("hated")}
+            className="flex items-center"
+          >
             <span
               className="material-symbols-rounded text-[18px] text-gray-300 font-light"
               style={
@@ -64,7 +70,7 @@ export default function MovieCard({
         </div>
       </div>
 
-      <div className="flex flex-wrap text-xs text-gray-400 mt-1.5 gap-[5px]">
+      <div className="flex flex-wrap text-xs mt-0.5 text-gray-400 gap-x-[4px]">
         {movie
           .hashtags!.slice(1)
           .split("#")

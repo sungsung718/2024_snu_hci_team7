@@ -300,7 +300,7 @@ function InputWrapper({
         onBlur={() => {
           if (!value) setActive(false);
         }}
-        className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
+        className="text-[28px] outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
       />
       {!labelForward && (
         <label
