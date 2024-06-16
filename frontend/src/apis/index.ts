@@ -46,13 +46,12 @@ const putRequest = async <T = unknown>(
   return await response.json();
 };
 
-export const getPreviewMovies =
-  //  getMockPreviewMovies;
-  async () =>
-    await getRequest<{
-      recent_movies: Movie[];
-      classic_movies: Movie[];
-    }>("/preview");
+export const getPreviewMovies = getMockPreviewMovies;
+// async () =>
+//   await getRequest<{
+//     recent_movies: Movie[];
+//     classic_movies: Movie[];
+//   }>("/preview");
 
 export const postRecommendations =
   // postMockRecommendations;
