@@ -23,7 +23,7 @@ export default function ResultPage() {
       </div>
       <div
         ref={ticketRef}
-        className="relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
+        className="scale-90 relative w-[1413px] h-[724px] p-5 flex mx-auto justify-between items-center bg-[url('src/assets/ticket_background.png')]"
       >
         <div className="h-full flex items-end px-[50px] py-[70px]">
           <div className="max-h-[350px] overflow-y-auto overflow-x-hidden styled-scrollbar">
@@ -46,7 +46,7 @@ function Prompt({ content, isFirst }: { content: string; isFirst: boolean }) {
       {!isFirst && (
         <div className="my-5 border-b border-[rgba(114,_107,_107,_0.3)] w-[120px] h-[1px]" />
       )}
-      <div className="w-[286px] max-h-[45px] line-clamp-2 overflow-hidden text-[15px] font-medium text-[#726B6B]">
+      <div className="w-[286px] max-h-[45px] line-clamp-5 overflow-hidden text-[15px] font-medium text-[#726B6B]">
         {content}
       </div>
     </>

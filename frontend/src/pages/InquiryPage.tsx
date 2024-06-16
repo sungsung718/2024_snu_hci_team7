@@ -60,8 +60,12 @@ export default function InquiryPage() {
       genres.options + (genres.custom ? "," + genres.custom : "");
     const { actor, director, liked, hated } = basicPreference;
 
-    const likedList = [liked].concat(location.state.liked);
-    const hatedList = [hated].concat(location.state.hated);
+    const likedList = liked
+      ? [liked].concat(location.state.liked)
+      : location.state.liked;
+    const hatedList = hated
+      ? [hated].concat(location.state.hated)
+      : location.state.hated;
 
     const preference = {
       genre: genreString,
@@ -74,7 +78,10 @@ export default function InquiryPage() {
 
     const chatting = generateChatting({
       genres: genres.options.concat(genres.custom ? [genres.custom] : []),
-      ...basicPreference,
+      actor,
+      director,
+      liked: likedList,
+      hated: hatedList,
       detail,
     });
 
@@ -145,7 +152,9 @@ function FavoriteGanre({ genres, setGenres }: FavoriteGanreProps) {
 
   return (
     <div className="flex gap-4 mb-[70px]">
-      <span className="whitespace-nowrap">내가 좋아하는 장르는</span>
+      <span className="whitespace-nowrap font-nanumpen text-[28px] text-[#726E6B]">
+        내가 좋아하는 장르는
+      </span>
       <div className="flex gap-2 flex-wrap">
         {GENRE_LIST.map((genre) => (
           <GenreChip
@@ -196,7 +205,7 @@ function BasicPreferenceInputs({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
-    <div className="flex justify-center gap-4 flex-wrap mb-[128px]">
+    <div className="font-nanumpen flex justify-center gap-4 flex-wrap mb-[128px]">
       <InputWrapper
         label="좋아하는 감독은"
         value={basicPreference.director}
@@ -274,7 +283,10 @@ function InputWrapper({
   return (
     <div className={active ? "" : "opacity-50"}>
       {labelForward && (
-        <label htmlFor={name} className="whitespace-nowrap">
+        <label
+          htmlFor={name}
+          className="text-[#726E6B] whitespace-nowrap text-[28px]"
+        >
           {label}
         </label>
       )}
@@ -291,7 +303,10 @@ function InputWrapper({
         className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
       />
       {!labelForward && (
-        <label htmlFor={name} className="whitespace-nowrap">
+        <label
+          htmlFor={name}
+          className="text-[#726E6B] whitespace-nowrap text-[28px]"
+        >
           {label}
         </label>
       )}
@@ -310,8 +325,8 @@ const generateChatting = ({
   genres: string[];
   director: string;
   actor: string;
-  liked: string;
-  hated: string;
+  liked: string[];
+  hated: string[];
   detail: string;
 }) => {
   let chatting = "";
@@ -328,12 +343,12 @@ const generateChatting = ({
     chatting += `좋아하는 배우는 ${actor}. `;
   }
 
-  if (liked) {
-    chatting += `재밌게 본 영화는 ${liked}. `;
+  if (liked.length > 0) {
+    chatting += `선호하는 영화는 ${liked.join(", ")}. `;
   }
 
-  if (hated) {
-    chatting += `별로였던 영화는 ${hated}. `;
+  if (hated.length > 0) {
+    chatting += `별로인 영화는 ${hated.join(", ")}. `;
   }
 
   if (detail) chatting += `그 이외에는 ${detail}`;

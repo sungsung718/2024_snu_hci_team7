@@ -29,7 +29,7 @@ export default function RecommendPage() {
   const [likes, setLikes] = useState<string[]>([]);
   const [hates, setHates] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFinishing, setIsFinishing] = useState(false);
+  // const [isFinishing, setIsFinishing] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
@@ -64,7 +64,7 @@ export default function RecommendPage() {
   };
 
   const handleSendClick = async () => {
-    if (!detail) {
+    if (!detail.trim()) {
       alert("채팅을 입력해주세요");
       return;
     }
@@ -78,8 +78,14 @@ export default function RecommendPage() {
         hates: hates.join(";"),
         detail,
       });
+
+      console.log(res.movies);
+
       setPastRecoList((prev) => [...prev, recommendation]);
-      setRecommendation({ ...res, chatting: detail });
+      setRecommendation({
+        ...res,
+        chatting: generateChatting(likes, hates, detail),
+      });
       resetAll();
       textAreaRef.current?.focus();
     } catch (err) {
@@ -103,7 +109,7 @@ export default function RecommendPage() {
     const idsStr = ids.join(",");
 
     try {
-      setIsFinishing(true);
+      setIsLoading(true);
 
       const res = await postResult(idsStr);
 
@@ -121,7 +127,7 @@ export default function RecommendPage() {
       console.log(err);
       alert("에러가 발생했습니다.");
     } finally {
-      setIsFinishing(false);
+      setIsLoading(false);
     }
   };
 
@@ -133,7 +139,7 @@ export default function RecommendPage() {
 
   return (
     <>
-      <div className="relative min-h-full min-w-fit pt-[110px] pb-[120px] bg-[url('src/assets/beige_background.png')]">
+      <div className="relative min-h-full min-w-fit pt-[110px] pb-[80px] bg-[url('src/assets/beige_background.png')]">
         <div className="px-[120px] w-fit mx-auto">
           <div className="flex flex-col gap-20">
             {pastRecoList.map((pastRecos, i) => (
@@ -167,7 +173,7 @@ export default function RecommendPage() {
           <ReactedWords likes={likes} hates={hates} />
         </div>
       </div>
-      {isFinishing && <Loading />}
+      {isLoading && <Loading />}
     </>
   );
 }
@@ -251,5 +257,16 @@ function ReactedWords({ likes, hates }: { likes: string[]; hates: string[] }) {
   );
 }
 
-const sleep = (delay: number) =>
-  new Promise((reslove) => setTimeout(reslove, delay));
+const generateChatting = (likes: string[], hates: string[], detail: string) => {
+  let chatting = "";
+
+  if (likes.length > 0) {
+    chatting += `'${likes.join(" / ")}' 같은 부분은 좋아. `;
+  }
+
+  if (hates.length > 0) {
+    chatting += `'${hates.join(" / ")}' 같은 부분은 별로야. `;
+  }
+
+  return chatting + detail;
+};
