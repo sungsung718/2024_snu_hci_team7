@@ -32,7 +32,7 @@ export default {
       },
     },
     fontFamily: {
-      nanumpen: ["nanumpen"],
+      nanumpen: ["Nanum Pen Script"],
     },
   },
   plugins: [],
