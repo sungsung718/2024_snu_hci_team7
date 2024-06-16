@@ -1,13 +1,13 @@
 export default function Loading() {
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen flex flex-col items-center pt-[20vh] text-2xl gap-2 bg-[rgb(195,_189,_184,_0.5)]">
+    <div className="fixed top-0 left-0 w-screen h-screen flex flex-col items-center pt-[25vh] text-2xl gap-2 bg-[rgb(195,_189,_184,_0.6)]">
       <img
         src="./src/assets/spinner.gif"
         alt="spinner"
         width={400}
-        className="translate-y-12"
+        className="transition-all duration-150"
       />
-      <span className="text-[#453e38] font-semibold">
+      <span className="text-[#453e38] font-semibold mt-[-48px] transition-all duration-150">
         영화 정보를 불러오고 있습니다
       </span>
     </div>

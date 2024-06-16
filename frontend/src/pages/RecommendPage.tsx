@@ -29,7 +29,7 @@ export default function RecommendPage() {
   const [likes, setLikes] = useState<string[]>([]);
   const [hates, setHates] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [isFinishing, setIsFinishing] = useState(false);
+  const [isFinishing, setIsFinishing] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(e.target.value);
@@ -109,25 +109,21 @@ export default function RecommendPage() {
     const idsStr = ids.join(",");
 
     try {
-      setIsLoading(true);
+      setIsFinishing(true);
 
-      const res = await postResult(idsStr);
+      const { movies } = await postResult(idsStr);
 
-      res.history.shift();
-      if (pastRecoList.length > 0) {
-        res.history.unshift(pastRecoList[0].chatting);
-      } else {
-        res.history.unshift(recommendation.chatting);
-      }
+      const history = pastRecoList.map((reco) => reco.chatting);
+      history.push(recommendation.chatting);
 
       navigate("/result", {
-        state: res,
+        state: { movies, history },
       });
     } catch (err) {
       console.log(err);
       alert("에러가 발생했습니다.");
     } finally {
-      setIsLoading(false);
+      setIsFinishing(false);
     }
   };
 
@@ -173,7 +169,7 @@ export default function RecommendPage() {
           <ReactedWords likes={likes} hates={hates} />
         </div>
       </div>
-      {isLoading && <Loading />}
+      {(isLoading || isFinishing) && <Loading />}
     </>
   );
 }
