@@ -72,7 +72,7 @@ export default function PreviewPage() {
         }}
       >
         <div className="bg-[#F5F0EA] flex flex-col items-center w-[1000px] px-14">
-          <div className="text-[20px] pt-[80px] flex justify-center pb-[18px]">
+          <div className="font-nanumpen text-[20px] pt-[80px] flex justify-center pb-[18px]">
             영화 취향을 알고 있나요?
           </div>
           <div className="flex flex-col gap-9 w-full">
@@ -145,8 +145,8 @@ function StartButton({
       state={preference}
       className="pb-14 mt-10 flex items-center justify-center gap-1"
     >
-      <span className="text-lg">시작하기</span>
-      <span className="material-symbols-outlined text-5xl font-extralight">
+      <span className="text-lg pt-[3px]">시작하기</span>
+      <span className="material-symbols-outlined text-4xl font-extralight">
         arrow_right_alt
       </span>
     </Link>

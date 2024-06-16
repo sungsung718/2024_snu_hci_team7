@@ -31,6 +31,9 @@ export default {
         fadeIn: "fadeIn 500ms ease-out",
       },
     },
+    fontFamily: {
+      nanumpen: ["nanumpen"],
+    },
   },
   plugins: [],
 };

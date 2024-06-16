@@ -152,7 +152,9 @@ function FavoriteGanre({ genres, setGenres }: FavoriteGanreProps) {
 
   return (
     <div className="flex gap-4 mb-[70px]">
-      <span className="whitespace-nowrap">내가 좋아하는 장르는</span>
+      <span className="whitespace-nowrap font-nanumpen text-[28px] text-[#726E6B]">
+        내가 좋아하는 장르는
+      </span>
       <div className="flex gap-2 flex-wrap">
         {GENRE_LIST.map((genre) => (
           <GenreChip
@@ -203,7 +205,7 @@ function BasicPreferenceInputs({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
-    <div className="flex justify-center gap-4 flex-wrap mb-[128px]">
+    <div className="font-nanumpen flex justify-center gap-4 flex-wrap mb-[128px]">
       <InputWrapper
         label="좋아하는 감독은"
         value={basicPreference.director}
@@ -281,7 +283,10 @@ function InputWrapper({
   return (
     <div className={active ? "" : "opacity-50"}>
       {labelForward && (
-        <label htmlFor={name} className="whitespace-nowrap">
+        <label
+          htmlFor={name}
+          className="text-[#726E6B] whitespace-nowrap text-[28px]"
+        >
           {label}
         </label>
       )}
@@ -298,7 +303,10 @@ function InputWrapper({
         className="outline-none mx-2 px-2 py-1 bg-transparent border-b-[1.5px] border-beige-dark w-[248px]"
       />
       {!labelForward && (
-        <label htmlFor={name} className="whitespace-nowrap">
+        <label
+          htmlFor={name}
+          className="text-[#726E6B] whitespace-nowrap text-[28px]"
+        >
           {label}
         </label>
       )}
