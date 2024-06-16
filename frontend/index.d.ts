@@ -16,3 +16,5 @@ declare module "use-react-screenshot" {
   declare const createFileName: (extension: string, name: string) => string;
   export { useScreenshot, createFileName };
 }
+
+declare module "*.gif";
