@@ -13,6 +13,7 @@ After installing nodejs, run:
 > npm run dev // run project
 ```
 
+Recommend using **Chrome** browser.   
 Make sure you also run the backend server.
 
 ## **Backend**
