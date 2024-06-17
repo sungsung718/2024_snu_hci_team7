@@ -13,7 +13,7 @@ openai.api_key = OPENAI_API_KEY
 
 
 class GPTAgent:
-    def __init__(self, model: str = "gpt-3.5-turbo"):
+    def __init__(self, model: str = "gpt-4o"):
         self.model = model
         self._messages = []
 
